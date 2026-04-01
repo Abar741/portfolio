@@ -1,0 +1,880 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Hero Section Editor{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Enhanced Hero Editor Styles */
+    .hero-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px 15px 0 0;
+        margin-bottom: 0;
+    }
+    
+    .hero-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .hero-header p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+    
+    .hero-container {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 0;
+        margin-bottom: 25px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .hero-toolbar {
+        background: #f8f9fa;
+        padding: 20px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .hero-content {
+        padding: 25px;
+    }
+    
+    /* Enhanced Section Cards */
+    .section-card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        background: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    
+    .section-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--section-color) 0%, var(--section-color-light) 100%);
+    }
+    
+    .section-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    
+    .section-card.basic::before { --section-color: #4e73df; --section-color-light: #6b8cff; }
+    .section-card.badge::before { --section-color: #1cc88a; --section-color-light: #2dd4a0; }
+    .section-card.roles::before { --section-color: #36b9cc; --section-color-light: #4dd9ec; }
+    .section-card.buttons::before { --section-color: #f6c23e; --section-color-light: #f8d66e; }
+    .section-card.stats::before { --section-color: #e74a3b; --section-color-light: #f56c6c; }
+    .section-card.timeline::before { --section-color: #858796; --section-color-light: #a1a3b0; }
+    .section-card.settings::before { --section-color: #5a5c69; --section-color-light: #747882; }
+    
+    .section-header {
+        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%);
+        padding: 1.25rem;
+        border-bottom: 1px solid #e5e7eb;
+        backdrop-filter: blur(10px);
+    }
+    
+    .section-header h6 {
+        margin: 0;
+        font-weight: 700;
+        color: var(--section-color);
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .section-header h6 i {
+        font-size: 1.2rem;
+    }
+    
+    .section-body {
+        padding: 1.5rem;
+    }
+    
+    /* Enhanced Form Controls */
+    .form-control, .form-select {
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 12px 15px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        background: #fafbfc;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.15);
+        outline: none;
+        background: white;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+    
+    /* Enhanced Buttons */
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+        padding: 12px 20px;
+        transition: all 0.3s ease;
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn:hover::before {
+        left: 100%;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #4e73df 0%, #6b8cff 100%);
+        box-shadow: 0 4px 15px rgba(78, 115, 223, 0.3);
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(78, 115, 223, 0.4);
+    }
+    
+    .btn-secondary {
+        background: linear-gradient(135deg, #858796 0%, #a1a3b0 100%);
+        box-shadow: 0 4px 15px rgba(133, 135, 150, 0.3);
+    }
+    
+    .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(133, 135, 150, 0.4);
+    }
+    
+    .btn-info {
+        background: linear-gradient(135deg, #36b9cc 0%, #4dd9ec 100%);
+        box-shadow: 0 4px 15px rgba(54, 185, 204, 0.3);
+    }
+    
+    .btn-info:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(54, 185, 204, 0.4);
+    }
+    
+    .btn-danger {
+        background: linear-gradient(135deg, #e74a3b 0%, #f56c6c 100%);
+        box-shadow: 0 4px 15px rgba(231, 74, 59, 0.3);
+    }
+    
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(231, 74, 59, 0.4);
+    }
+    
+    .btn-sm {
+        padding: 8px 12px;
+        font-size: 0.875rem;
+    }
+    
+    /* Dynamic Item Styles */
+    .dynamic-item {
+        background: #f8f9fa;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .dynamic-item:hover {
+        border-color: #4f46e5;
+        background: white;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.1);
+    }
+    
+    .dynamic-item .btn-danger {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+    
+    /* JSON Output */
+    .json-output {
+        background: #1e293b;
+        color: #e2e8f0;
+        border: 2px solid #334155;
+        border-radius: 12px;
+        padding: 15px;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    /* Alert Styles */
+    .alert {
+        border: none;
+        border-radius: 12px;
+        padding: 15px 20px;
+        font-weight: 500;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .alert-success {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        color: #155724;
+        border-left: 4px solid #1cc88a;
+    }
+    
+    .alert-danger {
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        color: #721c24;
+        border-left: 4px solid #e74a3b;
+    }
+    
+    .alert-info {
+        background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+        color: #0c5460;
+        border-left: 4px solid #36b9cc;
+    }
+    
+    /* Animation Classes */
+    .fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .slide-in {
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+        from { transform: translateX(-20px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Header -->
+<div class="hero-header fade-in">
+    <div class="d-sm-flex align-items-center justify-content-between">
+        <div>
+            <h1>
+                <i class="fas fa-user me-3"></i>Hero Section Editor
+            </h1>
+            <p class="mb-0">Customize your portfolio's hero section with dynamic content management</p>
+        </div>
+        <div class="btn-group mt-3 mt-sm-0" role="group">
+            <button type="button" class="btn btn-secondary" onclick="loadPreview()">
+                <i class="fas fa-eye me-2"></i>Preview
+            </button>
+            <button type="button" class="btn btn-info" onclick="exportJSON()">
+                <i class="fas fa-download me-2"></i>Export JSON
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Hero Container -->
+<div class="hero-container">
+    <!-- Toolbar -->
+    <div class="hero-toolbar">
+        <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-primary rounded-pill px-3 py-2">
+                <i class="fas fa-edit me-2"></i>Edit Mode
+            </span>
+            <span class="text-muted">
+                <i class="fas fa-info-circle me-2"></i>All changes are auto-saved
+            </span>
+        </div>
+        <button type="submit" form="heroForm" class="btn btn-primary">
+            <i class="fas fa-save me-2"></i>Save All Changes
+        </button>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="hero-content">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show slide-in" role="alert">
+                        <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form id="heroForm" method="POST">
+        <div class="hero-content">
+            <!-- Basic Information -->
+            <div class="section-card basic fade-in">
+                <div class="section-header">
+                    <h6>
+                        <i class="fas fa-user"></i>
+                        Basic Information
+                    </h6>
+                </div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" value="Muhammad Abrar">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="profile_image" class="form-label">Profile Image URL</label>
+                                <input type="url" class="form-control" id="profile_image" name="profile_image" placeholder="Leave empty for default">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subtitle" class="form-label">Subtitle</label>
+                        <textarea class="form-control" id="subtitle" name="subtitle" rows="3">I transform creative ideas into exceptional digital experiences through innovative web development, stunning graphic design, and compelling video editing. Let's create something extraordinary together!</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Badge -->
+            <div class="section-card badge fade-in">
+                <div class="section-header">
+                    <h6>
+                        <i class="fas fa-tag"></i>
+                        Badge
+                    </h6>
+                </div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="badge_icon" class="form-label">Badge Icon</label>
+                                <input type="text" class="form-control" id="badge_icon" name="badge_icon" value="fas fa-sparkles">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="badge_text" class="form-label">Badge Text</label>
+                                <input type="text" class="form-control" id="badge_text" name="badge_text" value="Available for Projects">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Roles -->
+            <div class="section-card roles fade-in">
+                <div class="section-header">
+                    <h6>
+                        <i class="fas fa-briefcase"></i>
+                        Professional Roles
+                    </h6>
+                </div>
+                <div class="section-body">
+                    <div id="rolesContainer">
+                        <div class="dynamic-item">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Icon (e.g., fas fa-code)" name="role_icon[]" value="fas fa-code">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Role Title" name="role_title[]" value="Web Developer">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeRole(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dynamic-item">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Icon (e.g., fas fa-palette)" name="role_icon[]" value="fas fa-palette">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Role Title" name="role_title[]" value="Graphic Designer">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeRole(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dynamic-item">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Icon (e.g., fas fa-video)" name="role_icon[]" value="fas fa-video">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Role Title" name="role_title[]" value="Video Editor">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeRole(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary mt-3" onclick="addRole()">
+                        <i class="fas fa-plus me-2"></i>Add Role
+                    </button>
+                </div>
+            </div>
+
+            <!-- Call-to-Action Buttons -->
+            <div class="section-card buttons fade-in">
+                <div class="section-header">
+                    <h6>
+                        <i class="fas fa-mouse-pointer"></i>
+                        Call-to-Action Buttons
+                    </h6>
+                </div>
+                <div class="section-body">
+                    <div id="buttonsContainer">
+                        <div class="dynamic-item">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="Icon" name="button_icon[]" value="fas fa-briefcase">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="Text" name="button_text[]" value="View Portfolio">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="URL" name="button_url[]" value="#projects">
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" name="button_style[]">
+                                        <option value="primary">Primary</option>
+                                        <option value="secondary">Secondary</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeButton(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dynamic-item">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="Icon" name="button_icon[]" value="fas fa-envelope">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="Text" name="button_text[]" value="Get In Touch">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="URL" name="button_url[]" value="#contact">
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" name="button_style[]">
+                                        <option value="primary">Primary</option>
+                                        <option value="secondary" selected>Secondary</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeButton(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary mt-3" onclick="addButton()">
+                        <i class="fas fa-plus me-2"></i>Add Button
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="section-card stats fade-in">
+                <div class="section-header">
+                    <h6>
+                        <i class="fas fa-chart-bar"></i>
+                        Statistics
+                    </h6>
+                </div>
+                <div class="section-body">
+                    <div id="statsContainer">
+                        <div class="dynamic-item">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Value (e.g., 50+)" name="stat_value[]" value="50+">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Label (e.g., Projects)" name="stat_label[]" value="Projects">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeStat(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dynamic-item">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Value (e.g., 5+)" name="stat_value[]" value="5+">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Label (e.g., Years)" name="stat_label[]" value="Years">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeStat(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dynamic-item">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Value (e.g., 100%)" name="stat_value[]" value="100%">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Label (e.g., Satisfaction)" name="stat_label[]" value="Satisfaction">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeStat(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary mt-3" onclick="addStat()">
+                        <i class="fas fa-plus me-2"></i>Add Stat
+                    </button>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="section-card timeline fade-in">
+                <div class="section-header">
+                    <h6>
+                        <i class="fas fa-clock"></i>
+                        Timeline
+                    </h6>
+                </div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="timeline_title" class="form-label">Timeline Title</label>
+                                <input type="text" class="form-control" id="timeline_title" name="timeline_title" value="5+ Years Experience">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="timeline_subtitle" class="form-label">Timeline Subtitle</label>
+                                <input type="text" class="form-control" id="timeline_subtitle" name="timeline_subtitle" value="Professional Development">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Settings -->
+            <div class="section-card settings fade-in">
+                <div class="section-header">
+                    <h6>
+                        <i class="fas fa-cog"></i>
+                        Other Settings
+                    </h6>
+                </div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="scroll_text" class="form-label">Scroll Text</label>
+                                <input type="text" class="form-control" id="scroll_text" name="scroll_text" value="Scroll Down">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="show_scroll_indicator" name="show_scroll_indicator" checked>
+                                    <label class="form-check-label" for="show_scroll_indicator">
+                                        Show Scroll Indicator
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JSON Preview -->
+            <div class="section-card fade-in">
+                <div class="section-header">
+                    <h6>
+                        <i class="fas fa-code"></i>
+                        JSON Output
+                    </h6>
+                </div>
+                <div class="section-body">
+                    <textarea id="jsonOutput" class="json-output" rows="10" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Dynamic form functions
+    function addRole() {
+        const container = document.getElementById('rolesContainer');
+        const roleItem = document.createElement('div');
+        roleItem.className = 'dynamic-item slide-in';
+        roleItem.innerHTML = `
+            <div class="row">
+                <div class="col-md-5">
+                    <input type="text" class="form-control" placeholder="Icon (e.g., fas fa-code)" name="role_icon[]">
+                </div>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" placeholder="Role Title" name="role_title[]">
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeRole(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        container.appendChild(roleItem);
+    }
+
+    function removeRole(button) {
+        const item = button.closest('.dynamic-item');
+        item.style.animation = 'fadeOut 0.3s ease-out';
+        setTimeout(() => item.remove(), 300);
+    }
+
+    function addButton() {
+        const container = document.getElementById('buttonsContainer');
+        const buttonItem = document.createElement('div');
+        buttonItem.className = 'dynamic-item slide-in';
+        buttonItem.innerHTML = `
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="text" class="form-control" placeholder="Icon" name="button_icon[]">
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" placeholder="Text" name="button_text[]">
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" placeholder="URL" name="button_url[]">
+                </div>
+                <div class="col-md-2">
+                    <select class="form-select" name="button_style[]">
+                        <option value="primary">Primary</option>
+                        <option value="secondary">Secondary</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeButton(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        container.appendChild(buttonItem);
+    }
+
+    function removeButton(button) {
+        const item = button.closest('.dynamic-item');
+        item.style.animation = 'fadeOut 0.3s ease-out';
+        setTimeout(() => item.remove(), 300);
+    }
+
+    function addStat() {
+        const container = document.getElementById('statsContainer');
+        const statItem = document.createElement('div');
+        statItem.className = 'dynamic-item slide-in';
+        statItem.innerHTML = `
+            <div class="row">
+                <div class="col-md-5">
+                    <input type="text" class="form-control" placeholder="Value (e.g., 50+)" name="stat_value[]">
+                </div>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" placeholder="Label (e.g., Projects)" name="stat_label[]">
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeStat(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        container.appendChild(statItem);
+    }
+
+    function removeStat(button) {
+        const item = button.closest('.dynamic-item');
+        item.style.animation = 'fadeOut 0.3s ease-out';
+        setTimeout(() => item.remove(), 300);
+    }
+
+    function collectFormData() {
+        const formData = new FormData(document.getElementById('heroForm'));
+        
+        const heroData = {
+            name: formData.get('name'),
+            subtitle: formData.get('subtitle'),
+            profile_image: formData.get('profile_image') || null,
+            badge: {
+                icon: formData.get('badge_icon'),
+                text: formData.get('badge_text')
+            },
+            roles: [],
+            buttons: [],
+            stats: [],
+            timeline: {
+                title: formData.get('timeline_title'),
+                subtitle: formData.get('timeline_subtitle')
+            },
+            scroll_text: formData.get('scroll_text'),
+            show_scroll_indicator: formData.get('show_scroll_indicator') === 'on'
+        };
+
+        // Collect roles
+        const roleIcons = formData.getAll('role_icon[]');
+        const roleTitles = formData.getAll('role_title[]');
+        for (let i = 0; i < roleIcons.length; i++) {
+            if (roleIcons[i] && roleTitles[i]) {
+                heroData.roles.push({
+                    icon: roleIcons[i],
+                    title: roleTitles[i]
+                });
+            }
+        }
+
+        // Collect buttons
+        const buttonIcons = formData.getAll('button_icon[]');
+        const buttonTexts = formData.getAll('button_text[]');
+        const buttonUrls = formData.getAll('button_url[]');
+        const buttonStyles = formData.getAll('button_style[]');
+        for (let i = 0; i < buttonIcons.length; i++) {
+            if (buttonIcons[i] && buttonTexts[i] && buttonUrls[i]) {
+                heroData.buttons.push({
+                    icon: buttonIcons[i],
+                    text: buttonTexts[i],
+                    url: buttonUrls[i],
+                    style: buttonStyles[i] || 'primary'
+                });
+            }
+        }
+
+        // Collect stats
+        const statValues = formData.getAll('stat_value[]');
+        const statLabels = formData.getAll('stat_label[]');
+        for (let i = 0; i < statValues.length; i++) {
+            if (statValues[i] && statLabels[i]) {
+                heroData.stats.push({
+                    value: statValues[i],
+                    label: statLabels[i]
+                });
+            }
+        }
+
+        // Add default floating icons
+        heroData.floating_icons = [
+            {icon_class: "fas fa-code", label: "Web Dev", animation: "down", delay: 600},
+            {icon_class: "fas fa-palette", label: "Design", animation: "up", delay: 700},
+            {icon_class: "fas fa-video", label: "Video", animation: "down", delay: 800},
+            {icon_class: "fas fa-mobile-alt", label: "Mobile", animation: "up", delay: 900},
+            {icon_class: "fas fa-camera", label: "Photo", animation: "down", delay: 1000}
+        ];
+
+        return heroData;
+    }
+
+    function loadPreview() {
+        const heroData = collectFormData();
+        document.getElementById('jsonOutput').value = JSON.stringify(heroData, null, 2);
+    }
+
+    function exportJSON() {
+        const heroData = collectFormData();
+        const jsonStr = JSON.stringify(heroData, null, 2);
+        const blob = new Blob([jsonStr], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'hero_data.json';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // Form submission
+    document.getElementById('heroForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        loadPreview();
+        
+        // Submit the form normally
+        this.submit();
+    });
+
+    // Add fade out animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(-20px); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Load initial preview
+    loadPreview();
+</script>
+{% endblock %}

@@ -1,0 +1,870 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Messages Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Enhanced Messages Page Styles */
+    .messages-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px 15px 0 0;
+        margin-bottom: 0;
+    }
+    
+    .messages-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .messages-header p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+    
+    .messages-container {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 0;
+        margin-bottom: 25px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .messages-toolbar {
+        background: #f8f9fa;
+        padding: 20px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .messages-content {
+        padding: 25px;
+    }
+    
+    /* Enhanced Stats Cards */
+    .stats-card-enhanced {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        background: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    
+    .stats-card-enhanced::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--card-color) 0%, var(--card-color-light) 100%);
+    }
+    
+    .stats-card-enhanced:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    
+    .stats-card-enhanced.total::before { --card-color: #4e73df; --card-color-light: #6b8cff; }
+    .stats-card-enhanced.unread::before { --card-color: #e74a3b; --card-color-light: #f56c6c; }
+    .stats-card-enhanced.read::before { --card-color: #1cc88a; --card-color-light: #2dd4a0; }
+    .stats-card-enhanced.week::before { --card-color: #36b9cc; --card-color-light: #4dd9ec; }
+    
+    .stats-card-enhanced .card-body {
+        padding: 1.5rem;
+    }
+    
+    .stats-icon-enhanced {
+        font-size: 2.5rem;
+        opacity: 0.4;
+        transition: all 0.3s ease;
+    }
+    
+    .stats-card-enhanced:hover .stats-icon-enhanced {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+    
+    /* Enhanced Section Cards */
+    .section-card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        background: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    
+    .section-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--section-color) 0%, var(--section-color-light) 100%);
+    }
+    
+    .section-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    
+    .section-card.messages::before { --section-color: #4e73df; --section-color-light: #6b8cff; }
+    
+    .section-header {
+        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%);
+        padding: 1.25rem;
+        border-bottom: 1px solid #e5e7eb;
+        backdrop-filter: blur(10px);
+    }
+    
+    .section-header h6 {
+        margin: 0;
+        font-weight: 700;
+        color: var(--section-color);
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .section-header h6 i {
+        font-size: 1.2rem;
+    }
+    
+    .section-body {
+        padding: 1.5rem;
+    }
+    
+    /* Enhanced Table */
+    .table-enhanced {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .table-enhanced thead th {
+        background: linear-gradient(135deg, #4e73df 0%, #6b8cff 100%);
+        color: white;
+        border: none;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+        padding: 1rem;
+    }
+    
+    .table-enhanced tbody tr {
+        transition: all 0.3s ease;
+    }
+    
+    .table-enhanced tbody tr:hover {
+        background: #f8f9fa;
+        transform: scale(1.01);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .table-enhanced tbody tr.unread-row {
+        background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%);
+        border-left: 4px solid #e74a3b;
+    }
+    
+    .table-enhanced tbody tr.unread-row:hover {
+        background: linear-gradient(135deg, #ffe8e8 0%, #ffd6d6 100%);
+    }
+    
+    .table-enhanced tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    
+    /* Enhanced Buttons */
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+        padding: 12px 20px;
+        transition: all 0.3s ease;
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn:hover::before {
+        left: 100%;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #4e73df 0%, #6b8cff 100%);
+        box-shadow: 0 4px 15px rgba(78, 115, 223, 0.3);
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(78, 115, 223, 0.4);
+    }
+    
+    .btn-outline-primary {
+        border: 2px solid #4e73df;
+        color: #4e73df;
+        background: transparent;
+    }
+    
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, #4e73df 0%, #6b8cff 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(78, 115, 223, 0.4);
+    }
+    
+    .btn-outline-info {
+        border: 2px solid #36b9cc;
+        color: #36b9cc;
+        background: transparent;
+    }
+    
+    .btn-outline-info:hover {
+        background: linear-gradient(135deg, #36b9cc 0%, #4dd9ec 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(54, 185, 204, 0.4);
+    }
+    
+    .btn-outline-danger {
+        border: 2px solid #e74a3b;
+        color: #e74a3b;
+        background: transparent;
+    }
+    
+    .btn-outline-danger:hover {
+        background: linear-gradient(135deg, #e74a3b 0%, #f56c6c 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(231, 74, 59, 0.4);
+    }
+    
+    .btn-sm {
+        padding: 8px 12px;
+        font-size: 0.875rem;
+    }
+    
+    /* Enhanced Badges */
+    .badge-enhanced {
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .badge-danger {
+        background: linear-gradient(135deg, #e74a3b 0%, #f56c6c 100%);
+        box-shadow: 0 2px 10px rgba(231, 74, 59, 0.3);
+        animation: pulse 2s infinite;
+    }
+    
+    .badge-success {
+        background: linear-gradient(135deg, #1cc88a 0%, #2dd4a0 100%);
+        box-shadow: 0 2px 10px rgba(28, 200, 138, 0.3);
+    }
+    
+    .badge-info {
+        background: linear-gradient(135deg, #36b9cc 0%, #4dd9ec 100%);
+        box-shadow: 0 2px 10px rgba(54, 185, 204, 0.3);
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    /* Message Avatar Styles */
+    .message-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #36b9cc 0%, #4dd9ec 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        border: 2px solid #e5e7eb;
+    }
+    
+    .message-avatar:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 15px rgba(54, 185, 204, 0.4);
+        border-color: #36b9cc;
+    }
+    
+    /* Message Preview Styles */
+    .message-preview {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+    
+    /* Animation Classes */
+    .fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .slide-in {
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+        from { transform: translateX(-20px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    /* Empty State Styles */
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 15px;
+        border: 2px dashed #dee2e6;
+    }
+    
+    .empty-state i {
+        font-size: 4rem;
+        color: #adb5bd;
+        margin-bottom: 1rem;
+    }
+    
+    /* Dropdown Styles */
+    .dropdown-menu-enhanced {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+    }
+    
+    .dropdown-item-enhanced {
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    .dropdown-item-enhanced:hover {
+        background: linear-gradient(135deg, #4e73df 0%, #6b8cff 100%);
+        color: white;
+        transform: translateX(5px);
+    }
+    
+    /* Modal Enhancements */
+    .modal-content {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    .modal-header {
+        background: linear-gradient(135deg, #4e73df 0%, #6b8cff 100%);
+        color: white;
+        border-radius: 15px 15px 0 0;
+        border: none;
+    }
+    
+    .modal-header .btn-close {
+        filter: brightness(0) invert(1);
+    }
+    
+    /* Checkbox Styles */
+    .form-check-input:checked {
+        background-color: #4e73df;
+        border-color: #4e73df;
+    }
+    
+    .form-check-input:focus {
+        border-color: #4e73df;
+        box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Messages Header -->
+<div class="messages-header fade-in">
+    <div class="d-sm-flex align-items-center justify-content-between">
+        <div>
+            <h1>
+                <i class="fas fa-envelope me-3"></i>Messages Management
+            </h1>
+            <p class="mb-0">Manage and respond to visitor messages from your portfolio</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-danger" onclick="markAllAsRead()">
+                <i class="fas fa-envelope-open me-2"></i>Mark All as Read
+            </button>
+            <button class="btn btn-outline-danger" onclick="deleteAllRead()">
+                <i class="fas fa-trash me-2"></i>Delete Read Messages
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Messages Container -->
+<div class="messages-container">
+    <!-- Toolbar -->
+    <div class="messages-toolbar">
+        <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-primary rounded-pill px-3 py-2">
+                <i class="fas fa-database me-2"></i>{{ messages|length }} Total Messages
+            </span>
+            {% if unread_count > 0 %}
+            <span class="badge badge-enhanced badge-danger rounded-pill px-3 py-2">
+                <i class="fas fa-exclamation-circle me-2"></i>{{ unread_count }} Unread
+            </span>
+            {% endif %}
+            <span class="text-muted">
+                <i class="fas fa-info-circle me-2"></i>Click actions to manage messages
+            </span>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-filter me-2"></i>Filter Messages
+            </button>
+            <ul class="dropdown-menu dropdown-menu-enhanced">
+                <li><a class="dropdown-item dropdown-item-enhanced" href="{{ url_for('admin.messages') }}">
+                    <i class="fas fa-list me-2"></i>All Messages
+                </a></li>
+                <li><a class="dropdown-item dropdown-item-enhanced" href="{{ url_for('admin.messages') }}?filter=unread">
+                    <i class="fas fa-envelope me-2"></i>Unread Only
+                </a></li>
+                <li><a class="dropdown-item dropdown-item-enhanced" href="{{ url_for('admin.messages') }}?filter=read">
+                    <i class="fas fa-envelope-open me-2"></i>Read Only
+                </a></li>
+                <li><a class="dropdown-item dropdown-item-enhanced" href="{{ url_for('admin.messages') }}?filter=week">
+                    <i class="fas fa-calendar-week me-2"></i>This Week
+                </a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="messages-content">
+        <!-- Messages Statistics -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stats-card-enhanced total fade-in">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Messages
+                                </div>
+                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ messages|length }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-envelope stats-icon-enhanced text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stats-card-enhanced unread fade-in">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                    Unread Messages
+                                </div>
+                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ messages|selectattr('status', 'equalto', 'unread')|list|length }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-envelope stats-icon-enhanced text-danger"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stats-card-enhanced read fade-in">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Read Messages
+                                </div>
+                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ messages|selectattr('status', 'equalto', 'read')|list|length }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-envelope-open stats-icon-enhanced text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stats-card-enhanced week fade-in">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    This Week
+                                </div>
+                                <div class="h3 mb-0 font-weight-bold text-gray-800">
+                                    {{ messages|selectattr('created_at', 'ge', week_ago)|list|length }}
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar-week stats-icon-enhanced text-info"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages Table -->
+        <div class="section-card messages fade-in">
+            <div class="section-header">
+                <h6>
+                    <i class="fas fa-envelope"></i>
+                    All Messages
+                </h6>
+            </div>
+            <div class="section-body">
+                {% if messages %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-enhanced">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="selectAll">
+                                    </div>
+                                </th>
+                                <th>Status</th>
+                                <th>Sender</th>
+                                <th>Subject</th>
+                                <th>Message</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for message in messages %}
+                            <tr class="{{ 'unread-row' if message.status == 'unread' else '' }}">
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input message-checkbox" type="checkbox" value="{{ message.id }}">
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if message.status == 'unread' %}
+                                    <span class="badge badge-enhanced badge-danger">New</span>
+                                    {% else %}
+                                    <span class="text-muted"><i class="fas fa-envelope-open"></i></span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="message-avatar me-3">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div>
+                                            <strong>{{ message.name }}</strong>
+                                            <br>
+                                            <small class="text-muted">{{ message.email }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong>{{ message.subject or 'No Subject' }}</strong>
+                                </td>
+                                <td>
+                                    <div class="message-preview">
+                                        {{ message.message[:100] }}{% if message.message|length > 100 %}...{% endif %}
+                                    </div>
+                                </td>
+                                <td>
+                                    <small class="text-muted">{{ message.created_at.strftime('%b %d, %Y %H:%M') if message.created_at else 'No date' }}</small>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewMessage({{ message.id }})" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-info" onclick="replyToMessage('{{ message.email }}', '{{ message.subject or 'No Subject' }}')" title="Reply">
+                                            <i class="fas fa-reply"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteMessage({{ message.id }})" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="empty-state fade-in">
+                    <i class="fas fa-envelope"></i>
+                    <h4 class="text-gray-500">No Messages Yet</h4>
+                    <p class="text-gray-400">When visitors contact you through your portfolio, their messages will appear here.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Message Detail Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">
+                    <i class="fas fa-envelope me-2"></i>Message Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">From:</label>
+                    <div class="d-flex align-items-center">
+                        <div class="message-avatar me-3">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <strong id="messageSender"></strong>
+                            <br>
+                            <small class="text-muted" id="messageEmail"></small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Subject:</label>
+                    <h6 id="messageSubject"></h6>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Message:</label>
+                    <div id="messageContent" class="border rounded p-3 bg-light"></div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Received:</label>
+                    <small id="messageDate"></small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="replyButton">
+                    <i class="fas fa-reply me-2"></i>Reply
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Message data
+const messages = {{ messages|tojson|safe }};
+
+// Mark as read function
+function markAsRead(id) {
+    fetch('/admin/messages/' + id + '/read', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': ''
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+// Delete message function
+function deleteMessage(id) {
+    if (confirm('Are you sure you want to delete this message? This action cannot be undone.')) {
+        fetch('/admin/messages/' + id + '/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': ''
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error deleting message: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting message');
+        });
+    }
+}
+
+// Select all functionality
+document.getElementById('selectAll')?.addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('.message-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+});
+
+// Mark all as read
+function markAllAsRead() {
+    const unreadIds = messages.filter(m => m.status === 'unread').map(m => m.id);
+    if (unreadIds.length === 0) {
+        alert('No unread messages to mark as read.');
+        return;
+    }
+    
+    if (confirm(`Mark ${unreadIds.length} message(s) as read?`)) {
+        fetch('/admin/messages/mark-all-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': ''
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error marking messages as read: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error marking messages as read');
+        });
+    }
+}
+
+// Delete all read messages
+function deleteAllRead() {
+    const readIds = messages.filter(m => m.status === 'read').map(m => m.id);
+    if (readIds.length === 0) {
+        alert('No read messages to delete.');
+        return;
+    }
+    
+    if (confirm(`Delete ${readIds.length} read message(s)? This action cannot be undone.`)) {
+        fetch('/admin/messages/delete-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': ''
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error deleting messages: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting messages');
+        });
+    }
+}
+
+// View message function
+function viewMessage(id) {
+    const message = messages.find(m => m.id === id);
+    if (message) {
+        document.getElementById('messageSender').textContent = message.name;
+        document.getElementById('messageEmail').textContent = message.email;
+        document.getElementById('messageSubject').textContent = message.subject || 'No Subject';
+        document.getElementById('messageContent').textContent = message.message;
+        document.getElementById('messageDate').textContent = new Date(message.created_at).toLocaleString();
+        
+        // Mark as read if unread
+        if (message.status === 'unread') {
+            markAsRead(id);
+        }
+        
+        // Set reply button
+        document.getElementById('replyButton').onclick = function() {
+            replyToMessage(message.email, message.subject || 'No Subject');
+        };
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('messageModal'));
+        modal.show();
+    }
+}
+
+// Reply to message function
+function replyToMessage(email, subject) {
+    window.location.href = `mailto:${email}?subject=Re: ${subject}`;
+}
+
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+});
+</script>
+{% endblock %}

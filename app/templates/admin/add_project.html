@@ -1,0 +1,458 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Add New Project{% endblock %}
+
+{% block extra_css %}
+<style>
+    .project-form-container {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .form-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .form-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .form-header p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+    
+    .form-body {
+        padding: 2.5rem;
+    }
+    
+    .form-section {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .form-section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .form-section-title i {
+        color: #4f46e5;
+        font-size: 1.2rem;
+    }
+    
+    .form-control, .form-select {
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 12px 15px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.15);
+        transform: translateY(-1px);
+        background: #fafbff;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+    
+    .required-star {
+        color: #ef4444;
+        font-weight: 700;
+    }
+    
+    .form-text {
+        color: #6b7280;
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+    
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+        padding: 12px 24px;
+        transition: all 0.3s ease;
+        border: none;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+    
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+    }
+    
+    .btn-secondary {
+        background: #6b7280;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background: #4b5563;
+        transform: translateY(-2px);
+    }
+    
+    .image-upload-area {
+        border: 2px dashed #d1d5db;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: #f9fafb;
+    }
+    
+    .image-upload-area:hover {
+        border-color: #4f46e5;
+        background: #f0f1ff;
+    }
+    
+    .image-upload-area i {
+        font-size: 3rem;
+        color: #9ca3af;
+        margin-bottom: 1rem;
+    }
+    
+    .image-upload-area.has-image {
+        border-color: #10b981;
+        background: #ecfdf5;
+    }
+    
+    .image-preview {
+        max-width: 200px;
+        max-height: 150px;
+        border-radius: 8px;
+        margin-top: 1rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .link-input-group {
+        position: relative;
+    }
+    
+    .link-input-group .input-group-text {
+        background: #f3f4f6;
+        border: 2px solid #e5e7eb;
+        border-right: none;
+        border-radius: 10px 0 0 10px;
+        color: #6b7280;
+    }
+    
+    .link-input-group .form-control {
+        border-radius: 0 10px 10px 0;
+        border-left: none;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        padding-top: 2rem;
+        border-top: 1px solid #e5e7eb;
+        margin-top: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+        .form-header {
+            padding: 1.5rem;
+        }
+        
+        .form-header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .form-body {
+            padding: 1.5rem;
+        }
+        
+        .form-section {
+            padding: 1rem;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+        
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="project-form-container">
+        <!-- Form Header -->
+        <div class="form-header">
+            <h1>
+                <i class="fas fa-rocket me-3"></i>Add New Project
+            </h1>
+            <p>Create an amazing project to showcase in your portfolio</p>
+        </div>
+        
+        <!-- Form Body -->
+        <div class="form-body">
+            <form method="POST" enctype="multipart/form-data" id="projectForm">
+                
+                <!-- Basic Information Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Basic Information
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="title" class="form-label">
+                            Project Title <span class="required-star">*</span>
+                        </label>
+                        <input type="text" 
+                               class="form-control form-control-lg" 
+                               id="title" 
+                               name="title" 
+                               placeholder="Enter your project name..."
+                               required>
+                        <div class="form-text">Choose a descriptive title that represents your project well</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="description" class="form-label">
+                            Project Description <span class="required-star">*</span>
+                        </label>
+                        <textarea class="form-control form-control-lg" 
+                                  id="description" 
+                                  name="description" 
+                                  rows="5" 
+                                  placeholder="Describe your project, its purpose, technologies used, and key features..."
+                                  required></textarea>
+                        <div class="form-text">Provide a comprehensive description of your project</div>
+                    </div>
+                </div>
+                
+                <!-- Project Image Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-image"></i>
+                        Project Image
+                    </div>
+                    
+                    <div class="image-upload-area" onclick="document.getElementById('image').click()">
+                        <input type="file" 
+                               id="image" 
+                               name="image" 
+                               accept="image/*" 
+                               style="display: none;"
+                               onchange="previewImage(this)">
+                        
+                        <div id="uploadPlaceholder">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h5 class="text-gray-700">Click to upload project image</h5>
+                            <p class="text-gray-500 mb-0">or drag and drop</p>
+                            <small class="text-gray-400">PNG, JPG, GIF up to 10MB</small>
+                        </div>
+                        
+                        <div id="imagePreviewContainer" style="display: none;">
+                            <img id="imagePreview" class="image-preview" alt="Project preview">
+                            <p class="text-success mt-2 mb-0">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <span id="imageName"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-text mt-2">Upload a screenshot or image of your project (optional)</div>
+                </div>
+                
+                <!-- Project Links Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-link"></i>
+                        Project Links
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="github" class="form-label">
+                            <i class="fab fa-github me-2"></i>GitHub Repository
+                        </label>
+                        <div class="link-input-group">
+                            <span class="input-group-text">
+                                <i class="fab fa-github"></i>
+                            </span>
+                            <input type="url" 
+                                   class="form-control form-control-lg" 
+                                   id="github" 
+                                   name="github" 
+                                   placeholder="https://github.com/username/repository">
+                        </div>
+                        <div class="form-text">Link to your project's source code repository</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="live" class="form-label">
+                            <i class="fas fa-external-link-alt me-2"></i>Live Demo
+                        </label>
+                        <div class="link-input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-globe"></i>
+                            </span>
+                            <input type="url" 
+                                   class="form-control form-control-lg" 
+                                   id="live" 
+                                   name="live" 
+                                   placeholder="https://your-project-demo.com">
+                        </div>
+                        <div class="form-text">Link to the live demo or deployed version of your project</div>
+                    </div>
+                </div>
+                
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-save me-2"></i>Save Project
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function previewImage(input) {
+    const file = input.files[0];
+    const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+    const imagePreview = document.getElementById('imagePreview');
+    const imageName = document.getElementById('imageName');
+    const uploadArea = document.querySelector('.image-upload-area');
+    
+    if (file) {
+        // Check file type
+        if (!file.type.startsWith('image/')) {
+            alert('Please select an image file');
+            input.value = '';
+            return;
+        }
+        
+        // Check file size (10MB limit)
+        if (file.size > 10 * 1024 * 1024) {
+            alert('Image size should be less than 10MB');
+            input.value = '';
+            return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imageName.textContent = file.name;
+            uploadPlaceholder.style.display = 'none';
+            imagePreviewContainer.style.display = 'block';
+            uploadArea.classList.add('has-image');
+        }
+        
+        reader.onerror = function() {
+            alert('Error reading image file');
+            input.value = '';
+        }
+        
+        reader.readAsDataURL(file);
+    } else {
+        // Reset when no file selected
+        uploadPlaceholder.style.display = 'block';
+        imagePreviewContainer.style.display = 'none';
+        uploadArea.classList.remove('has-image');
+    }
+}
+
+// Form validation
+document.getElementById('projectForm').addEventListener('submit', function(e) {
+    const title = document.getElementById('title').value.trim();
+    const description = document.getElementById('description').value.trim();
+    
+    if (!title) {
+        e.preventDefault();
+        alert('Please enter a project title');
+        document.getElementById('title').focus();
+        return;
+    }
+    
+    if (!description) {
+        e.preventDefault();
+        alert('Please enter a project description');
+        document.getElementById('description').focus();
+        return;
+    }
+    
+    if (description.length < 20) {
+        e.preventDefault();
+        alert('Project description should be at least 20 characters long');
+        document.getElementById('description').focus();
+        return;
+    }
+});
+
+// Auto-save draft functionality (optional)
+let autoSaveTimer;
+const formInputs = document.querySelectorAll('#projectForm input, #projectForm textarea');
+
+formInputs.forEach(input => {
+    input.addEventListener('input', function() {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => {
+            // Save to localStorage as draft
+            const formData = new FormData(document.getElementById('projectForm'));
+            const draft = {};
+            for (let [key, value] of formData.entries()) {
+                draft[key] = value;
+            }
+            localStorage.setItem('projectDraft', JSON.stringify(draft));
+            console.log('Draft saved automatically');
+        }, 3000);
+    });
+});
+
+// Load draft on page load if exists
+window.addEventListener('load', function() {
+    const savedDraft = localStorage.getItem('projectDraft');
+    if (savedDraft) {
+        const draft = JSON.parse(savedDraft);
+        // You can implement draft restoration here if needed
+        console.log('Draft found:', draft);
+    }
+});
+</script>
+{% endblock %}

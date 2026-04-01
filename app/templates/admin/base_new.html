@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel{% endblock %} - Portfolio Management</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #858796;
+            --success-color: #1cc88a;
+            --info-color: #36b9cc;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --dark-color: #5a5c69;
+            --light-color: #f8f9fc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--light-color);
+            min-height: 100vh;
+        }
+        
+        .wrapper {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .sidebar-brand {
+            height: 4.375rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-brand:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-divider {
+            height: 0;
+            margin: 1rem 0;
+            overflow: hidden;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .sidebar-heading {
+            text-align: center;
+            padding: 0 1rem;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.1rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-link:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary-color);
+        }
+        
+        .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-left-color: white;
+        }
+        
+        .nav-link i {
+            margin-right: 0.5rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            background-color: var(--light-color);
+            min-height: 100vh;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        /* Top Bar */
+        .topbar {
+            height: 4.375rem;
+            background-color: white;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+        }
+        
+        .topbar-brand {
+            display: none;
+        }
+        
+        .topbar-divider {
+            width: 0;
+            height: 2.1875rem;
+            margin: 0 1rem;
+            border-left: 1px solid var(--secondary-color);
+        }
+        
+        /* Hamburger Menu Button */
+        #sidebarToggle {
+            color: #5a5c69 !important;
+            background-color: #f8f9fc !important;
+            border: 1px solid #dddfeb !important;
+            padding: 0.5rem 0.75rem !important;
+            font-size: 1rem !important;
+            line-height: 1 !important;
+            border-radius: 0.35rem !important;
+            transition: all 0.3s ease !important;
+            margin-right: 0.75rem !important;
+        }
+        
+        #sidebarToggle:hover {
+            background-color: #eaecf4 !important;
+            border-color: #d1d3e2 !important;
+            color: #5a5c69 !important;
+            transform: none !important;
+        }
+        
+        #sidebarToggle:focus {
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25) !important;
+            border-color: #4e73df !important;
+        }
+        
+        #sidebarToggle:active {
+            background-color: #dddfeb !important;
+        }
+        
+        #sidebarToggle i {
+            font-size: 1rem !important;
+            width: 1rem !important;
+            text-align: center !important;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-item-dropdown {
+            position: relative;
+        }
+        
+        .nav-link-dropdown {
+            color: var(--dark-color);
+            padding: 0.5rem 1rem;
+            border-radius: 0.35rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .nav-link-dropdown:hover {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            min-width: 12rem;
+            padding: 0.5rem 0;
+            margin-top: 0.25rem;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+        
+        /* Cards */
+        .card {
+            border: none;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .card-body {
+            padding: 1.25rem;
+        }
+        
+        /* Stats Cards */
+        .stats-card {
+            border-left: 0.25rem solid;
+        }
+        
+        .stats-card.border-left-primary {
+            border-left-color: var(--primary-color);
+        }
+        
+        .stats-card.border-left-success {
+            border-left-color: var(--success-color);
+        }
+        
+        .stats-card.border-left-info {
+            border-left-color: var(--info-color);
+        }
+        
+        .stats-card.border-left-warning {
+            border-left-color: var(--warning-color);
+        }
+        
+        .stats-icon {
+            font-size: 2rem;
+            opacity: 0.3;
+        }
+        
+        .text-xs {
+            font-size: 0.75rem;
+        }
+        
+        .font-weight-bold {
+            font-weight: 700;
+        }
+        
+        .text-uppercase {
+            text-transform: uppercase;
+        }
+        
+        /* Tables */
+        .table {
+            margin-bottom: 0;
+        }
+        
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .table td {
+            font-size: 0.875rem;
+            vertical-align: middle;
+        }
+        
+        /* Buttons */
+        .btn {
+            border-radius: 0.35rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #2e59d9;
+            border-color: #2653d4;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+            border-color: var(--warning-color);
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        /* Forms */
+        .form-control {
+            border: 1px solid var(--border-color);
+            border-radius: 0.35rem;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 0.875rem;
+        }
+        
+        /* Alerts */
+        .alert {
+            border: none;
+            border-radius: 0.35rem;
+            font-size: 0.875rem;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            border-left: 4px solid var(--success-color);
+            color: #155724;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            border-left: 4px solid var(--danger-color);
+            color: #721c24;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: fixed;
+                left: -100%;
+                transition: left 0.3s;
+            }
+            
+            .sidebar.show {
+                left: 0;
+            }
+            
+            .content-wrapper {
+                margin-left: 0;
+            }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <a class="sidebar-brand" href="{{ url_for('admin.dashboard') }}">
+                <i class="fas fa-code me-2"></i>
+                Portfolio Admin
+            </a>
+            
+            <hr class="sidebar-divider">
+            
+            <div class="sidebar-heading">
+                Main
+            </div>
+            
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}" href="{{ url_for('admin.dashboard') }}">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'admin.hero_editor' %}active{% endif %}" href="{{ url_for('admin.hero_editor') }}">
+                        <i class="fas fa-user"></i>
+                        Hero Section
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'admin.projects' %}active{% endif %}" href="{{ url_for('admin.projects') }}">
+                        <i class="fas fa-project-diagram"></i>
+                        Projects
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'calendar.calendar' %}active{% endif %}" href="{{ url_for('calendar.calendar') }}">
+                        <i class="fas fa-calendar-alt"></i>
+                        Calendar
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'admin.skills' %}active{% endif %}" href="{{ url_for('admin.skills') }}">
+                        <i class="fas fa-cogs"></i>
+                        <span>Skills</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'admin.messages' %}active{% endif %}" href="{{ url_for('admin.messages') }}">
+                        <i class="fas fa-envelope"></i>
+                        Messages
+                        {% if unread_count > 0 %}
+                        <span class="badge bg-danger rounded-pill ms-auto">{{ unread_count }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+            </ul>
+            
+            <hr class="sidebar-divider">
+            
+            <div class="sidebar-heading">
+                Management
+            </div>
+            
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('admin.add_project') }}">
+                        <i class="fas fa-plus"></i>
+                        Add Project
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('main.home') }}" target="_blank" class="nav-link">
+                        <i class="fas fa-external-link-alt"></i>
+                        View Site
+                    </a>
+                </li>
+            </ul>
+            
+            <hr class="sidebar-divider">
+            
+            <div class="text-center d-none d-md-inline">
+                <div class="sidebar-heading">
+                    User
+                </div>
+                <div class="text-white-50 small">
+                    Admin User
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <div class="content-wrapper">
+            <!-- Top Bar -->
+            <nav class="topbar">
+                <div class="d-flex align-items-center">
+                    <button id="sidebarToggle" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link-dropdown" href="#" id="userDropdown">
+                            <i class="fas fa-user-circle fa-lg"></i>
+                            <span class="ms-2 d-none d-lg-inline">Admin</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ url_for('auth.logout') }}">
+                                <i class="fas fa-sign-out-alt me-2"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Page Content -->
+            <main class="content">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Sidebar Toggle
+        document.getElementById('sidebarToggle')?.addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('show');
+        });
+        
+        // Dropdown Toggle
+        document.getElementById('userDropdown')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.dropdown-menu').classList.toggle('show');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.nav-item-dropdown')) {
+                document.querySelector('.dropdown-menu')?.classList.remove('show');
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

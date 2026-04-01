@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Portfolio Control Center</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #ec4899;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --gradient-6: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 30px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-logo i {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.8rem;
+        }
+        
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .sidebar-user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .sidebar-user-info h5 {
+            color: white;
+            font-size: 0.9rem;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .sidebar-user-info p {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            margin: 0;
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .sidebar-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 25px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-menu-item:hover {
+            color: white;
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .sidebar-menu-item.active {
+            color: white;
+            background: var(--gradient-1);
+        }
+        
+        .sidebar-menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .sidebar-menu-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--gradient-1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar-menu-item.active::before {
+            transform: translateX(0);
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        .topbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        
+        .topbar-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .topbar-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .topbar-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .stat-card.gradient-1::before {
+            background: var(--gradient-1);
+        }
+        
+        .stat-card.gradient-2::before {
+            background: var(--gradient-2);
+        }
+        
+        .stat-card.gradient-3::before {
+            background: var(--gradient-3);
+        }
+        
+        .stat-card.gradient-4::before {
+            background: var(--gradient-4);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.2);
+        }
+        
+        .stat-card:hover::before {
+            opacity: 0.1;
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .stat-icon.gradient-1 {
+            background: var(--gradient-1);
+        }
+        
+        .stat-icon.gradient-2 {
+            background: var(--gradient-2);
+        }
+        
+        .stat-icon.gradient-3 {
+            background: var(--gradient-3);
+        }
+        
+        .stat-icon.gradient-4 {
+            background: var(--gradient-4);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .stat-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .stat-change.positive {
+            background: rgba(67, 233, 123, 0.2);
+            color: #43e97b;
+        }
+        
+        .stat-change.negative {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        /* Content Cards */
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-1);
+        }
+        
+        .content-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .content-card-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .content-card-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-action {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: var(--gradient-1);
+            border: none;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--gradient-2);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th {
+            background: rgba(99, 102, 241, 0.1);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .data-table td {
+            padding: 15px;
+            color: #e2e8f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+        }
+        
+        .data-table tr:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-badge.published {
+            background: rgba(67, 233, 123, 0.2);
+            color: #43e97b;
+        }
+        
+        .status-badge.draft {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+        
+        .status-badge.archived {
+            background: rgba(107, 114, 128, 0.2);
+            color: #6b7280;
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .table-action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .table-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        /* Charts */
+        .chart-container {
+            height: 300px;
+            position: relative;
+            margin-top: 20px;
+        }
+        
+        .chart-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 15px;
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+        
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-in {
+            animation: slideIn 0.5s ease forwards;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="{{ url_for('admin.dashboard') }}" class="sidebar-logo">
+                <i class="fas fa-rocket"></i>
+                <span>Portfolio</span>
+            </a>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="sidebar-user-info">
+                    <h5>{{ current_user.username }}</h5>
+                    <p>Administrator</p>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="sidebar-menu">
+            <a href="{{ url_for('admin.dashboard') }}" class="sidebar-menu-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('admin.projects') }}" class="sidebar-menu-item">
+                <i class="fas fa-folder-open"></i>
+                <span>Projects</span>
+            </a>
+            <a href="{{ url_for('admin.add_project') }}" class="sidebar-menu-item">
+                <i class="fas fa-plus-circle"></i>
+                <span>Add Project</span>
+            </a>
+            <a href="{{ url_for('admin.skills') }}" class="sidebar-menu-item">
+                <i class="fas fa-code"></i>
+                <span>Skills</span>
+            </a>
+            <a href="{{ url_for('admin.add_skill') }}" class="sidebar-menu-item">
+                <i class="fas fa-plus"></i>
+                <span>Add Skill</span>
+            </a>
+            <a href="{{ url_for('admin.messages') }}" class="sidebar-menu-item">
+                <i class="fas fa-envelope"></i>
+                <span>Messages</span>
+            </a>
+            <a href="{{ url_for('auth.logout') }}" class="sidebar-menu-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Topbar -->
+        <div class="topbar">
+            <h1 class="topbar-title">Dashboard Overview</h1>
+            <div class="topbar-actions">
+                <a href="{{ url_for('admin.add_project') }}" class="topbar-btn">
+                    <i class="fas fa-plus"></i>
+                    <span>New Project</span>
+                </a>
+                <button class="topbar-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show animate-in" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card gradient-1 animate-in">
+                    <div class="stat-header">
+                        <div class="stat-icon gradient-1">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">{{ projects|length }}</div>
+                    <div class="stat-label">Total Projects</div>
+                </div>
+
+                <div class="stat-card gradient-2 animate-in">
+                    <div class="stat-header">
+                        <div class="stat-icon gradient-2">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>8%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">{{ skills|length }}</div>
+                    <div class="stat-label">Technical Skills</div>
+                </div>
+
+                <div class="stat-card gradient-3 animate-in">
+                    <div class="stat-header">
+                        <div class="stat-icon gradient-3">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>24%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">{{ messages|length }}</div>
+                    <div class="stat-label">Messages Received</div>
+                </div>
+
+                <div class="stat-card gradient-4 animate-in">
+                    <div class="stat-header">
+                        <div class="stat-icon gradient-4">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>18%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">15.2K</div>
+                    <div class="stat-label">Portfolio Views</div>
+                </div>
+            </div>
+
+            <!-- Recent Projects -->
+            <div class="content-card animate-in">
+                <div class="content-card-header">
+                    <h2 class="content-card-title">Recent Projects</h2>
+                    <div class="content-card-actions">
+                        <a href="{{ url_for('admin.projects') }}" class="btn-action">
+                            <i class="fas fa-eye"></i>
+                            <span>View All</span>
+                        </a>
+                        <a href="{{ url_for('admin.add_project') }}" class="btn-action btn-primary">
+                            <i class="fas fa-plus"></i>
+                            <span>Add New</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in projects[:5] %}
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        {% if project.image %}
+                                        <img src="{{ url_for('static', filename='uploads/' + project.image) }}" 
+                                             alt="{{ project.title }}" style="width: 40px; height: 40px; border-radius: 8px; object-fit: cover;">
+                                        {% else %}
+                                        <div style="width: 40px; height: 40px; border-radius: 8px; background: var(--gradient-1); display: flex; align-items: center; justify-content: center; color: white;">
+                                            <i class="fas fa-folder"></i>
+                                        </div>
+                                        {% endif %}
+                                        <div>
+                                            <div style="font-weight: 600; color: white;">{{ project.title }}</div>
+                                            <div style="font-size: 0.8rem; color: #94a3b8;">{{ project.description[:50] }}...</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge {{ project.status }}">
+                                        <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
+                                        {{ project.status|title }}
+                                    </span>
+                                </td>
+                                <td>{{ project.created_at.strftime('%b %d, %Y') if project.created_at else 'N/A' }}</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <a href="{{ url_for('admin.edit_project', id=project.id) }}" class="table-action-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{{ url_for('admin.delete_project', id=project.id) }}" class="table-action-btn" 
+                                           onclick="return confirm('Are you sure you want to delete this project?')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 40px; color: #94a3b8;">
+                                    <i class="fas fa-folder-open fa-2x mb-3"></i>
+                                    <div>No projects yet. Create your first project!</div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Recent Messages -->
+            <div class="content-card animate-in">
+                <div class="content-card-header">
+                    <h2 class="content-card-title">Recent Messages</h2>
+                    <div class="content-card-actions">
+                        <a href="{{ url_for('admin.messages') }}" class="btn-action">
+                            <i class="fas fa-eye"></i>
+                            <span>View All</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for message in messages[:5] %}
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="width: 35px; height: 35px; border-radius: 50%; background: var(--gradient-2); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                            {{ message.name[0].upper() }}
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; color: white;">{{ message.name }}</div>
+                                            <div style="font-size: 0.8rem; color: #94a3b8;">{{ message.email }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="color: #e2e8f0;">{{ message.subject or 'No Subject' }}</div>
+                                </td>
+                                <td>{{ message.created_at.strftime('%b %d, %Y') if message.created_at else 'N/A' }}</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <a href="{{ url_for('admin.view_message', id=message.id) }}" class="table-action-btn">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ url_for('admin.delete_message', id=message.id) }}" class="table-action-btn"
+                                           onclick="return confirm('Are you sure you want to delete this message?')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 40px; color: #94a3b8;">
+                                    <i class="fas fa-envelope fa-2x mb-3"></i>
+                                    <div>No messages yet.</div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Analytics Chart -->
+            <div class="content-card animate-in">
+                <div class="content-card-header">
+                    <h2 class="content-card-title">Portfolio Analytics</h2>
+                    <div class="content-card-actions">
+                        <a href="#" class="btn-action">
+                            <i class="fas fa-download"></i>
+                            <span>Export</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-placeholder">
+                        <i class="fas fa-chart-line fa-2x mb-3"></i>
+                        <div>Analytics Chart Coming Soon</div>
+                        <div style="font-size: 0.9rem; margin-top: 10px;">Track your portfolio performance over time</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+        
+        // Add animation to elements when they come into view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.animate-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+        
+        // Add hover effects to stat cards
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-5px) scale(1)';
+            });
+        });
+        
+        // Mobile responsiveness
+        if (window.innerWidth <= 768) {
+            document.addEventListener('click', function(e) {
+                const sidebar = document.getElementById('sidebar');
+                const isClickInsideSidebar = sidebar.contains(e.target);
+                const isClickOnToggle = e.target.closest('.topbar-btn');
+                
+                if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

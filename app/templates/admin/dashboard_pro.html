@@ -1,0 +1,787 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Enhanced Dashboard Page Styles */
+    .dashboard-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px 15px 0 0;
+        margin-bottom: 0;
+    }
+    
+    .dashboard-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .dashboard-header p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+    
+    .dashboard-container {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 0;
+        margin-bottom: 25px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .dashboard-toolbar {
+        background: #f8f9fa;
+        padding: 20px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .dashboard-content {
+        padding: 25px;
+    }
+    
+    /* Enhanced Stats Cards */
+    .stats-card-enhanced {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        background: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+        height: 100%;
+    }
+    
+    .stats-card-enhanced::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--card-color) 0%, var(--card-color-light) 100%);
+    }
+    
+    .stats-card-enhanced:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    
+    .stats-card-enhanced.projects::before { --card-color: #4e73df; --card-color-light: #6b8cff; }
+    .stats-card-enhanced.skills::before { --card-color: #1cc88a; --card-color-light: #2dd4a0; }
+    .stats-card-enhanced.messages::before { --card-color: #36b9cc; --card-color-light: #4dd9ec; }
+    .stats-card-enhanced.published::before { --card-color: #f6c23e; --card-color-light: #f8d66e; }
+    
+    .stats-card-enhanced .card-body {
+        padding: 1.5rem;
+    }
+    
+    .stats-icon-enhanced {
+        font-size: 2.5rem;
+        opacity: 0.4;
+        transition: all 0.3s ease;
+    }
+    
+    .stats-card-enhanced:hover .stats-icon-enhanced {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+    
+    /* Enhanced Section Cards */
+    .section-card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        background: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    
+    .section-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--section-color) 0%, var(--section-color-light) 100%);
+    }
+    
+    .section-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    
+    .section-card.projects::before { --section-color: #4e73df; --section-color-light: #6b8cff; }
+    .section-card.messages::before { --section-color: #36b9cc; --section-color-light: #4dd9ec; }
+    .section-card.skills::before { --section-color: #1cc88a; --section-color-light: #2dd4a0; }
+    .section-card.actions::before { --section-color: #f6c23e; --section-color-light: #f8d66e; }
+    
+    .section-header {
+        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%);
+        padding: 1.25rem;
+        border-bottom: 1px solid #e5e7eb;
+        backdrop-filter: blur(10px);
+    }
+    
+    .section-header h6 {
+        margin: 0;
+        font-weight: 700;
+        color: var(--section-color);
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .section-header h6 i {
+        font-size: 1.2rem;
+    }
+    
+    .section-body {
+        padding: 1.5rem;
+    }
+    
+    /* Enhanced Buttons */
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+        padding: 12px 20px;
+        transition: all 0.3s ease;
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn:hover::before {
+        left: 100%;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #4e73df 0%, #6b8cff 100%);
+        box-shadow: 0 4px 15px rgba(78, 115, 223, 0.3);
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(78, 115, 223, 0.4);
+    }
+    
+    .btn-success {
+        background: linear-gradient(135deg, #1cc88a 0%, #2dd4a0 100%);
+        box-shadow: 0 4px 15px rgba(28, 200, 138, 0.3);
+    }
+    
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(28, 200, 138, 0.4);
+    }
+    
+    .btn-info {
+        background: linear-gradient(135deg, #36b9cc 0%, #4dd9ec 100%);
+        box-shadow: 0 4px 15px rgba(54, 185, 204, 0.3);
+    }
+    
+    .btn-info:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(54, 185, 204, 0.4);
+    }
+    
+    .btn-warning {
+        background: linear-gradient(135deg, #f6c23e 0%, #f8d66e 100%);
+        box-shadow: 0 4px 15px rgba(246, 194, 62, 0.3);
+    }
+    
+    .btn-warning:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(246, 194, 62, 0.4);
+    }
+    
+    .btn-outline-primary {
+        border: 2px solid #4e73df;
+        color: #4e73df;
+        background: transparent;
+    }
+    
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, #4e73df 0%, #6b8cff 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(78, 115, 223, 0.4);
+    }
+    
+    .btn-sm {
+        padding: 8px 12px;
+        font-size: 0.875rem;
+    }
+    
+    .btn-lg {
+        padding: 16px 24px;
+        font-size: 1.1rem;
+    }
+    
+    /* Enhanced Badges */
+    .badge-enhanced {
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .badge-success {
+        background: linear-gradient(135deg, #1cc88a 0%, #2dd4a0 100%);
+        box-shadow: 0 2px 10px rgba(28, 200, 138, 0.3);
+    }
+    
+    .badge-warning {
+        background: linear-gradient(135deg, #f6c23e 0%, #f8d66e 100%);
+        box-shadow: 0 2px 10px rgba(246, 194, 62, 0.3);
+    }
+    
+    .badge-danger {
+        background: linear-gradient(135deg, #e74a3b 0%, #f56c6c 100%);
+        box-shadow: 0 2px 10px rgba(231, 74, 59, 0.3);
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    /* Project and Message Item Styles */
+    .dashboard-item {
+        background: #f8f9fa;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .dashboard-item:hover {
+        border-color: #4e73df;
+        background: white;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.1);
+        transform: translateY(-2px);
+    }
+    
+    .project-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #e5e7eb;
+        transition: all 0.3s ease;
+    }
+    
+    .project-avatar:hover {
+        border-color: #4e73df;
+        transform: scale(1.1);
+    }
+    
+    .project-avatar-placeholder {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4e73df 0%, #6b8cff 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .project-avatar-placeholder:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 15px rgba(78, 115, 223, 0.4);
+    }
+    
+    .message-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #36b9cc 0%, #4dd9ec 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .message-avatar:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 15px rgba(54, 185, 204, 0.4);
+    }
+    
+    /* Progress Bar Styles */
+    .progress-enhanced {
+        height: 12px;
+        border-radius: 10px;
+        background: #e9ecef;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .progress-bar-enhanced {
+        background: linear-gradient(135deg, #4e73df 0%, #6b8cff 100%);
+        border-radius: 10px;
+        transition: width 0.6s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .progress-bar-enhanced::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: progressShimmer 2s infinite;
+    }
+    
+    @keyframes progressShimmer {
+        0% { left: -100%; }
+        50% { left: 100%; }
+        100% { left: 100%; }
+    }
+    
+    /* Animation Classes */
+    .fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .slide-in {
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+        from { transform: translateX(-20px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    /* Empty State Styles */
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 15px;
+        border: 2px dashed #dee2e6;
+    }
+    
+    .empty-state i {
+        font-size: 4rem;
+        color: #adb5bd;
+        margin-bottom: 1rem;
+    }
+    
+    /* Quick Action Cards */
+    .quick-action-card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        background: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    
+    .quick-action-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, var(--card-color) 0%, var(--card-color-light) 100%);
+        transition: all 0.3s ease;
+        opacity: 0.9;
+    }
+    
+    .quick-action-card:hover::before {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+    
+    .quick-action-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        text-decoration: none;
+        color: white;
+    }
+    
+    .quick-action-card.project::before { --card-color: #4e73df; --card-color-light: #6b8cff; }
+    .quick-action-card.skill::before { --card-color: #1cc88a; --card-color-light: #2dd4a0; }
+    .quick-action-card.message::before { --card-color: #36b9cc; --card-color-light: #4dd9ec; }
+    .quick-action-card.site::before { --card-color: #f6c23e; --card-color-light: #f8d66e; }
+    
+    .quick-action-card-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 2rem;
+    }
+    
+    .quick-action-card i {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<div class="dashboard-header fade-in">
+    <div class="d-sm-flex align-items-center justify-content-between">
+        <div>
+            <h1>
+                <i class="fas fa-tachometer-alt me-3"></i>Dashboard
+            </h1>
+            <p class="mb-0">Welcome back! Here's an overview of your portfolio management</p>
+        </div>
+        <a href="{{ url_for('admin.add_project') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Add New Project
+        </a>
+    </div>
+</div>
+
+<!-- Dashboard Container -->
+<div class="dashboard-container">
+    <!-- Toolbar -->
+    <div class="dashboard-toolbar">
+        <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-primary rounded-pill px-3 py-2">
+                <i class="fas fa-chart-line me-2"></i>Portfolio Overview
+            </span>
+            <span class="text-muted">
+                <i class="fas fa-info-circle me-2"></i>Real-time statistics
+            </span>
+        </div>
+    </div>
+
+    <div class="dashboard-content">
+        <!-- Statistics Cards -->
+        <div class="row">
+            <!-- Projects Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="stats-card-enhanced projects fade-in">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Projects
+                                </div>
+                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ projects|length }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-project-diagram stats-icon-enhanced text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="stats-card-enhanced skills fade-in">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Total Skills
+                                </div>
+                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ skills|length }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-chart-bar stats-icon-enhanced text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="stats-card-enhanced messages fade-in">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Messages
+                                </div>
+                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ messages|length }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-envelope stats-icon-enhanced text-info"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Published Projects Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="stats-card-enhanced published fade-in">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Published
+                                </div>
+                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ projects|selectattr('status', 'equalto', 'published')|list|length }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-eye stats-icon-enhanced text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Row -->
+        <div class="row">
+            <!-- Recent Projects -->
+            <div class="col-lg-6 mb-4">
+                <div class="section-card projects fade-in">
+                    <div class="section-header">
+                        <h6>
+                            <i class="fas fa-project-diagram"></i>
+                            Recent Projects
+                        </h6>
+                        <a href="{{ url_for('admin.projects') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="section-body">
+                        {% if projects %}
+                            {% for project in projects[:5] %}
+                            <div class="dashboard-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        {% if project.image %}
+                                        <img src="{{ url_for('static', filename='uploads/' + project.image) }}" alt="{{ project.title }}" class="project-avatar">
+                                        {% else %}
+                                        <div class="project-avatar-placeholder">
+                                            <i class="fas fa-project-diagram"></i>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-1 font-weight-bold">{{ project.title }}</h6>
+                                        <div class="text-xs text-gray-500">
+                                            <span class="badge badge-enhanced badge-{{ 'success' if project.status == 'published' else 'warning' }}">
+                                                {{ project.status.title() }}
+                                            </span>
+                                            <span class="ms-2">{{ project.created_at.strftime('%b %d, %Y') if project.created_at else 'No date' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <a href="{{ url_for('admin.edit_project', id=project.id) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <div class="empty-state fade-in">
+                            <i class="fas fa-project-diagram"></i>
+                            <h4 class="text-gray-500">No projects yet</h4>
+                            <p class="text-gray-400">Start by adding your first project to showcase your work.</p>
+                            <a href="{{ url_for('admin.add_project') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Add Your First Project
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Messages -->
+            <div class="col-lg-6 mb-4">
+                <div class="section-card messages fade-in">
+                    <div class="section-header">
+                        <h6>
+                            <i class="fas fa-envelope"></i>
+                            Recent Messages
+                        </h6>
+                        <a href="{{ url_for('admin.messages') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="section-body">
+                        {% if messages %}
+                            {% for message in messages[:5] %}
+                            <div class="dashboard-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="message-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-1 font-weight-bold">{{ message.name }}</h6>
+                                        <div class="text-xs text-gray-500">
+                                            <div class="text-truncate">{{ message.message[:50] }}{% if message.message|length > 50 %}...{% endif %}</div>
+                                            <span>{{ message.created_at.strftime('%b %d, %Y %H:%M') if message.created_at else 'No date' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        {% if message.status == 'unread' %}
+                                        <span class="badge badge-enhanced badge-danger">New</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <div class="empty-state fade-in">
+                            <i class="fas fa-envelope"></i>
+                            <h4 class="text-gray-500">No messages yet</h4>
+                            <p class="text-gray-400">When visitors contact you, their messages will appear here.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Overview -->
+        <div class="row">
+            <div class="col-lg-12 mb-4">
+                <div class="section-card skills fade-in">
+                    <div class="section-header">
+                        <h6>
+                            <i class="fas fa-chart-bar"></i>
+                            Skills Overview
+                        </h6>
+                        <a href="{{ url_for('admin.skills') }}" class="btn btn-sm btn-outline-primary">Manage Skills</a>
+                    </div>
+                    <div class="section-body">
+                        {% if skills %}
+                            <div class="row">
+                                {% for skill in skills[:8] %}
+                                <div class="col-md-3 col-sm-6 mb-4">
+                                    <div class="text-center">
+                                        <div class="mb-2">
+                                            <h5 class="font-weight-bold text-gray-800">{{ skill.name }}</h5>
+                                        </div>
+                                        <div class="progress progress-enhanced mb-2">
+                                            <div class="progress-bar progress-bar-enhanced" role="progressbar" style="width: {{ skill.percentage }}%;" aria-valuenow="{{ skill.percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <span class="text-xs text-gray-600 font-weight-bold">{{ skill.percentage }}%</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                        <div class="empty-state fade-in">
+                            <i class="fas fa-chart-bar"></i>
+                            <h4 class="text-gray-500">No skills added yet</h4>
+                            <p class="text-gray-400">Add your skills to showcase your expertise.</p>
+                            <a href="{{ url_for('admin.skills') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Add Skills
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row">
+            <div class="col-lg-12 mb-4">
+                <div class="section-card actions fade-in">
+                    <div class="section-header">
+                        <h6>
+                            <i class="fas fa-bolt"></i>
+                            Quick Actions
+                        </h6>
+                    </div>
+                    <div class="section-body">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="{{ url_for('admin.add_project') }}" class="quick-action-card project">
+                                    <div class="quick-action-card-content">
+                                        <i class="fas fa-plus"></i>
+                                        Add Project
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="{{ url_for('admin.skills') }}" class="quick-action-card skill">
+                                    <div class="quick-action-card-content">
+                                        <i class="fas fa-chart-bar"></i>
+                                        Manage Skills
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="{{ url_for('admin.messages') }}" class="quick-action-card message">
+                                    <div class="quick-action-card-content">
+                                        <i class="fas fa-envelope"></i>
+                                        View Messages
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="{{ url_for('main.home') }}" target="_blank" class="quick-action-card site">
+                                    <div class="quick-action-card-content">
+                                        <i class="fas fa-external-link-alt"></i>
+                                        View Site
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

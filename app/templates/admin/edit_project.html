@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+<h2>Edit Project</h2>
+
+<form method="POST">
+
+<input class="form-control mb-2"
+       name="title"
+       value="{{ project.title }}">
+
+<textarea class="form-control mb-2"
+          name="description">{{ project.description }}</textarea>
+
+<input class="form-control mb-2"
+       name="github"
+       value="{{ project.github_link }}">
+
+<input class="form-control mb-2"
+       name="live"
+       value="{{ project.live_link }}">
+
+<button class="btn btn-success">Update</button>
+
+</form>
+
+{% endblock %}

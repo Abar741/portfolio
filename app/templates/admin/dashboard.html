@@ -1,0 +1,139 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    <a href="{{ url_for('admin.add_project') }}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Add New Project
+    </a>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Total Projects
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ projects|length }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-project-diagram stats-icon text-primary"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card success border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Total Skills
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ skills|length if skills else 0 }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-cogs stats-icon text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card info border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Messages
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ messages|length if messages else 0 }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-envelope stats-icon text-info"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card warning border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            Recent Activity
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">Today</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar stats-icon text-warning"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                </a>
+                <button class="topbar-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show animate-in" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card gradient-1 animate-in">
+                    <div class="stat-header">
+                        <div class="stat-icon gradient-1">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">{{ projects|length }}</div>
+                    <div class="stat-label">Total Projects</div>
+                </div>
+
+                <div class="stat-card gradient-2 animate-in">
+                    <div class="stat-header">
+                        <div class="stat-icon gradient-2">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>8%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">{{ skills|length }}</div>
+                    <div class="stat-label">Technical Skills</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
