@@ -18,9 +18,11 @@ def login():
 
         user = User.query.filter_by(username=username).first()
 
-        if user and check_password_hash(user.password_hash, password):
-            login_user(user)
-            return redirect(url_for("admin.dashboard"))
+        if user:
+            # Simple and reliable password verification
+            if verify_password_simple(password, user.password_hash):
+                login_user(user)
+                return redirect(url_for("admin.dashboard"))
 
         flash("Invalid credentials")
 
@@ -28,6 +30,19 @@ def login():
     return render_template("admin/login.html", 
                          unread_count=0, 
                          feedback_unread_count=0)
+
+def verify_password_simple(input_password, stored_hash):
+    """
+    Simple password verification that works reliably
+    """
+    import hashlib
+    import hmac
+    
+    # Generate SHA256 hash of input password
+    password_hash = hashlib.sha256(input_password.encode('utf-8')).hexdigest()
+    
+    # Use timing-safe comparison
+    return hmac.compare_digest(password_hash, stored_hash)
 
 @auth.route("/logout")
 @login_required
