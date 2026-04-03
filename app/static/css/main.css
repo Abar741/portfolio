@@ -554,9 +554,10 @@ p {
 /* ===== ENHANCED HERO SECTION ===== */
 .hero-section {
     position: relative;
-    min-height: 100vh;
+    min-height: 70vh;
     display: flex;
     align-items: center;
+    padding-top: 15px;
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
     overflow: hidden;
 }
@@ -906,12 +907,27 @@ p {
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    animation: fadeInUp 1s ease forwards;
+    animation-delay: 0.5s;
+    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    gap: 8px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
 }
 
 .scroll-indicator:hover {
@@ -924,6 +940,8 @@ p {
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .scroll-arrow {
@@ -5320,11 +5338,15 @@ p {
 
 /* ===== BODY PADDING FOR FIXED NAVBAR ===== */
 body {
-    padding-top: 80px;
+    padding-top: 0;
 }
 
 @media (max-width: 991px) {
     body {
+        padding-top: 0;
+    }
+    
+    .hero-section {
         padding-top: 70px;
     }
 }
