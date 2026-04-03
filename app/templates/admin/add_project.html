@@ -156,6 +156,40 @@
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     
+    .video-upload-area {
+        border: 2px dashed #d1d5db;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: #f0f9ff;
+    }
+    
+    .video-upload-area:hover {
+        border-color: #4f46e5;
+        background: #e0f2fe;
+    }
+    
+    .video-upload-area i {
+        font-size: 3rem;
+        color: #9ca3af;
+        margin-bottom: 1rem;
+    }
+    
+    .video-upload-area.has-video {
+        border-color: #10b981;
+        background: #ecfdf5;
+    }
+    
+    .video-preview {
+        max-width: 300px;
+        max-height: 200px;
+        border-radius: 8px;
+        margin-top: 1rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
     .link-input-group {
         position: relative;
     }
@@ -257,39 +291,109 @@
                                   required></textarea>
                         <div class="form-text">Provide a comprehensive description of your project</div>
                     </div>
+                    
+                    <div class="mb-4">
+                        <label for="category" class="form-label">
+                            <i class="fas fa-folder me-2"></i>Project Category <span class="required-star">*</span>
+                        </label>
+                        <select class="form-control form-control-lg" 
+                                id="category" 
+                                name="category" 
+                                required>
+                            <option value="">Select a category...</option>
+                            <option value="web_dev">🌐 Web Development</option>
+                            <option value="graphic_design">🎨 Graphic Design</option>
+                            <option value="video_editing">🎬 Video Editing</option>
+                        </select>
+                        <div class="form-text">Choose the category that best describes your project</div>
+                    </div>
                 </div>
                 
-                <!-- Project Image Section -->
+                <!-- Project Media Section -->
                 <div class="form-section">
                     <div class="form-section-title">
-                        <i class="fas fa-image"></i>
-                        Project Image
+                        <i class="fas fa-photo-video"></i>
+                        Project Media
                     </div>
                     
-                    <div class="image-upload-area" onclick="document.getElementById('image').click()">
-                        <input type="file" 
-                               id="image" 
-                               name="image" 
-                               accept="image/*" 
-                               style="display: none;"
-                               onchange="previewImage(this)">
-                        
-                        <div id="uploadPlaceholder">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <h5 class="text-gray-700">Click to upload project image</h5>
-                            <p class="text-gray-500 mb-0">or drag and drop</p>
-                            <small class="text-gray-400">PNG, JPG, GIF up to 10MB</small>
-                        </div>
-                        
-                        <div id="imagePreviewContainer" style="display: none;">
-                            <img id="imagePreview" class="image-preview" alt="Project preview">
-                            <p class="text-success mt-2 mb-0">
-                                <i class="fas fa-check-circle me-2"></i>
-                                <span id="imageName"></span>
-                            </p>
-                        </div>
+                    <div class="mb-4">
+                        <label for="media_type" class="form-label">
+                            <i class="fas fa-file me-2"></i>Media Type <span class="required-star">*</span>
+                        </label>
+                        <select class="form-control form-control-lg" 
+                                id="media_type" 
+                                name="media_type" 
+                                onchange="toggleMediaFields()"
+                                required>
+                            <option value="">Select media type...</option>
+                            <option value="image">📷 Image Only</option>
+                            <option value="video">🎬 Video Only</option>
+                            <option value="both">🎭 Both Image & Video</option>
+                        </select>
+                        <div class="form-text">Choose what type of media you want to upload</div>
                     </div>
-                    <div class="form-text mt-2">Upload a screenshot or image of your project (optional)</div>
+                    
+                    <div class="mb-4" id="imageSection">
+                        <label for="image" class="form-label">
+                            <i class="fas fa-image me-2"></i>Project Image
+                        </label>
+                        <div class="image-upload-area" onclick="document.getElementById('image').click()">
+                            <input type="file" 
+                                   id="image" 
+                                   name="image" 
+                                   accept="image/*" 
+                                   style="display: none;"
+                                   onchange="previewImage(this)">
+                            
+                            <div id="uploadPlaceholder">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <h5 class="text-gray-700">Click to upload project image</h5>
+                                <p class="text-gray-500 mb-0">or drag and drop</p>
+                                <small class="text-gray-400">PNG, JPG, GIF up to 10MB</small>
+                            </div>
+                            
+                            <div id="imagePreviewContainer" style="display: none;">
+                                <img id="imagePreview" class="image-preview" alt="Project preview">
+                                <p class="text-success mt-2 mb-0">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <span id="imageName"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-text mt-2">Upload a screenshot or image of your project</div>
+                    </div>
+                    
+                    <div class="mb-4" id="videoSection" style="display: none;">
+                        <label for="video" class="form-label">
+                            <i class="fas fa-video me-2"></i>Project Video
+                        </label>
+                        <div class="video-upload-area" onclick="document.getElementById('video').click()">
+                            <input type="file" 
+                                   id="video" 
+                                   name="video" 
+                                   accept="video/*" 
+                                   style="display: none;"
+                                   onchange="previewVideo(this)">
+                            
+                            <div id="videoUploadPlaceholder">
+                                <i class="fas fa-video"></i>
+                                <h5 class="text-gray-700">Click to upload project video</h5>
+                                <p class="text-gray-500 mb-0">or drag and drop</p>
+                                <small class="text-gray-400">MP4, MOV, AVI up to 50MB</small>
+                            </div>
+                            
+                            <div id="videoPreviewContainer" style="display: none;">
+                                <video id="videoPreview" class="video-preview" controls>
+                                    Your browser does not support the video tag.
+                                </video>
+                                <p class="text-success mt-2 mb-0">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <span id="videoName"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-text mt-2">Upload a video showcase of your project</div>
+                    </div>
                 </div>
                 
                 <!-- Project Links Section -->
@@ -310,7 +414,7 @@
                             <input type="url" 
                                    class="form-control form-control-lg" 
                                    id="github" 
-                                   name="github" 
+                                   name="github_link" 
                                    placeholder="https://github.com/username/repository">
                         </div>
                         <div class="form-text">Link to your project's source code repository</div>
@@ -327,10 +431,10 @@
                             <input type="url" 
                                    class="form-control form-control-lg" 
                                    id="live" 
-                                   name="live" 
+                                   name="live_link" 
                                    placeholder="https://your-project-demo.com">
                         </div>
-                        <div class="form-text">Link to the live demo or deployed version of your project</div>
+                        <div class="form-text">Link to live demo or deployed version of your project</div>
                     </div>
                 </div>
                 
@@ -398,10 +502,76 @@ function previewImage(input) {
     }
 }
 
+function previewVideo(input) {
+    const file = input.files[0];
+    const videoUploadPlaceholder = document.getElementById('videoUploadPlaceholder');
+    const videoPreviewContainer = document.getElementById('videoPreviewContainer');
+    const videoPreview = document.getElementById('videoPreview');
+    const videoName = document.getElementById('videoName');
+    const uploadArea = document.querySelector('.video-upload-area');
+    
+    if (file) {
+        // Check file type
+        if (!file.type.startsWith('video/')) {
+            alert('Please select a video file');
+            input.value = '';
+            return;
+        }
+        
+        // Check file size (50MB limit)
+        if (file.size > 50 * 1024 * 1024) {
+            alert('Video size should be less than 50MB');
+            input.value = '';
+            return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            videoPreview.src = e.target.result;
+            videoName.textContent = file.name;
+            videoUploadPlaceholder.style.display = 'none';
+            videoPreviewContainer.style.display = 'block';
+            uploadArea.classList.add('has-video');
+        }
+        
+        reader.onerror = function() {
+            alert('Error reading video file');
+            input.value = '';
+        }
+        
+        reader.readAsDataURL(file);
+    } else {
+        // Reset when no file selected
+        videoUploadPlaceholder.style.display = 'block';
+        videoPreviewContainer.style.display = 'none';
+        uploadArea.classList.remove('has-video');
+    }
+}
+
+function toggleMediaFields() {
+    const mediaType = document.getElementById('media_type').value;
+    const imageSection = document.getElementById('imageSection');
+    const videoSection = document.getElementById('videoSection');
+    
+    if (mediaType === 'video') {
+        imageSection.style.display = 'none';
+        videoSection.style.display = 'block';
+    } else if (mediaType === 'both') {
+        imageSection.style.display = 'block';
+        videoSection.style.display = 'block';
+    } else {
+        imageSection.style.display = 'block';
+        videoSection.style.display = 'none';
+    }
+}
+
 // Form validation
 document.getElementById('projectForm').addEventListener('submit', function(e) {
     const title = document.getElementById('title').value.trim();
     const description = document.getElementById('description').value.trim();
+    const category = document.getElementById('category').value;
+    const mediaType = document.getElementById('media_type').value;
     
     if (!title) {
         e.preventDefault();
@@ -423,11 +593,25 @@ document.getElementById('projectForm').addEventListener('submit', function(e) {
         document.getElementById('description').focus();
         return;
     }
+    
+    if (!category) {
+        e.preventDefault();
+        alert('Please select a project category');
+        document.getElementById('category').focus();
+        return;
+    }
+    
+    if (!mediaType) {
+        e.preventDefault();
+        alert('Please select a media type');
+        document.getElementById('media_type').focus();
+        return;
+    }
 });
 
 // Auto-save draft functionality (optional)
 let autoSaveTimer;
-const formInputs = document.querySelectorAll('#projectForm input, #projectForm textarea');
+const formInputs = document.querySelectorAll('#projectForm input, #projectForm textarea, #projectForm select');
 
 formInputs.forEach(input => {
     input.addEventListener('input', function() {

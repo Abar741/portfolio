@@ -21,20 +21,25 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-expand-lg">
+    <nav id="mainNav" class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#hero">
-                <i class="fas fa-code"></i>
-                Portfolio
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Graphic Nest" class="navbar-logo">
             </a>
-            <div class="navbar-nav">
-                <a class="nav-link" href="#hero">Home</a>
-                <a class="nav-link" href="#about">About</a>
-                <a class="nav-link" href="#services">Services</a>
-                <a class="nav-link" href="#projects">Projects</a>
-                <a class="nav-link" href="#skills">Skills</a>
-                <a class="nav-link" href="#testimonials">Testimonials</a>
-                <a class="nav-link" href="#contact">Contact</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#feedback">Feedback</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -103,7 +108,7 @@
                         <div class="hero-image-bg"></div>
                         <div class="hero-image-wrapper">
                             {% if hero_data.profile_image %}
-                            <img src="{{ hero_data.profile_image }}" 
+                            <img src="{{ url_for('static', filename='uploads/' + hero_data.profile_image) }}" 
                                  alt="{{ hero_data.name or 'Muhammad Abrar' }} - Professional Developer & Designer" class="hero-image-img">
                             {% else %}
                             <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face&auto=format" 
@@ -267,6 +272,7 @@
                 </div>
                 
                 <div class="col-lg-6" data-aos="fade-left">
+                    <!-- About Highlights -->
                     <div class="about-highlights">
                         <div class="highlight-card">
                             <div class="highlight-icon">
@@ -306,6 +312,28 @@
                                 <h4>100% Satisfaction</h4>
                                 <p>Committed to excellence and client success in every project</p>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Projects News Slider -->
+                    <div class="news-slider-container mt-4">
+                        <div class="news-slider-header">
+                            <i class="fas fa-broadcast-tower"></i>
+                            <h4>Latest Projects</h4>
+                        </div>
+                        <div class="news-slider-wrapper">
+                            <div class="news-slider-track" id="newsSliderTrack">
+                                <!-- News items will be loaded here via JavaScript -->
+                            </div>
+                        </div>
+                        <div class="news-slider-footer">
+                            <span class="live-indicator">
+                                <span class="pulse"></span>
+                                Live Updates
+                            </span>
+                            <a href="#projects" class="view-all-link">
+                                View All <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -601,229 +629,189 @@
     <!-- Projects Section -->
     <section id="projects" class="section section-dark">
         <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Featured Projects</h2>
-            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-                Explore my latest work and creative solutions
-            </p>
+            <div class="text-center mb-5">
+                <h2 class="section-title" data-aos="fade-up">Featured Projects</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+                    Explore my latest work across web development, graphic design, and video editing
+                </p>
+            </div>
             
-            <!-- Projects Slider Container -->
-            <div class="projects-slider-wrapper" data-aos="fade-up" data-aos-delay="200">
-                <!-- Slider Controls -->
-                <div class="projects-slider-nav">
-                    <button class="slider-nav-btn slider-nav-prev" onclick="navigateProjects('prev')">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button class="slider-nav-btn slider-nav-next" onclick="navigateProjects('next')">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-                
-                <!-- Projects Grid with Slider -->
-                <div class="projects-slider-viewport">
-                    <div class="projects-slider-track" id="projectsSliderTrack">
-                        <div class="row g-4">
-                            <!-- Sample Project 1 -->
-                            <div class="col-lg-4 col-md-6 project-slide-item">
-                                <div class="project-card">
-                                    <div class="project-image">
-                                        <img src="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="E-Commerce Platform">
-                                        <div class="project-overlay"></div>
-                                    </div>
-                                    <div class="project-content">
-                                        <h3 class="project-title">E-Commerce Platform</h3>
-                                        <p class="project-description">
-                                            Modern e-commerce solution with real-time inventory management and secure payment processing.
-                                        </p>
-                                        
-                                        <div class="project-tech">
-                                            <span class="tech-tag">React</span>
-                                            <span class="tech-tag">Node.js</span>
-                                            <span class="tech-tag">MongoDB</span>
-                                            <span class="tech-tag">Stripe</span>
-                                        </div>
-                                        
-                                        <div class="project-links">
-                                            <a href="https://github.com" class="project-link project-link-secondary" target="_blank">
-                                                <i class="fab fa-github"></i> Code
-                                            </a>
-                                            <a href="https://example.com" class="project-link project-link-primary" target="_blank">
-                                                <i class="fas fa-external-link-alt"></i> Live Demo
-                                            </a>
-                                        </div>
+            <!-- Project Category Tabs -->
+            <div class="project-tabs" data-aos="fade-up" data-aos-delay="200">
+                <button class="project-tab active" data-category="all" onclick="filterProjects('all')">
+                    <i class="fas fa-th-large"></i> All Projects
+                </button>
+                <button class="project-tab" data-category="web_dev" onclick="filterProjects('web_dev')">
+                    <i class="fas fa-code"></i> Web Development
+                </button>
+                <button class="project-tab" data-category="graphic_design" onclick="filterProjects('graphic_design')">
+                    <i class="fas fa-palette"></i> Graphic Design
+                </button>
+                <button class="project-tab" data-category="video_editing" onclick="filterProjects('video_editing')">
+                    <i class="fas fa-video"></i> Video Editing
+                </button>
+            </div>
+            
+            <!-- Projects Grid -->
+            <div class="projects-container" data-aos="fade-up" data-aos-delay="300">
+                <div class="projects-grid" id="projectsGrid">
+                    {% if projects %}
+                        {% for project in projects %}
+                        <div class="project-card" data-category="{{ project.category or 'web_dev' }}">
+                            <div class="project-media">
+                                {% if project.video %}
+                                <div class="project-video">
+                                    <video class="project-video-player" controls poster="{{ url_for('static', filename='uploads/' + project.image) if project.image else 'https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format' }}">
+                                        <source src="{{ url_for('static', filename='uploads/' + project.video) }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <div class="project-overlay"></div>
+                                    <div class="project-category-badge" data-category="{{ project.category or 'web_dev' }}">
+                                        {% if project.category == 'web_dev' %}
+                                            <i class="fas fa-code"></i> Web Dev
+                                        {% elif project.category == 'graphic_design' %}
+                                            <i class="fas fa-palette"></i> Design
+                                        {% elif project.category == 'video_editing' %}
+                                            <i class="fas fa-video"></i> Video
+                                        {% else %}
+                                            <i class="fas fa-code"></i> Web Dev
+                                        {% endif %}
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <!-- Sample Project 2 -->
-                            <div class="col-lg-4 col-md-6 project-slide-item">
-                                <div class="project-card">
-                                    <div class="project-image">
-                                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="Task Management App">
-                                        <div class="project-overlay"></div>
-                                    </div>
-                                    <div class="project-content">
-                                        <h3 class="project-title">Task Management App</h3>
-                                        <p class="project-description">
-                                            Collaborative task management tool with real-time updates and team collaboration features.
-                                        </p>
-                                        
-                                        <div class="project-tech">
-                                            <span class="tech-tag">Vue.js</span>
-                                            <span class="tech-tag">Python</span>
-                                            <span class="tech-tag">PostgreSQL</span>
-                                            <span class="tech-tag">Socket.io</span>
-                                        </div>
-                                        
-                                        <div class="project-links">
-                                            <a href="https://github.com" class="project-link project-link-secondary" target="_blank">
-                                                <i class="fab fa-github"></i> Code
-                                            </a>
-                                            <a href="https://example.com" class="project-link project-link-primary" target="_blank">
-                                                <i class="fas fa-external-link-alt"></i> Live Demo
-                                            </a>
-                                        </div>
+                                {% elif project.image %}
+                                <div class="project-image">
+                                    <img src="{{ url_for('static', filename='uploads/' + project.image) }}" alt="{{ project.title }}">
+                                    <div class="project-overlay"></div>
+                                    <div class="project-category-badge" data-category="{{ project.category or 'web_dev' }}">
+                                        {% if project.category == 'web_dev' %}
+                                            <i class="fas fa-code"></i> Web Dev
+                                        {% elif project.category == 'graphic_design' %}
+                                            <i class="fas fa-palette"></i> Design
+                                        {% elif project.category == 'video_editing' %}
+                                            <i class="fas fa-video"></i> Video
+                                        {% else %}
+                                            <i class="fas fa-code"></i> Web Dev
+                                        {% endif %}
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <!-- Sample Project 3 -->
-                            <div class="col-lg-4 col-md-6 project-slide-item">
-                                <div class="project-card">
-                                    <div class="project-image">
-                                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="Analytics Dashboard">
-                                        <div class="project-overlay"></div>
-                                    </div>
-                                    <div class="project-content">
-                                        <h3 class="project-title">Analytics Dashboard</h3>
-                                        <p class="project-description">
-                                            Interactive data visualization dashboard with real-time analytics and customizable reports.
-                                        </p>
-                                        
-                                        <div class="project-tech">
-                                            <span class="tech-tag">React</span>
-                                            <span class="tech-tag">D3.js</span>
-                                            <span class="tech-tag">Express</span>
-                                            <span class="tech-tag">Redis</span>
-                                        </div>
-                                        
-                                        <div class="project-links">
-                                            <a href="https://github.com" class="project-link project-link-secondary" target="_blank">
-                                                <i class="fab fa-github"></i> Code
-                                            </a>
-                                            <a href="https://example.com" class="project-link project-link-primary" target="_blank">
-                                                <i class="fas fa-external-link-alt"></i> Live Demo
-                                            </a>
-                                        </div>
+                                {% else %}
+                                <div class="project-image">
+                                    <img src="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="{{ project.title }}">
+                                    <div class="project-overlay"></div>
+                                    <div class="project-category-badge" data-category="{{ project.category or 'web_dev' }}">
+                                        {% if project.category == 'web_dev' %}
+                                            <i class="fas fa-code"></i> Web Dev
+                                        {% elif project.category == 'graphic_design' %}
+                                            <i class="fas fa-palette"></i> Design
+                                        {% elif project.category == 'video_editing' %}
+                                            <i class="fas fa-video"></i> Video
+                                        {% else %}
+                                            <i class="fas fa-code"></i> Web Dev
+                                        {% endif %}
                                     </div>
                                 </div>
+                                {% endif %}
                             </div>
-                            
-                            <!-- Sample Project 4 -->
-                            <div class="col-lg-4 col-md-6 project-slide-item">
-                                <div class="project-card">
-                                    <div class="project-image">
-                                        <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="Social Media App">
-                                        <div class="project-overlay"></div>
-                                    </div>
-                                    <div class="project-content">
-                                        <h3 class="project-title">Social Media App</h3>
-                                        <p class="project-description">
-                                            Full-featured social networking platform with real-time messaging, content sharing, and community features.
-                                        </p>
-                                        
-                                        <div class="project-tech">
-                                            <span class="tech-tag">React Native</span>
-                                            <span class="tech-tag">Firebase</span>
-                                            <span class="tech-tag">GraphQL</span>
-                                            <span class="tech-tag">AWS</span>
-                                        </div>
-                                        
-                                        <div class="project-links">
-                                            <a href="https://github.com" class="project-link project-link-secondary" target="_blank">
-                                                <i class="fab fa-github"></i> Code
-                                            </a>
-                                            <a href="https://example.com" class="project-link project-link-primary" target="_blank">
-                                                <i class="fas fa-external-link-alt"></i> Live Demo
-                                            </a>
-                                        </div>
+                            <div class="project-content">
+                                <div class="project-header">
+                                    <h3 class="project-title">{{ project.title }}</h3>
+                                    <div class="project-meta">
+                                        {% if project.created_at %}
+                                        <span class="project-date">
+                                            <i class="far fa-calendar"></i> {{ project.created_at }}
+                                        </span>
+                                        {% endif %}
+                                        {% if project.category %}
+                                        <span class="project-type">
+                                            {% if project.category == 'web_dev' %}
+                                                <i class="fas fa-laptop-code"></i> Web Development
+                                            {% elif project.category == 'graphic_design' %}
+                                                <i class="fas fa-paint-brush"></i> Graphic Design
+                                            {% elif project.category == 'video_editing' %}
+                                                <i class="fas fa-video"></i> Video Editing
+                                            {% endif %}
+                                        </span>
+                                        {% endif %}
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <!-- Sample Project 5 -->
-                            <div class="col-lg-4 col-md-6 project-slide-item">
-                                <div class="project-card">
-                                    <div class="project-image">
-                                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="Banking App">
-                                        <div class="project-overlay"></div>
+                                
+                                <p class="project-description">
+                                    {{ project.description[:150] + "..." if project.description and project.description|length > 150 else project.description or 'No description available.' }}
+                                </p>
+                                
+                                {% if project.technologies %}
+                                <div class="project-tech">
+                                    <div class="tech-label">
+                                        <i class="fas fa-tools"></i> Technologies Used
                                     </div>
-                                    <div class="project-content">
-                                        <h3 class="project-title">Banking App</h3>
-                                        <p class="project-description">
-                                            Secure mobile banking application with transaction management, budget tracking, and financial analytics.
-                                        </p>
-                                        
-                                        <div class="project-tech">
-                                            <span class="tech-tag">Flutter</span>
-                                            <span class="tech-tag">Node.js</span>
-                                            <span class="tech-tag">PostgreSQL</span>
-                                            <span class="tech-tag">JWT</span>
-                                        </div>
-                                        
-                                        <div class="project-links">
-                                            <a href="https://github.com" class="project-link project-link-secondary" target="_blank">
-                                                <i class="fab fa-github"></i> Code
-                                            </a>
-                                            <a href="https://example.com" class="project-link project-link-primary" target="_blank">
-                                                <i class="fas fa-external-link-alt"></i> Live Demo
-                                            </a>
-                                        </div>
+                                    <div class="tech-tags">
+                                        {% for tech in project.technologies.split(',')[:6] %}
+                                        <span class="tech-tag">{{ tech.strip() }}</span>
+                                        {% endfor %}
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <!-- Sample Project 6 -->
-                            <div class="col-lg-4 col-md-6 project-slide-item">
-                                <div class="project-card">
-                                    <div class="project-image">
-                                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="Learning Platform">
-                                        <div class="project-overlay"></div>
-                                    </div>
-                                    <div class="project-content">
-                                        <h3 class="project-title">Learning Platform</h3>
-                                        <p class="project-description">
-                                            Comprehensive online learning management system with video streaming, quizzes, and progress tracking.
-                                        </p>
-                                        
-                                        <div class="project-tech">
-                                            <span class="tech-tag">Angular</span>
-                                            <span class="tech-tag">Django</span>
-                                            <span class="tech-tag">MySQL</span>
-                                            <span class="tech-tag">WebRTC</span>
-                                        </div>
-                                        
-                                        <div class="project-links">
-                                            <a href="https://github.com" class="project-link project-link-secondary" target="_blank">
-                                                <i class="fab fa-github"></i> Code
-                                            </a>
-                                            <a href="https://example.com" class="project-link project-link-primary" target="_blank">
-                                                <i class="fas fa-external-link-alt"></i> Live Demo
-                                            </a>
-                                        </div>
-                                    </div>
+                                {% endif %}
+                                
+                                <div class="project-links">
+                                    {% if project.github_link %}
+                                    <a href="{{ project.github_link }}" class="project-link project-link-secondary" target="_blank">
+                                        <i class="fab fa-github"></i> 
+                                        <span>Source Code</span>
+                                    </a>
+                                    {% endif %}
+                                    {% if project.live_link %}
+                                    <a href="{{ project.live_link }}" class="project-link project-link-primary" target="_blank">
+                                        {% if project.category == 'video_editing' %}
+                                            <i class="fas fa-play-circle"></i> 
+                                            <span>Watch Video</span>
+                                        {% elif project.category == 'graphic_design' %}
+                                            <i class="fas fa-eye"></i> 
+                                            <span>View Project</span>
+                                        {% else %}
+                                            <i class="fas fa-external-link-alt"></i> 
+                                            <span>Live Demo</span>
+                                        {% endif %}
+                                    </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- Slider Progress Indicators -->
-                <div class="projects-slider-dots" id="projectsSliderDots">
-                    <button class="slider-dot active" onclick="goToProjectSlide(0)"></button>
-                    <button class="slider-dot" onclick="goToProjectSlide(1)"></button>
-                    <button class="slider-dot" onclick="goToProjectSlide(2)"></button>
+                        {% endfor %}
+                    {% else %}
+                        <!-- No Projects State -->
+                        <div class="no-projects-state">
+                            <div class="no-projects-icon">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <h3>No Projects Yet</h3>
+                            <p>Projects will appear here once you add them from the admin panel.</p>
+                            <div class="no-projects-categories">
+                                <div class="category-preview">
+                                    <i class="fas fa-code"></i>
+                                    <span>Web Development</span>
+                                </div>
+                                <div class="category-preview">
+                                    <i class="fas fa-palette"></i>
+                                    <span>Graphic Design</span>
+                                </div>
+                                <div class="category-preview">
+                                    <i class="fas fa-video"></i>
+                                    <span>Video Editing</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
+            
+            <!-- View All Projects Button -->
+            {% if projects %}
+            <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="400">
+                <a href="/portfolio" class="btn-hero btn-hero-primary">
+                    <i class="fas fa-th-large"></i> View All Projects
+                </a>
+            </div>
+            {% endif %}
         </div>
     </section>
 
@@ -1105,299 +1093,160 @@
             <div class="testimonials-slider" data-aos="fade-up" data-aos-delay="200">
                 <div class="swiper testimonialSwiper">
                     <div class="swiper-wrapper">
-                        <!-- Testimonial 1 -->
-                        <div class="swiper-slide">
-                            <div class="testimonial-card">
-                                <div class="testimonial-header">
-                                    <div class="quote-icon">
-                                        <i class="fas fa-quote-left"></i>
-                                    </div>
-                                    <div class="testimonial-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                                
-                                <div class="testimonial-content">
-                                    <p class="testimonial-quote">
-                                        "Exceptional work! Delivered beyond expectations and attention to detail was remarkable. The communication throughout the project was outstanding, and the final product exceeded our wildest dreams. Highly recommend for any web development project."
-                                    </p>
-                                </div>
-                                
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">
-                                        <img src="https://picsum.photos/seed/johndoe/80/80.jpg" alt="John Doe" class="avatar-img">
-                                        <div class="avatar-badge">
-                                            <i class="fas fa-check"></i>
+                        {% if testimonials %}
+                            {% for testimonial in testimonials %}
+                            <div class="swiper-slide">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-header">
+                                        <div class="quote-icon">
+                                            <i class="fas fa-quote-left"></i>
+                                        </div>
+                                        <div class="testimonial-rating">
+                                            {% for i in range(testimonial.rating or 5) %}
+                                            <i class="fas fa-star"></i>
+                                            {% endfor %}
                                         </div>
                                     </div>
-                                    <div class="author-info">
-                                        <h4 class="author-name">John Doe</h4>
-                                        <p class="author-position">CEO & Founder</p>
-                                        <p class="author-company">TechCorp Industries</p>
+                                    
+                                    <div class="testimonial-content">
+                                        <p class="testimonial-quote">
+                                            "{{ testimonial.quote }}"
+                                        </p>
                                     </div>
-                                </div>
-                                
-                                <div class="testimonial-meta">
-                                    <div class="project-type">
-                                        <i class="fas fa-laptop-code"></i>
-                                        Web Development
+                                    
+                                    <div class="testimonial-author">
+                                        <div class="author-avatar">
+                                            {% if testimonial.client_avatar %}
+                                            <img src="{{ url_for('static', filename='uploads/' + testimonial.client_avatar) }}" alt="{{ testimonial.client_name }}" class="avatar-img">
+                                            {% else %}
+                                            <img src="https://picsum.photos/seed/{{ testimonial.client_name|lower|replace(' ', '') }}/80/80.jpg" alt="{{ testimonial.client_name }}" class="avatar-img">
+                                            {% endif %}
+                                            <div class="avatar-badge">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                        </div>
+                                        <div class="author-info">
+                                            <h4 class="author-name">{{ testimonial.client_name }}</h4>
+                                            <p class="author-position">{{ testimonial.client_position or '' }}</p>
+                                            <p class="author-company">{{ testimonial.client_company or '' }}</p>
+                                        </div>
                                     </div>
-                                    <div class="testimonial-date">
-                                        <i class="fas fa-clock"></i>
-                                        2 weeks ago
+                                    
+                                    <div class="testimonial-meta">
+                                        <div class="project-type">
+                                            <i class="fas {{ testimonial.project_type_icon or 'fa-laptop-code' }}"></i>
+                                            {{ testimonial.project_type or 'Project' }}
+                                        </div>
+                                        <div class="testimonial-date">
+                                            <i class="fas fa-clock"></i>
+                                            {% if testimonial.created_at %}
+                                                {{ testimonial.created_at.strftime('%b %d, %Y') }}
+                                            {% else %}
+                                                Recently
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Testimonial 2 -->
-                        <div class="swiper-slide">
-                            <div class="testimonial-card">
-                                <div class="testimonial-header">
-                                    <div class="quote-icon">
-                                        <i class="fas fa-quote-left"></i>
-                                    </div>
-                                    <div class="testimonial-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                                
-                                <div class="testimonial-content">
-                                    <p class="testimonial-quote">
-                                        "Professional, creative, and always meets deadlines. A true pleasure to work with on complex projects. The quality of work is outstanding, and the ability to understand our requirements was impressive. Would definitely work with again!"
-                                    </p>
-                                </div>
-                                
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">
-                                        <img src="https://picsum.photos/seed/janesmith/80/80.jpg" alt="Jane Smith" class="avatar-img">
-                                        <div class="avatar-badge">
-                                            <i class="fas fa-check"></i>
+                            {% endfor %}
+                        {% else %}
+                            <!-- Fallback testimonials if no data in database -->
+                            <div class="swiper-slide">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-header">
+                                        <div class="quote-icon">
+                                            <i class="fas fa-quote-left"></i>
+                                        </div>
+                                        <div class="testimonial-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
                                         </div>
                                     </div>
-                                    <div class="author-info">
-                                        <h4 class="author-name">Jane Smith</h4>
-                                        <p class="author-position">Product Manager</p>
-                                        <p class="author-company">StartupX Solutions</p>
+                                    
+                                    <div class="testimonial-content">
+                                        <p class="testimonial-quote">
+                                            "Exceptional work! Delivered beyond expectations and attention to detail was remarkable. The communication throughout the project was outstanding, and the final product exceeded our wildest dreams. Highly recommend for any web development project."
+                                        </p>
                                     </div>
-                                </div>
-                                
-                                <div class="testimonial-meta">
-                                    <div class="project-type">
-                                        <i class="fas fa-mobile-alt"></i>
-                                        Mobile App
+                                    
+                                    <div class="testimonial-author">
+                                        <div class="author-avatar">
+                                            <img src="https://picsum.photos/seed/johndoe/80/80.jpg" alt="John Doe" class="avatar-img">
+                                            <div class="avatar-badge">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                        </div>
+                                        <div class="author-info">
+                                            <h4 class="author-name">John Doe</h4>
+                                            <p class="author-position">CEO & Founder</p>
+                                            <p class="author-company">TechCorp Industries</p>
+                                        </div>
                                     </div>
-                                    <div class="testimonial-date">
-                                        <i class="fas fa-clock"></i>
-                                        1 month ago
+                                    
+                                    <div class="testimonial-meta">
+                                        <div class="project-type">
+                                            <i class="fas fa-laptop-code"></i>
+                                            Web Development
+                                        </div>
+                                        <div class="testimonial-date">
+                                            <i class="fas fa-clock"></i>
+                                            2 weeks ago
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Testimonial 3 -->
-                        <div class="swiper-slide">
-                            <div class="testimonial-card">
-                                <div class="testimonial-header">
-                                    <div class="quote-icon">
-                                        <i class="fas fa-quote-left"></i>
-                                    </div>
-                                    <div class="testimonial-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                                
-                                <div class="testimonial-content">
-                                    <p class="testimonial-quote">
-                                        "Outstanding developer with great communication skills. Transformed our vision into reality perfectly. The attention to detail and commitment to excellence is unmatched. A true professional who delivers results beyond expectations!"
-                                    </p>
-                                </div>
-                                
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">
-                                        <img src="https://picsum.photos/seed/mikebrown/80/80.jpg" alt="Mike Brown" class="avatar-img">
-                                        <div class="avatar-badge">
-                                            <i class="fas fa-check"></i>
+                            
+                            <div class="swiper-slide">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-header">
+                                        <div class="quote-icon">
+                                            <i class="fas fa-quote-left"></i>
+                                        </div>
+                                        <div class="testimonial-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
                                         </div>
                                     </div>
-                                    <div class="author-info">
-                                        <h4 class="author-name">Mike Brown</h4>
-                                        <p class="author-position">Chief Technology Officer</p>
-                                        <p class="author-company">Digital Solutions Inc.</p>
+                                    
+                                    <div class="testimonial-content">
+                                        <p class="testimonial-quote">
+                                            "Professional, creative, and always meets deadlines. A true pleasure to work with on complex projects. The quality of work is outstanding, and the ability to understand our requirements was impressive. Would definitely work with again!"
+                                        </p>
                                     </div>
-                                </div>
-                                
-                                <div class="testimonial-meta">
-                                    <div class="project-type">
-                                        <i class="fas fa-server"></i>
-                                        Backend Development
+                                    
+                                    <div class="testimonial-author">
+                                        <div class="author-avatar">
+                                            <img src="https://picsum.photos/seed/janesmith/80/80.jpg" alt="Jane Smith" class="avatar-img">
+                                            <div class="avatar-badge">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                        </div>
+                                        <div class="author-info">
+                                            <h4 class="author-name">Jane Smith</h4>
+                                            <p class="author-position">Product Manager</p>
+                                            <p class="author-company">StartupX Solutions</p>
+                                        </div>
                                     </div>
-                                    <div class="testimonial-date">
-                                        <i class="fas fa-clock"></i>
-                                        2 months ago
+                                    
+                                    <div class="testimonial-meta">
+                                        <div class="project-type">
+                                            <i class="fas fa-mobile-alt"></i>
+                                            Mobile App
+                                        </div>
+                                        <div class="testimonial-date">
+                                            <i class="fas fa-clock"></i>
+                                            1 month ago
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Testimonial 4 -->
-                        <div class="swiper-slide">
-                            <div class="testimonial-card">
-                                <div class="testimonial-header">
-                                    <div class="quote-icon">
-                                        <i class="fas fa-quote-left"></i>
-                                    </div>
-                                    <div class="testimonial-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                                
-                                <div class="testimonial-content">
-                                    <p class="testimonial-quote">
-                                        "Absolutely brilliant work! The technical expertise and problem-solving skills are exceptional. Delivered a complex project on time and within budget. The code quality and documentation were top-notch. Highly recommended!"
-                                    </p>
-                                </div>
-                                
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">
-                                        <img src="https://picsum.photos/seed/sarahchen/80/80.jpg" alt="Sarah Chen" class="avatar-img">
-                                        <div class="avatar-badge">
-                                            <i class="fas fa-check"></i>
-                                        </div>
-                                    </div>
-                                    <div class="author-info">
-                                        <h4 class="author-name">Sarah Chen</h4>
-                                        <p class="author-position">Director of Engineering</p>
-                                        <p class="author-company">Innovation Labs</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="testimonial-meta">
-                                    <div class="project-type">
-                                        <i class="fas fa-code"></i>
-                                        Full Stack Development
-                                    </div>
-                                    <div class="testimonial-date">
-                                        <i class="fas fa-clock"></i>
-                                        3 months ago
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Testimonial 5 -->
-                        <div class="swiper-slide">
-                            <div class="testimonial-card">
-                                <div class="testimonial-header">
-                                    <div class="quote-icon">
-                                        <i class="fas fa-quote-left"></i>
-                                    </div>
-                                    <div class="testimonial-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                                
-                                <div class="testimonial-content">
-                                    <p class="testimonial-quote">
-                                        "Incredible attention to detail and creative solutions. Our website traffic increased by 300% after the redesign. The user experience improvements were phenomenal, and the SEO optimization delivered outstanding results. A true expert!"
-                                    </p>
-                                </div>
-                                
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">
-                                        <img src="https://picsum.photos/seed/alexlee/80/80.jpg" alt="Alex Lee" class="avatar-img">
-                                        <div class="avatar-badge">
-                                            <i class="fas fa-check"></i>
-                                        </div>
-                                    </div>
-                                    <div class="author-info">
-                                        <h4 class="author-name">Alex Lee</h4>
-                                        <p class="author-position">Marketing Director</p>
-                                        <p class="author-company">Growth Agency</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="testimonial-meta">
-                                    <div class="project-type">
-                                        <i class="fas fa-paint-brush"></i>
-                                        UI/UX Design
-                                    </div>
-                                    <div class="testimonial-date">
-                                        <i class="fas fa-clock"></i>
-                                        1 month ago
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Testimonial 6 -->
-                        <div class="swiper-slide">
-                            <div class="testimonial-card">
-                                <div class="testimonial-header">
-                                    <div class="quote-icon">
-                                        <i class="fas fa-quote-left"></i>
-                                    </div>
-                                    <div class="testimonial-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                                
-                                <div class="testimonial-content">
-                                    <p class="testimonial-quote">
-                                        "Remarkable expertise in modern web technologies. The solution provided was not only technically sound but also beautifully designed. Our team learned so much from the collaboration. Looking forward to future projects together!"
-                                    </p>
-                                </div>
-                                
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">
-                                        <img src="https://picsum.photos/seed/emilywang/80/80.jpg" alt="Emily Wang" class="avatar-img">
-                                        <div class="avatar-badge">
-                                            <i class="fas fa-check"></i>
-                                        </div>
-                                    </div>
-                                    <div class="author-info">
-                                        <h4 class="author-name">Emily Wang</h4>
-                                        <p class="author-position">VP of Engineering</p>
-                                        <p class="author-company">TechStart Inc.</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="testimonial-meta">
-                                    <div class="project-type">
-                                        <i class="fas fa-cloud"></i>
-                                        Cloud Architecture
-                                    </div>
-                                    <div class="testimonial-date">
-                                        <i class="fas fa-clock"></i>
-                                        1 week ago
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {% endif %}
                     </div>
                     
                     <!-- Navigation Buttons -->
@@ -1455,6 +1304,166 @@
                                 <p class="stat-label">Awards Won</p>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Feedback Section -->
+    <section id="feedback" class="section section-light">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="section-title">Share Your Feedback</h2>
+                <p class="section-subtitle">Your feedback helps me improve and serves as a testimonial for others</p>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  {% if 'feedback' in message %}
+                  <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert" data-aos="fade-up">
+                    <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }} me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                  </div>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feedback-form-container">
+                        <div class="feedback-form-header">
+                            <h3 class="form-title">Leave Your Feedback</h3>
+                            <p class="form-subtitle">Share your experience working with me</p>
+                        </div>
+                        
+                        <form method="POST" action="/feedback" class="feedback-form" id="feedbackForm" enctype="multipart/form-data">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="feedback_name" class="form-label">
+                                            <i class="fas fa-user"></i>
+                                            Your Name *
+                                        </label>
+                                        <input type="text" class="form-control" id="feedback_name" name="client_name" placeholder="John Doe" required>
+                                        <div class="form-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="feedback_email" class="form-label">
+                                            <i class="fas fa-envelope"></i>
+                                            Email Address *
+                                        </label>
+                                        <input type="email" class="form-control" id="feedback_email" name="email" placeholder="john@example.com" required>
+                                        <div class="form-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="feedback_position" class="form-label">
+                                            <i class="fas fa-briefcase"></i>
+                                            Position
+                                        </label>
+                                        <input type="text" class="form-control" id="feedback_position" name="client_position" placeholder="CEO & Founder">
+                                        <div class="form-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="feedback_company" class="form-label">
+                                            <i class="fas fa-building"></i>
+                                            Company
+                                        </label>
+                                        <input type="text" class="form-control" id="feedback_company" name="client_company" placeholder="TechCorp Industries">
+                                        <div class="form-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="feedback_project_type" class="form-label">
+                                            <i class="fas fa-project-diagram"></i>
+                                            Project Type
+                                        </label>
+                                        <select class="form-control" id="feedback_project_type" name="project_type">
+                                            <option value="">Select project type</option>
+                                            <option value="Web Development">Web Development</option>
+                                            <option value="Mobile App">Mobile App</option>
+                                            <option value="Backend Development">Backend Development</option>
+                                            <option value="Full Stack Development">Full Stack Development</option>
+                                            <option value="UI/UX Design">UI/UX Design</option>
+                                            <option value="Graphic Design">Graphic Design</option>
+                                            <option value="Video Editing">Video Editing</option>
+                                            <option value="Cloud Architecture">Cloud Architecture</option>
+                                            <option value="Database">Database</option>
+                                            <option value="Security">Security</option>
+                                        </select>
+                                        <div class="form-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="feedback_rating" class="form-label">
+                                            <i class="fas fa-star"></i>
+                                            Rating *
+                                        </label>
+                                        <select class="form-control" id="feedback_rating" name="rating" required>
+                                            <option value="">Select rating</option>
+                                            <option value="5">5 Stars - Excellent</option>
+                                            <option value="4">4 Stars - Very Good</option>
+                                            <option value="3">3 Stars - Good</option>
+                                            <option value="2">2 Stars - Fair</option>
+                                            <option value="1">1 Star - Poor</option>
+                                        </select>
+                                        <div class="form-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feedback_message" class="form-label">
+                                    <i class="fas fa-comment"></i>
+                                    Your Feedback *
+                                </label>
+                                <textarea class="form-control" id="feedback_message" name="quote" rows="5" placeholder="Share your experience working with me..." required></textarea>
+                                <div class="form-feedback"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feedback_avatar" class="form-label">
+                                    <i class="fas fa-camera"></i>
+                                    Your Photo (Optional)
+                                </label>
+                                <input type="file" class="form-control" id="feedback_avatar" name="avatar" accept="image/*">
+                                <small class="text-muted">Upload your photo to appear with your testimonial (recommended: square image)</small>
+                                <div class="form-feedback"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="feedback_permission" name="permission" checked>
+                                    <label class="form-check-label" for="feedback_permission">
+                                        I give permission to display this feedback as a testimonial on the website
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane me-2"></i>
+                                    Submit Feedback
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -1754,10 +1763,7 @@
                     <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
                         <div class="footer-about">
                             <div class="footer-logo">
-                                <h3 class="footer-brand">
-                                    <i class="fas fa-code"></i>
-                                    Portfolio
-                                </h3>
+                                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Graphic Nest" class="footer-logo-img">
                                 <p class="footer-tagline">Crafting Digital Experiences</p>
                             </div>
                             <p class="footer-description">
@@ -1880,10 +1886,10 @@
                     </div>
                     <div class="col-md-6">
                         <div class="footer-bottom-links">
-                            <a href="#" class="bottom-link">Privacy Policy</a>
-                            <a href="#" class="bottom-link">Terms of Service</a>
-                            <a href="#" class="bottom-link">Cookie Policy</a>
-                            <a href="#" class="bottom-link">Sitemap</a>
+                            <a href="{{ url_for('main.privacy_policy') }}" class="bottom-link">Privacy Policy</a>
+                            <a href="{{ url_for('main.terms_of_service') }}" class="bottom-link">Terms of Service</a>
+                            <a href="{{ url_for('main.cookie_policy') }}" class="bottom-link">Cookie Policy</a>
+                            <a href="{{ url_for('main.sitemap') }}" class="bottom-link">Sitemap</a>
                         </div>
                     </div>
                 </div>

@@ -51,6 +51,348 @@
         padding: 25px;
     }
     
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+        .dashboard-header {
+            padding: 1.5rem;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .dashboard-header p {
+            font-size: 1rem;
+        }
+        
+        .dashboard-toolbar {
+            padding: 15px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+        }
+        
+        .dashboard-content {
+            padding: 15px;
+        }
+        
+        /* Stats Cards Mobile Layout */
+        .stats-card-enhanced {
+            margin-bottom: 15px;
+        }
+        
+        .stats-card-enhanced .card-body {
+            padding: 1rem;
+        }
+        
+        .stats-card-enhanced .row {
+            align-items: center;
+        }
+        
+        .stats-card-enhanced .col-mr-2 {
+            flex: 1;
+        }
+        
+        .stats-card-enhanced .col-auto {
+            flex: 0 0 auto;
+        }
+        
+        .stats-icon-enhanced {
+            font-size: 2rem;
+        }
+        
+        .stats-card-enhanced .text-xs {
+            font-size: 0.75rem;
+        }
+        
+        .stats-card-enhanced .h3 {
+            font-size: 1.5rem;
+        }
+        
+        /* Section Cards Mobile */
+        .section-card {
+            margin-bottom: 20px;
+        }
+        
+        .section-header {
+            padding: 1rem;
+        }
+        
+        .section-header h6 {
+            font-size: 1rem;
+        }
+        
+        .section-body {
+            padding: 1rem;
+        }
+        
+        /* Quick Action Cards Mobile */
+        .quick-action-card {
+            margin-bottom: 15px;
+        }
+        
+        .quick-action-card-content {
+            padding: 1.5rem;
+        }
+        
+        .quick-action-card i {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        /* Testimonial Cards Mobile */
+        .testimonial-card-dashboard {
+            padding: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .testimonial-avatar,
+        .testimonial-avatar-placeholder {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .testimonial-quote {
+            font-size: 0.9rem;
+            padding-left: 0.5rem;
+        }
+        
+        /* Feedback Cards Mobile */
+        .feedback-card-dashboard {
+            padding: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .feedback-avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+        
+        /* Project List Mobile */
+        .project-item {
+            padding: 0.75rem;
+            margin-bottom: 10px;
+        }
+        
+        .project-avatar,
+        .project-avatar-placeholder {
+            width: 35px;
+            height: 35px;
+        }
+        
+        .project-title {
+            font-size: 0.9rem;
+        }
+        
+        .project-description {
+            font-size: 0.8rem;
+        }
+        
+        /* Message List Mobile */
+        .message-item {
+            padding: 0.75rem;
+            margin-bottom: 10px;
+        }
+        
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            font-size: 0.9rem;
+        }
+        
+        .message-subject {
+            font-size: 0.9rem;
+        }
+        
+        .message-preview {
+            font-size: 0.8rem;
+        }
+        
+        /* Buttons Mobile */
+        .btn {
+            padding: 10px 16px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+        }
+        
+        /* Progress Bars Mobile */
+        .progress-enhanced {
+            height: 8px;
+        }
+        
+        /* Grid Layout Mobile */
+        .row.gutters {
+            margin: -5px;
+        }
+        
+        .row.gutters > [class*="col-"] {
+            padding: 5px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .dashboard-header {
+            padding: 1rem;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 1.25rem;
+        }
+        
+        .dashboard-header p {
+            font-size: 0.9rem;
+        }
+        
+        .dashboard-toolbar {
+            padding: 10px;
+        }
+        
+        .dashboard-content {
+            padding: 10px;
+        }
+        
+        .stats-icon-enhanced {
+            font-size: 1.5rem;
+        }
+        
+        .stats-card-enhanced .text-xs {
+            font-size: 0.7rem;
+        }
+        
+        .stats-card-enhanced .h3 {
+            font-size: 1.25rem;
+        }
+        
+        .section-header {
+            padding: 0.75rem;
+        }
+        
+        .section-header h6 {
+            font-size: 0.9rem;
+        }
+        
+        .section-body {
+            padding: 0.75rem;
+        }
+        
+        .quick-action-card-content {
+            padding: 1rem;
+        }
+        
+        .quick-action-card i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .testimonial-card-dashboard {
+            padding: 0.75rem;
+        }
+        
+        .feedback-card-dashboard {
+            padding: 0.75rem;
+        }
+        
+        .btn {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+        }
+        
+        .btn-sm {
+            padding: 6px 10px;
+            font-size: 0.75rem;
+        }
+        
+        /* Make stats cards full width on small mobile */
+        .stats-card-enhanced {
+            margin-bottom: 10px;
+        }
+        
+        /* Stack quick action cards vertically */
+        .quick-action-card {
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .dashboard-header h1 {
+            font-size: 1.1rem;
+        }
+        
+        .dashboard-header p {
+            font-size: 0.85rem;
+        }
+        
+        .stats-icon-enhanced {
+            font-size: 1.25rem;
+        }
+        
+        .stats-card-enhanced .h3 {
+            font-size: 1.1rem;
+        }
+        
+        .section-header h6 {
+            font-size: 0.85rem;
+        }
+        
+        .section-body {
+            padding: 0.5rem;
+        }
+        
+        .quick-action-card-content {
+            padding: 0.75rem;
+        }
+        
+        .quick-action-card i {
+            font-size: 1.25rem;
+        }
+        
+        .btn {
+            padding: 6px 10px;
+            font-size: 0.75rem;
+        }
+        
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 0.7rem;
+        }
+        
+        /* Optimize text for very small screens */
+        .text-xs {
+            font-size: 0.65rem;
+        }
+        
+        .h3 {
+            font-size: 1rem;
+        }
+        
+        .card-title {
+            font-size: 0.9rem;
+        }
+        
+        .h5 {
+            font-size: 0.85rem;
+        }
+        
+        /* Reduce spacing on very small screens */
+        .stats-card-enhanced {
+            margin-bottom: 8px;
+        }
+        
+        .section-card {
+            margin-bottom: 12px;
+        }
+        
+        .testimonial-card-dashboard,
+        .feedback-card-dashboard {
+            margin-bottom: 10px;
+        }
+    }
+    
     /* Enhanced Stats Cards */
     .stats-card-enhanced {
         transition: all 0.3s ease;
@@ -83,6 +425,8 @@
     .stats-card-enhanced.skills::before { --card-color: #1cc88a; --card-color-light: #2dd4a0; }
     .stats-card-enhanced.messages::before { --card-color: #36b9cc; --card-color-light: #4dd9ec; }
     .stats-card-enhanced.published::before { --card-color: #f6c23e; --card-color-light: #f8d66e; }
+    .stats-card-enhanced.testimonials::before { --card-color: #e74a3b; --card-color-light: #f56565; }
+    .stats-card-enhanced.feedback::before { --card-color: #f6c23e; --card-color-light: #f8d66e; }
     
     .stats-card-enhanced .card-body {
         padding: 1.5rem;
@@ -130,6 +474,8 @@
     .section-card.messages::before { --section-color: #36b9cc; --section-color-light: #4dd9ec; }
     .section-card.skills::before { --section-color: #1cc88a; --section-color-light: #2dd4a0; }
     .section-card.actions::before { --section-color: #f6c23e; --section-color-light: #f8d66e; }
+    .section-card.testimonials::before { --section-color: #e74a3b; --section-color-light: #f56565; }
+    .section-card.feedback::before { --section-color: #f6c23e; --section-color-light: #f8d66e; }
     
     .section-header {
         background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%);
@@ -460,6 +806,7 @@
     .quick-action-card.skill::before { --card-color: #1cc88a; --card-color-light: #2dd4a0; }
     .quick-action-card.message::before { --card-color: #36b9cc; --card-color-light: #4dd9ec; }
     .quick-action-card.site::before { --card-color: #f6c23e; --card-color-light: #f8d66e; }
+    .quick-action-card.testimonial::before { --card-color: #e74a3b; --card-color-light: #f56565; }
     
     .quick-action-card-content {
         position: relative;
@@ -472,6 +819,84 @@
         font-size: 2.5rem;
         margin-bottom: 1rem;
         display: block;
+    }
+
+    /* Testimonial Card Styles */
+    .testimonial-card-dashboard {
+        background: white;
+        border-radius: 12px;
+        padding: 1.25rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .testimonial-card-dashboard:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .testimonial-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .testimonial-avatar-placeholder {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e74a3b 0%, #f56565 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .testimonial-quote {
+        border-left: 3px solid #e74a3b;
+        padding-left: 0.75rem;
+        font-style: italic;
+    }
+
+    /* Feedback Card Styles */
+    .feedback-card-dashboard {
+        background: white;
+        border-radius: 12px;
+        padding: 1.25rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .feedback-card-dashboard:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .feedback-avatar-placeholder {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f6c23e 0%, #f8d66e 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .feedback-message {
+        border-left: 3px solid #f6c23e;
+        padding-left: 0.75rem;
+        font-style: italic;
     }
 </style>
 {% endblock %}
@@ -579,6 +1004,49 @@
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-eye stats-icon-enhanced text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="stats-card-enhanced testimonials fade-in">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                    Testimonials
+                                </div>
+                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ testimonials|length }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-quote-left stats-icon-enhanced text-danger"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="stats-card-enhanced feedback fade-in">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Feedback
+                                </div>
+                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ feedback_messages|length }}</div>
+                                {% if feedback_unread_count > 0 %}
+                                <div class="text-xs text-warning">
+                                    <i class="fas fa-circle me-1"></i>{{ feedback_unread_count }} unread
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-comment-dots stats-icon-enhanced text-warning"></i>
                             </div>
                         </div>
                     </div>
@@ -733,6 +1201,167 @@
             </div>
         </div>
 
+        <!-- Recent Testimonials -->
+        <div class="row">
+            <div class="col-lg-12 mb-4">
+                <div class="section-card testimonials fade-in">
+                    <div class="section-header">
+                        <h6>
+                            <i class="fas fa-quote-left"></i>
+                            Recent Testimonials
+                        </h6>
+                        <a href="{{ url_for('admin.testimonials') }}" class="btn btn-sm btn-outline-primary">Manage Testimonials</a>
+                    </div>
+                    <div class="section-body">
+                        {% if testimonials %}
+                            <div class="row">
+                                {% for testimonial in testimonials[:6] %}
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="testimonial-card-dashboard">
+                                        <div class="d-flex align-items-start">
+                                            <div class="flex-shrink-0">
+                                                {% if testimonial.client_avatar %}
+                                                <img src="{{ url_for('static', filename='uploads/' + testimonial.client_avatar) }}" 
+                                                     alt="{{ testimonial.client_name }}" class="testimonial-avatar">
+                                                {% else %}
+                                                <div class="testimonial-avatar-placeholder">
+                                                    <i class="fas fa-user"></i>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <h6 class="mb-0 font-weight-bold">{{ testimonial.client_name }}</h6>
+                                                    <div class="text-xs">
+                                                        {% for i in range(testimonial.rating or 5) %}
+                                                        <i class="fas fa-star text-warning"></i>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                {% if testimonial.client_position %}
+                                                <small class="text-muted d-block">{{ testimonial.client_position }}</small>
+                                                {% endif %}
+                                                {% if testimonial.client_company %}
+                                                <small class="text-muted d-block">{{ testimonial.client_company }}</small>
+                                                {% endif %}
+                                                <div class="testimonial-quote mt-2">
+                                                    <small class="text-gray-600">{{ testimonial.quote[:80] }}{% if testimonial.quote|length > 80 %}...{% endif %}</small>
+                                                </div>
+                                                <div class="mt-2">
+                                                    {% if testimonial.project_type %}
+                                                    <span class="badge badge-enhanced badge-info">
+                                                        <i class="fas {{ testimonial.project_type_icon or 'fa-laptop-code' }} me-1"></i>
+                                                        {{ testimonial.project_type }}
+                                                    </span>
+                                                    {% endif %}
+                                                    {% if testimonial.is_active %}
+                                                    <span class="badge badge-enhanced badge-success ms-1">Active</span>
+                                                    {% else %}
+                                                    <span class="badge badge-enhanced badge-secondary ms-1">Inactive</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                        <div class="empty-state fade-in">
+                            <i class="fas fa-quote-left"></i>
+                            <h4 class="text-gray-500">No testimonials yet</h4>
+                            <p class="text-gray-400">Add client testimonials to showcase their feedback and build trust.</p>
+                            <a href="{{ url_for('admin.add_testimonial') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Add Testimonial
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Feedback -->
+        <div class="row">
+            <div class="col-lg-12 mb-4">
+                <div class="section-card feedback fade-in">
+                    <div class="section-header">
+                        <h6>
+                            <i class="fas fa-comment-dots"></i>
+                            Recent Feedback
+                        </h6>
+                        <a href="{{ url_for('admin.feedback') }}" class="btn btn-sm btn-outline-warning">Manage Feedback</a>
+                    </div>
+                    <div class="section-body">
+                        {% if feedback_messages %}
+                            <div class="row">
+                                {% for feedback in feedback_messages[:6] %}
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="feedback-card-dashboard">
+                                        <div class="d-flex align-items-start">
+                                            <div class="flex-shrink-0">
+                                                <div class="feedback-avatar-placeholder">
+                                                    <i class="fas fa-user"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <h6 class="mb-0 font-weight-bold">{{ feedback.name }}</h6>
+                                                    <div class="text-xs">
+                                                        {% if feedback.status == 'unread' %}
+                                                        <span class="badge badge-enhanced badge-warning">
+                                                            <i class="fas fa-circle me-1"></i>Unread
+                                                        </span>
+                                                        {% elif feedback.status == 'approved' %}
+                                                        <span class="badge badge-enhanced badge-success">
+                                                            <i class="fas fa-check me-1"></i>Approved
+                                                        </span>
+                                                        {% elif feedback.status == 'rejected' %}
+                                                        <span class="badge badge-enhanced badge-danger">
+                                                            <i class="fas fa-times me-1"></i>Rejected
+                                                        </span>
+                                                        {% else %}
+                                                        <span class="badge badge-enhanced badge-secondary">
+                                                            <i class="fas fa-eye me-1"></i>Processed
+                                                        </span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <small class="text-muted d-block">{{ feedback.email }}</small>
+                                                <small class="text-muted d-block">{{ feedback.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                                                <div class="feedback-message mt-2">
+                                                    <small class="text-gray-600">{{ feedback.message[:100] }}{% if feedback.message|length > 100 %}...{% endif %}</small>
+                                                </div>
+                                                <div class="mt-2">
+                                                    <a href="{{ url_for('admin.edit_feedback', id=feedback.id) }}" class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-edit me-1"></i>View
+                                                    </a>
+                                                    {% if feedback.status == 'unread' %}
+                                                    <form action="{{ url_for('admin.approve_feedback', id=feedback.id) }}" method="post" class="d-inline">
+                                                        <button type="submit" class="btn btn-sm btn-outline-success ms-1">
+                                                            <i class="fas fa-check me-1"></i>Approve
+                                                        </button>
+                                                    </form>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                        <div class="empty-state fade-in">
+                            <i class="fas fa-comment-dots"></i>
+                            <h4 class="text-gray-500">No feedback submissions yet</h4>
+                            <p class="text-gray-400">Feedback from clients will appear here once they submit the feedback form.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Quick Actions -->
         <div class="row">
             <div class="col-lg-12 mb-4">
@@ -766,6 +1395,22 @@
                                     <div class="quick-action-card-content">
                                         <i class="fas fa-envelope"></i>
                                         View Messages
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="{{ url_for('admin.add_testimonial') }}" class="quick-action-card testimonial">
+                                    <div class="quick-action-card-content">
+                                        <i class="fas fa-quote-left"></i>
+                                        Add Testimonial
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="{{ url_for('admin.feedback') }}" class="quick-action-card message">
+                                    <div class="quick-action-card-content">
+                                        <i class="fas fa-comment-dots"></i>
+                                        Manage Feedback
                                     </div>
                                 </a>
                             </div>

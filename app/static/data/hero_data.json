@@ -1,0 +1,89 @@
+{
+  "name": "Muhammad Abrar",
+  "subtitle": "I transform creative ideas into exceptional digital experiences through innovative web development, stunning graphic design, and compelling video editing. Let's create something extraordinary together!",
+  "profile_image": "hero_My_Profile_Image_1775012362.jpg",
+  "badge": {
+    "icon": "fas fa-sparkles",
+    "text": "Available for Projects"
+  },
+  "roles": [
+    {
+      "icon": "fas fa-code",
+      "title": "Web Developer"
+    },
+    {
+      "icon": "fas fa-palette",
+      "title": "Graphic Designer"
+    },
+    {
+      "icon": "fas fa-video",
+      "title": "Video Editor"
+    }
+  ],
+  "buttons": [
+    {
+      "icon": "fas fa-briefcase",
+      "text": "View Portfolio",
+      "url": "#projects",
+      "style": "primary"
+    },
+    {
+      "icon": "fas fa-envelope",
+      "text": "Get In Touch",
+      "url": "#contact",
+      "style": "secondary"
+    }
+  ],
+  "stats": [
+    {
+      "value": "50+",
+      "label": "Projects"
+    },
+    {
+      "value": "5+",
+      "label": "Years"
+    },
+    {
+      "value": "100%",
+      "label": "Satisfaction"
+    }
+  ],
+  "timeline": {
+    "title": "5+ Years Experience",
+    "subtitle": "Professional Development"
+  },
+  "scroll_text": "Scroll Down",
+  "show_scroll_indicator": true,
+  "floating_icons": [
+    {
+      "icon_class": "fas fa-code",
+      "label": "Web Dev",
+      "animation": "down",
+      "delay": 600
+    },
+    {
+      "icon_class": "fas fa-palette",
+      "label": "Design",
+      "animation": "up",
+      "delay": 700
+    },
+    {
+      "icon_class": "fas fa-video",
+      "label": "Video",
+      "animation": "down",
+      "delay": 800
+    },
+    {
+      "icon_class": "fas fa-mobile-alt",
+      "label": "Mobile",
+      "animation": "up",
+      "delay": 900
+    },
+    {
+      "icon_class": "fas fa-camera",
+      "label": "Photo",
+      "animation": "down",
+      "delay": 1000
+    }
+  ]
+}

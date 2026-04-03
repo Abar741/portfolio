@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap - Portfolio</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="mainNav" class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.home') }}">
+                <i class="fas fa-code"></i>
+                Portfolio
+            </a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sitemap Section -->
+    <section class="section section-light" style="padding-top: 120px; min-height: 100vh;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="content-card" style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                        <h1 class="mb-4" style="font-weight: 700; color: #1f2937;">
+                            <i class="fas fa-sitemap me-3 text-success"></i>Sitemap
+                        </h1>
+                        
+                        <p class="text-muted mb-4">A complete guide to all pages on this website</p>
+                        
+                        <div class="content-body" style="line-height: 1.8; color: #4b5563;">
+                            
+                            <!-- Main Pages -->
+                            <div class="sitemap-section mb-5">
+                                <h5 class="mb-3" style="font-weight: 600; color: #1f2937;">
+                                    <i class="fas fa-home me-2 text-primary"></i>Main Pages
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <a href="{{ url_for('main.home') }}" class="sitemap-link d-flex align-items-center p-3" style="background: #f8f9fa; border-radius: 10px; text-decoration: none; color: #4b5563; transition: all 0.3s;">
+                                            <i class="fas fa-home me-3 text-primary" style="font-size: 1.2rem;"></i>
+                                            <div>
+                                                <strong style="color: #1f2937;">Homepage</strong>
+                                                <p class="mb-0 small text-muted">Main portfolio landing page with hero section, about, services, and projects</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Portfolio Sections -->
+                            <div class="sitemap-section mb-5">
+                                <h5 class="mb-3" style="font-weight: 600; color: #1f2937;">
+                                    <i class="fas fa-briefcase me-2 text-info"></i>Portfolio Sections
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <a href="{{ url_for('main.home') }}#about" class="sitemap-link d-flex align-items-center p-3" style="background: #f8f9fa; border-radius: 10px; text-decoration: none; color: #4b5563;">
+                                            <i class="fas fa-user me-3 text-info" style="font-size: 1.2rem;"></i>
+                                            <div>
+                                                <strong style="color: #1f2937;">About Me</strong>
+                                                <p class="mb-0 small text-muted">Learn about my background and expertise</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <a href="{{ url_for('main.home') }}#services" class="sitemap-link d-flex align-items-center p-3" style="background: #f8f9fa; border-radius: 10px; text-decoration: none; color: #4b5563;">
+                                            <i class="fas fa-cogs me-3 text-info" style="font-size: 1.2rem;"></i>
+                                            <div>
+                                                <strong style="color: #1f2937;">Services</strong>
+                                                <p class="mb-0 small text-muted">Professional services I offer</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <a href="{{ url_for('main.home') }}#projects" class="sitemap-link d-flex align-items-center p-3" style="background: #f8f9fa; border-radius: 10px; text-decoration: none; color: #4b5563;">
+                                            <i class="fas fa-project-diagram me-3 text-info" style="font-size: 1.2rem;"></i>
+                                            <div>
+                                                <strong style="color: #1f2937;">Projects</strong>
+                                                <p class="mb-0 small text-muted">View my portfolio of completed projects</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <a href="{{ url_for('main.home') }}#skills" class="sitemap-link d-flex align-items-center p-3" style="background: #f8f9fa; border-radius: 10px; text-decoration: none; color: #4b5563;">
+                                            <i class="fas fa-chart-bar me-3 text-info" style="font-size: 1.2rem;"></i>
+                                            <div>
+                                                <strong style="color: #1f2937;">Skills</strong>
+                                                <p class="mb-0 small text-muted">Technical skills and expertise</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <a href="{{ url_for('main.home') }}#contact" class="sitemap-link d-flex align-items-center p-3" style="background: #f8f9fa; border-radius: 10px; text-decoration: none; color: #4b5563;">
+                                            <i class="fas fa-envelope me-3 text-info" style="font-size: 1.2rem;"></i>
+                                            <div>
+                                                <strong style="color: #1f2937;">Contact</strong>
+                                                <p class="mb-0 small text-muted">Get in touch with me</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Legal Pages -->
+                            <div class="sitemap-section mb-5">
+                                <h5 class="mb-3" style="font-weight: 600; color: #1f2937;">
+                                    <i class="fas fa-gavel me-2 text-warning"></i>Legal Pages
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <a href="{{ url_for('main.privacy_policy') }}" class="sitemap-link d-flex align-items-center p-3" style="background: #f8f9fa; border-radius: 10px; text-decoration: none; color: #4b5563;">
+                                            <i class="fas fa-shield-alt me-3 text-success" style="font-size: 1.2rem;"></i>
+                                            <div>
+                                                <strong style="color: #1f2937;">Privacy Policy</strong>
+                                                <p class="mb-0 small text-muted">How I handle your personal data</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <a href="{{ url_for('main.terms_of_service') }}" class="sitemap-link d-flex align-items-center p-3" style="background: #f8f9fa; border-radius: 10px; text-decoration: none; color: #4b5563;">
+                                            <i class="fas fa-file-contract me-3 text-primary" style="font-size: 1.2rem;"></i>
+                                            <div>
+                                                <strong style="color: #1f2937;">Terms of Service</strong>
+                                                <p class="mb-0 small text-muted">Rules and guidelines for using this website</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <a href="{{ url_for('main.cookie_policy') }}" class="sitemap-link d-flex align-items-center p-3" style="background: #f8f9fa; border-radius: 10px; text-decoration: none; color: #4b5563;">
+                                            <i class="fas fa-cookie-bite me-3 text-warning" style="font-size: 1.2rem;"></i>
+                                            <div>
+                                                <strong style="color: #1f2937;">Cookie Policy</strong>
+                                                <p class="mb-0 small text-muted">How I use cookies on this website</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <a href="{{ url_for('main.sitemap') }}" class="sitemap-link d-flex align-items-center p-3" style="background: #f8f9fa; border-radius: 10px; text-decoration: none; color: #4b5563;">
+                                            <i class="fas fa-sitemap me-3 text-success" style="font-size: 1.2rem;"></i>
+                                            <div>
+                                                <strong style="color: #1f2937;">Sitemap</strong>
+                                                <p class="mb-0 small text-muted">Complete website structure (this page)</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Admin Section -->
+                            <div class="sitemap-section">
+                                <h5 class="mb-3" style="font-weight: 600; color: #1f2937;">
+                                    <i class="fas fa-lock me-2 text-danger"></i>Admin (Restricted)
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="sitemap-link d-flex align-items-center p-3" style="background: #f8f9fa; border-radius: 10px; color: #9ca3af;">
+                                            <i class="fas fa-user-shield me-3 text-danger" style="font-size: 1.2rem;"></i>
+                                            <div>
+                                                <strong style="color: #6b7280;">Admin Dashboard</strong>
+                                                <p class="mb-0 small text-muted">Admin login required</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" style="background: #1f2937; color: white; padding: 40px 0;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2026 Muhammad Abrar. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="{{ url_for('main.privacy_policy') }}" class="text-light me-3">Privacy Policy</a>
+                    <a href="{{ url_for('main.terms_of_service') }}" class="text-light me-3">Terms of Service</a>
+                    <a href="{{ url_for('main.cookie_policy') }}" class="text-light me-3">Cookie Policy</a>
+                    <a href="{{ url_for('main.sitemap') }}" class="text-light">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

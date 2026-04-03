@@ -70,6 +70,211 @@
         padding: 25px;
     }
     
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+        .skills-header {
+            padding: 1.5rem;
+        }
+        
+        .skills-header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .skills-header p {
+            font-size: 1rem;
+        }
+        
+        .skills-toolbar {
+            padding: 15px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+        }
+        
+        .skills-search {
+            min-width: auto;
+            width: 100%;
+        }
+        
+        .skills-search input {
+            padding: 12px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .skills-content {
+            padding: 15px;
+        }
+        
+        .skill-card {
+            margin-bottom: 15px;
+        }
+        
+        .skill-card .card-body {
+            padding: 1rem;
+        }
+        
+        .skill-name {
+            font-size: 1.1rem;
+        }
+        
+        .skill-percentage {
+            font-size: 0.9rem;
+        }
+        
+        .btn-sm {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            margin: 0.1rem;
+        }
+        
+        .stats-card-enhanced {
+            margin-bottom: 15px;
+        }
+        
+        .stats-card-enhanced .card-body {
+            padding: 1rem;
+        }
+        
+        .stats-icon-enhanced {
+            font-size: 2rem;
+        }
+        
+        .skill-progress {
+            height: 8px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .skills-header {
+            padding: 1rem;
+        }
+        
+        .skills-header h1 {
+            font-size: 1.25rem;
+        }
+        
+        .skills-header p {
+            font-size: 0.9rem;
+        }
+        
+        .skills-toolbar {
+            padding: 10px;
+        }
+        
+        .skills-search input {
+            padding: 10px 12px;
+            font-size: 0.85rem;
+        }
+        
+        .skills-content {
+            padding: 10px;
+        }
+        
+        .skill-card .card-body {
+            padding: 0.75rem;
+        }
+        
+        .skill-name {
+            font-size: 1rem;
+        }
+        
+        .skill-percentage {
+            font-size: 0.85rem;
+        }
+        
+        .btn-sm {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.4rem;
+        }
+        
+        .stats-card-enhanced .card-body {
+            padding: 0.75rem;
+        }
+        
+        .stats-icon-enhanced {
+            font-size: 1.5rem;
+        }
+        
+        .skill-progress {
+            height: 6px;
+        }
+        
+        .skill-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .skills-header h1 {
+            font-size: 1.1rem;
+        }
+        
+        .skills-header p {
+            font-size: 0.85rem;
+        }
+        
+        .skills-search input {
+            padding: 8px 10px;
+            font-size: 0.8rem;
+        }
+        
+        .skill-card .card-body {
+            padding: 0.5rem;
+        }
+        
+        .skill-name {
+            font-size: 0.9rem;
+        }
+        
+        .skill-percentage {
+            font-size: 0.8rem;
+        }
+        
+        .btn-sm {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.3rem;
+        }
+        
+        .stats-card-enhanced .card-body {
+            padding: 0.5rem;
+        }
+        
+        .stats-icon-enhanced {
+            font-size: 1.25rem;
+        }
+        
+        .card-title {
+            font-size: 0.9rem;
+        }
+        
+        .h5 {
+            font-size: 0.85rem;
+        }
+        
+        .skill-progress {
+            height: 4px;
+        }
+        
+        .skill-form {
+            padding: 1rem;
+        }
+        
+        .skill-form .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .skill-form .form-label {
+            font-size: 0.85rem;
+        }
+        
+        .skill-form .form-control {
+            font-size: 0.8rem;
+            padding: 0.5rem;
+        }
+    }
+    
     /* Enhanced Stats Cards */
     .stats-card-enhanced {
         transition: all 0.3s ease;
@@ -1087,9 +1292,11 @@
                                                 <button class="btn btn-sm btn-outline-primary" onclick="editSkill({{ skill.id }}, '{{ skill.name }}', {{ skill.percentage }}, '{{ skill.icon or '' }}')">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="deleteSkill({{ skill.id }})">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                                                <form method="POST" action="{{ url_for('admin.delete_skill', id=skill.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this skill?');">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>
@@ -1142,9 +1349,11 @@
                         <button class="btn btn-outline-primary btn-sm" onclick="editSkill({{ skill.id }}, '{{ skill.name }}', {{ skill.percentage }}, '{{ skill.icon or '' }}')">
                             <i class="fas fa-edit me-2"></i>Edit
                         </button>
-                        <button class="btn btn-outline-danger btn-sm" onclick="deleteSkill({{ skill.id }})">
-                            <i class="fas fa-trash me-2"></i>Delete
-                        </button>
+                        <form method="POST" action="{{ url_for('admin.delete_skill', id=skill.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this skill?');">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash me-2"></i>Delete
+                            </button>
+                        </form>
                     </div>
                 </div>
                 {% endfor %}
@@ -1326,11 +1535,15 @@ function deleteSkill(id) {
         fetch('/admin/skills/delete/' + id, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': ''
+                'X-Requested-With': 'XMLHttpRequest'
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 location.reload();
@@ -1340,7 +1553,7 @@ function deleteSkill(id) {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error deleting skill');
+            alert('Error deleting skill. Please try again.');
         });
     }
 }

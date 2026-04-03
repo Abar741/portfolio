@@ -4,6 +4,8 @@
 
 // ===== INITIALIZATION ===== //
 document.addEventListener('DOMContentLoaded', function() {
+    // Load all projects initially
+    fetchAndRenderProjects('all');
     initializePortfolio();
 });
 
@@ -12,12 +14,14 @@ function initializePortfolio() {
     initializeNavigation();
     initializeSkillBars();
     initializeContactForm();
+    initializeFeedbackForm();
     initializeParticles();
     initializeActiveNavigation();
     initializeProjectsSlider();
     initializeSkillsSlider();
     initializeFooter();
     initializeTestimonialsSlider();
+    initializeNewsSlider();
 }
 
 // ===== AOS ANIMATION ===== //
@@ -823,9 +827,48 @@ function initializeContactForm() {
                     }
                 }, 3000);
                 
-                // Here you would normally send the form data to your server
+                // Actually submit the form to the server
                 const formData = new FormData(contactForm);
-                console.log('Form submitted:', Object.fromEntries(formData));
+                
+                // Submit form using fetch
+                fetch('/contact', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.redirected) {
+                        // If server redirects, follow the redirect
+                        window.location.href = response.url;
+                    } else {
+                        // Otherwise, show success and reset form
+                        showSuccessMessage();
+                        setTimeout(() => {
+                            contactForm.reset();
+                            if (submitBtn) {
+                                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>Send Message</span>';
+                                submitBtn.style.background = '';
+                            }
+                            if (charCount) {
+                                charCount.textContent = '0';
+                                charCount.style.color = '#a0aec0';
+                            }
+                        }, 3000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error submitting form:', error);
+                    // Show error message
+                    if (submitBtn) {
+                        submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> <span>Error!</span>';
+                        submitBtn.style.background = 'linear-gradient(135deg, #e53e3e, #c53030)';
+                    }
+                    setTimeout(() => {
+                        if (submitBtn) {
+                            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>Send Message</span>';
+                            submitBtn.style.background = '';
+                        }
+                    }, 2000);
+                });
                 
             }, 2000);
         });
@@ -980,4 +1023,392 @@ function initializeTestimonialsSlider() {
             swiper.autoplay.start();
         });
     }
+}
+
+// ===== RECENT PROJECTS NEWS SLIDER ===== //
+let newsRefreshInterval;
+
+function initializeNewsSlider() {
+    const newsTrack = document.getElementById('newsSliderTrack');
+    if (!newsTrack) return;
+    
+    // Fetch projects immediately
+    fetchRecentProjects();
+    
+    // Auto-refresh every 60 seconds
+    newsRefreshInterval = setInterval(fetchRecentProjects, 60000);
+    
+    // Handle visibility change to pause/resume
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            clearInterval(newsRefreshInterval);
+        } else {
+            fetchRecentProjects();
+            newsRefreshInterval = setInterval(fetchRecentProjects, 60000);
+        }
+    });
+}
+
+async function fetchRecentProjects() {
+    const newsTrack = document.getElementById('newsSliderTrack');
+    if (!newsTrack) return;
+    
+    try {
+        const response = await fetch('/recent-projects');
+        const data = await response.json();
+        
+        if (data.success && data.projects && data.projects.length > 0) {
+            renderNewsItems(data.projects);
+        } else {
+            // Show fallback message if no projects
+            newsTrack.innerHTML = `
+                <div class="news-item" style="justify-content: center; opacity: 0.6;">
+                    <div class="news-item-content" style="text-align: center;">
+                        <p class="news-item-desc">No recent projects yet. Check back soon!</p>
+                    </div>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Error fetching recent projects:', error);
+        // Don't clear existing content on error, just log it
+    }
+}
+
+function renderNewsItems(projects) {
+    const newsTrack = document.getElementById('newsSliderTrack');
+    if (!newsTrack) return;
+    
+    // Create HTML for projects (duplicate for infinite scroll)
+    const createNewsItem = (project) => {
+        const imageUrl = project.image 
+            ? `/static/uploads/${project.image}` 
+            : 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=100&h=100&fit=crop';
+        
+        const projectUrl = project.live_link || project.github_link || '#projects';
+        
+        return `
+            <div class="news-item" onclick="window.open('${projectUrl}', '_blank')">
+                <img src="${imageUrl}" alt="${project.title}" class="news-item-image" loading="lazy">
+                <div class="news-item-content">
+                    <h5 class="news-item-title">${escapeHtml(project.title)}</h5>
+                    <p class="news-item-desc">${escapeHtml(project.description)}</p>
+                    <span class="news-item-date">
+                        <i class="fas fa-clock"></i>
+                        ${project.created_at || 'Recently'}
+                    </span>
+                </div>
+            </div>
+        `;
+    };
+    
+    // Generate content - duplicate for seamless infinite scroll
+    const projectsHtml = projects.map(createNewsItem).join('');
+    const duplicatedHtml = projectsHtml + projectsHtml; // Duplicate for infinite loop
+    
+    newsTrack.innerHTML = duplicatedHtml;
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ===== PROJECT FILTERING ===== //
+function filterProjects(category) {
+    // Update active tab
+    const tabs = document.querySelectorAll('.project-tab');
+    tabs.forEach(tab => {
+        if (tab.dataset.category === category) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+    
+    // Filter project cards on the page
+    const projectCards = document.querySelectorAll('.project-card');
+    const projectsGrid = document.getElementById('projectsGrid');
+    
+    // Add loading state
+    projectsGrid.classList.add('loading');
+    
+    projectCards.forEach((card, index) => {
+        const cardCategory = card.dataset.category || 'web_dev';
+        
+        if (category === 'all' || cardCategory === category) {
+            // Show card with animation
+            card.classList.remove('hiding');
+            card.classList.add('showing');
+            card.style.display = '';
+            
+            // Stagger animation
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'scale(1)';
+            }, index * 100);
+        } else {
+            // Hide card with animation
+            card.classList.remove('showing');
+            card.classList.add('hiding');
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.8)';
+            
+            setTimeout(() => {
+                card.style.display = 'none';
+            }, 300);
+        }
+    });
+    
+    // Remove loading state
+    setTimeout(() => {
+        projectsGrid.classList.remove('loading');
+    }, 400);
+    
+    // Check if any projects are visible
+    const visibleCards = Array.from(projectCards).filter(card => 
+        card.style.display !== 'none'
+    );
+    
+    // Show empty state if no projects
+    if (visibleCards.length === 0) {
+        showEmptyState(category);
+    } else {
+        hideEmptyState();
+    }
+}
+
+// ===== EMPTY STATE FUNCTIONS ===== //
+function showEmptyState(category) {
+    const projectsGrid = document.getElementById('projectsGrid');
+    if (!projectsGrid) return;
+    
+    const emptyState = document.createElement('div');
+    emptyState.className = 'projects-grid-empty';
+    emptyState.innerHTML = `
+        <i class="fas fa-folder-open"></i>
+        <h3>No ${getCategoryName(category)} Projects</h3>
+        <p>Check back soon for new ${getCategoryName(category).toLowerCase()} projects!</p>
+    `;
+    
+    projectsGrid.appendChild(emptyState);
+}
+
+function hideEmptyState() {
+    const emptyState = document.querySelector('.projects-grid-empty');
+    if (emptyState) {
+        emptyState.remove();
+    }
+}
+
+function getCategoryName(category) {
+    const names = {
+        'all': 'Projects',
+        'web_dev': 'Web Development',
+        'graphic_design': 'Graphic Design',
+        'video_editing': 'Video Editing'
+    };
+    return names[category] || 'Projects';
+}
+
+// ===== FETCH AND RENDER PROJECTS ===== //
+async function fetchAndRenderProjects(category) {
+    const projectsGrid = document.getElementById('projectsGrid');
+    if (!projectsGrid) return;
+    
+    // If grid already has content from server, don't fetch
+    if (projectsGrid.children.length > 0) return;
+    
+    try {
+        const response = await fetch(`/api/projects?category=${category}&limit=12`);
+        const data = await response.json();
+        
+        if (data.success && data.projects.length > 0) {
+            renderProjectsToGrid(data.projects, projectsGrid);
+        }
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+    }
+}
+
+function renderProjectsToGrid(projects, grid) {
+    if (!grid || projects.length === 0) return;
+    
+    const projectsHtml = projects.map(project => {
+        const categoryBadge = getCategoryBadge(project.category);
+        const linkButton = getProjectLinkButton(project);
+        const techTags = project.technologies ? project.technologies.split(',').slice(0, 4).map(tech => 
+            `<span class="tech-tag">${tech.trim()}</span>`
+        ).join('') : '';
+        
+        return `
+        <div class="col-lg-4 col-md-6 project-item" data-category="${project.category || 'web_dev'}" data-aos="fade-up">
+            <div class="project-card">
+                <div class="project-image">
+                    ${project.image ? 
+                        `<img src="/static/uploads/${project.image}" alt="${escapeHtml(project.title)}">` :
+                        `<img src="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="${escapeHtml(project.title)}">`
+                    }
+                    <div class="project-overlay"></div>
+                    <div class="project-category-badge">
+                        ${categoryBadge}
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">${escapeHtml(project.title)}</h3>
+                    <p class="project-description">
+                        ${project.short_description || 'No description available.'}
+                    </p>
+                    
+                    ${techTags ? `<div class="project-tech">${techTags}</div>` : ''}
+                    
+                    <div class="project-links">
+                        ${linkButton}
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+    
+    if (projects.length > 0) {
+        grid.innerHTML = projectsHtml;
+        if (typeof AOS !== 'undefined') {
+            AOS.refresh();
+        }
+    }
+}
+
+function getCategoryBadge(category) {
+    switch(category) {
+        case 'web_dev':
+            return '<i class="fas fa-code"></i> Web Dev';
+        case 'graphic_design':
+            return '<i class="fas fa-palette"></i> Design';
+        case 'video_editing':
+            return '<i class="fas fa-video"></i> Video';
+        default:
+            return '<i class="fas fa-code"></i> Web Dev';
+    }
+}
+
+function getProjectLinkButton(project) {
+    let buttons = '';
+    
+    if (project.github_link && project.category === 'web_dev') {
+        buttons += `<a href="${project.github_link}" class="project-link project-link-secondary" target="_blank">
+            <i class="fab fa-github"></i> Code
+        </a>`;
+    }
+    
+    if (project.live_link) {
+        let icon = 'fa-external-link-alt';
+        let text = 'Live Demo';
+        
+        if (project.category === 'video_editing') {
+            icon = 'fa-play';
+            text = 'Watch';
+        } else if (project.category === 'graphic_design') {
+            icon = 'fa-eye';
+            text = 'View';
+        }
+        
+        buttons += `<a href="${project.live_link}" class="project-link project-link-primary" target="_blank">
+            <i class="fas ${icon}"></i> ${text}
+        </a>`;
+    }
+    
+    return buttons;
+}
+
+// ===== FLOATING NOTIFICATION SYSTEM ===== //
+function showFloatingNotification(message, type = 'success') {
+    // Remove any existing notifications
+    const existing = document.querySelector('.floating-notification');
+    if (existing) {
+        existing.remove();
+    }
+
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `floating-notification floating-notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            <span>${message}</span>
+        </div>
+        <button class="notification-close" onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+
+    // Add to page
+    document.body.appendChild(notification);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.classList.add('notification-hiding');
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 5000);
+}
+
+// ===== FEEDBACK FORM AJAX SUBMISSION ===== //
+function initializeFeedbackForm() {
+    const feedbackForm = document.getElementById('feedbackForm');
+    if (!feedbackForm) return;
+
+    feedbackForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        
+        // Show loading state
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        submitBtn.disabled = true;
+
+        // Submit via AJAX
+        fetch('/feedback', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success notification
+                showFloatingNotification('Feedback submitted successfully! Thank you for your feedback.', 'success');
+                
+                // Reset form
+                feedbackForm.reset();
+                
+                // Scroll to feedback section
+                setTimeout(() => {
+                    document.getElementById('feedback').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 500);
+                
+            } else {
+                // Show error notification
+                showFloatingNotification(data.message || 'Error submitting feedback. Please try again.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showFloatingNotification('Error submitting feedback. Please try again.', 'error');
+        })
+        .finally(() => {
+            // Reset button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
+    });
 }

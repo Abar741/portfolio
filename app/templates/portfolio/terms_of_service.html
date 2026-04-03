@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Portfolio</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="mainNav" class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.home') }}">
+                <i class="fas fa-code"></i>
+                Portfolio
+            </a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Terms of Service Section -->
+    <section class="section section-light" style="padding-top: 120px; min-height: 100vh;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="content-card" style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                        <h1 class="mb-4" style="font-weight: 700; color: #1f2937;">
+                            <i class="fas fa-file-contract me-3 text-primary"></i>Terms of Service
+                        </h1>
+                        
+                        <p class="text-muted mb-4">Last updated: April 1, 2026</p>
+                        
+                        <div class="content-body" style="line-height: 1.8; color: #4b5563;">
+                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">1. Agreement to Terms</h5>
+                            <p>By accessing and using this portfolio website, you agree to be bound by these Terms of Service. If you disagree with any part of these terms, please do not use this website.</p>
+                            
+                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">2. Use of Website</h5>
+                            <p>This portfolio website is for informational purposes only. You agree to use this website only for lawful purposes and in a way that does not infringe the rights of others or restrict their use of this website.</p>
+                            <p>You may not:</p>
+                            <ul>
+                                <li>Use this website in any way that causes damage to the website or impairs its availability</li>
+                                <li>Attempt to gain unauthorized access to the website or its server</li>
+                                <li>Use this website to transmit malicious software or harmful content</li>
+                                <li>Scrape, crawl, or spider the website content without permission</li>
+                            </ul>
+                            
+                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">3. Intellectual Property</h5>
+                            <p>All content on this website, including but not limited to text, graphics, logos, images, code, and software, is my property or the property of content suppliers and is protected by international copyright laws. You may view, download, and print content for personal use only. Commercial use, reproduction, or distribution without my express written consent is prohibited.</p>
+                            
+                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">4. Projects and Work</h5>
+                            <p>The projects displayed on this portfolio are examples of my work and capabilities. Unless otherwise stated, all projects shown are for demonstration purposes. Client confidentiality is maintained, and sensitive project details are not disclosed.</p>
+                            
+                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">5. Contact and Communication</h5>
+                            <p>When you contact me through this website:</p>
+                            <ul>
+                                <li>You warrant that the information you provide is accurate and truthful</li>
+                                <li>You agree not to send spam, promotional materials, or unsolicited communications</li>
+                                <li>I reserve the right to not respond to inquiries that violate these terms</li>
+                            </ul>
+                            
+                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">6. Disclaimer</h5>
+                            <p>The information on this website is provided on an "as is" basis without any representations or warranties, express or implied. I make no representations about the completeness, accuracy, or reliability of the information on this website.</p>
+                            
+                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">7. Limitation of Liability</h5>
+                            <p>In no event shall I be liable for any damages arising from the use or inability to use this website, even if I have been advised of the possibility of such damages. This includes but is not limited to direct, indirect, incidental, punitive, and consequential damages.</p>
+                            
+                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">8. External Links</h5>
+                            <p>This website may contain links to external websites. I have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party websites.</p>
+                            
+                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">9. Changes to Terms</h5>
+                            <p>I reserve the right to modify these Terms of Service at any time. Changes will be effective immediately upon posting. Your continued use of the website after changes constitutes your acceptance of the new terms.</p>
+                            
+                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">10. Contact Information</h5>
+                            <p>If you have any questions about these Terms of Service, please contact me through the contact form on this website.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" style="background: #1f2937; color: white; padding: 40px 0;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2026 Muhammad Abrar. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="{{ url_for('main.privacy_policy') }}" class="text-light me-3">Privacy Policy</a>
+                    <a href="{{ url_for('main.terms_of_service') }}" class="text-light me-3">Terms of Service</a>
+                    <a href="{{ url_for('main.cookie_policy') }}" class="text-light me-3">Cookie Policy</a>
+                    <a href="{{ url_for('main.sitemap') }}" class="text-light">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
