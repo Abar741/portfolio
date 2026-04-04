@@ -1,0 +1,604 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Navbar Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Enhanced Professional Navbar Management Styles */
+    .navbar-management-wrapper {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 2rem;
+    }
+    
+    .page-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    }
+    
+    .page-header h1 {
+        color: #2d3748;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .page-header h1 i {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .page-header p {
+        color: #718096;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .status-badges {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .status-badge {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    
+    .btn-primary-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-primary-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-outline-gradient {
+        background: transparent;
+        color: #667eea;
+        border: 2px solid #667eea;
+        border-radius: 12px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-gradient:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+    
+    .management-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .management-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .management-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--card-color-1) 0%, var(--card-color-2) 100%);
+    }
+    
+    .management-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .management-card.edit-nav {
+        --card-color-1: #667eea;
+        --card-color-2: #764ba2;
+    }
+    
+    .management-card.brand-settings {
+        --card-color-1: #f093fb;
+        --card-color-2: #f5576c;
+    }
+    
+    .management-card.nav-links {
+        --card-color-1: #4facfe;
+        --card-color-2: #00f2fe;
+    }
+    
+    .card-icon-wrapper {
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card-icon-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, var(--card-color-1) 0%, var(--card-color-2) 100%);
+        opacity: 0.1;
+    }
+    
+    .card-icon-wrapper i {
+        font-size: 2rem;
+        background: linear-gradient(135deg, var(--card-color-1) 0%, var(--card-color-2) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .management-card h3 {
+        color: #2d3748;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    
+    .management-card p {
+        color: #718096;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+    
+    .card-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, var(--card-color-1) 0%, var(--card-color-2) 100%);
+        color: white;
+        text-decoration: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .card-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .quick-actions-section {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .section-title {
+        color: #2d3748;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .section-title i {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .quick-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .quick-action-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .quick-action-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    }
+    
+    .quick-action-btn i {
+        font-size: 1.25rem;
+    }
+    
+    .info-section {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+    
+    .info-column h4 {
+        color: #2d3748;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .info-column h4 i {
+        color: #667eea;
+    }
+    
+    .info-column ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .info-column li {
+        color: #718096;
+        padding: 0.5rem 0;
+        padding-left: 1.5rem;
+        position: relative;
+        line-height: 1.6;
+    }
+    
+    .info-column li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: #48bb78;
+        font-weight: bold;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .navbar-management-wrapper {
+            padding: 1rem;
+        }
+        
+        .page-header {
+            padding: 1.5rem;
+        }
+        
+        .page-header h1 {
+            font-size: 2rem;
+        }
+        
+        .management-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .management-card {
+            padding: 1.5rem;
+        }
+        
+        .quick-actions-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .info-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+        
+        .status-badges {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .page-header h1 {
+            font-size: 1.75rem;
+        }
+        
+        .management-card {
+            padding: 1rem;
+        }
+        
+        .card-icon-wrapper {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .card-icon-wrapper i {
+            font-size: 1.5rem;
+        }
+        
+        .management-card h3 {
+            font-size: 1.25rem;
+        }
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .fade-in-up {
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .management-card {
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+    
+    .management-card:nth-child(1) { animation-delay: 0.1s; }
+    .management-card:nth-child(2) { animation-delay: 0.2s; }
+    .management-card:nth-child(3) { animation-delay: 0.3s; }
+    
+    .quick-actions-section {
+        animation: fadeInUp 0.6s ease-out 0.4s both;
+    }
+    
+    .info-section {
+        animation: fadeInUp 0.6s ease-out 0.5s both;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="navbar-management-wrapper">
+    <!-- Page Header -->
+    <div class="page-header fade-in-up">
+        <h1>
+            <i class="fas fa-bars"></i>
+            Navbar Management
+        </h1>
+        <p>Complete control over your website navigation and brand settings with professional tools</p>
+        
+        <div class="status-badges">
+            <span class="status-badge">
+                <i class="fas fa-circle"></i>
+                Live Active
+            </span>
+            <span class="status-badge">
+                <i class="fas fa-shield-alt"></i>
+                Secure
+            </span>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="{{ url_for('admin.navbar') }}" class="btn-primary-gradient">
+                <i class="fas fa-edit"></i>
+                Open Editor
+            </a>
+            <button type="button" class="btn-outline-gradient" onclick="window.open('{{ url_for('main.home') }}', '_blank')">
+                <i class="fas fa-eye"></i>
+                Preview Site
+            </button>
+        </div>
+    </div>
+
+    <!-- Management Cards -->
+    <div class="management-grid">
+        <div class="management-card edit-nav">
+            <div class="card-icon-wrapper">
+                <i class="fas fa-edit"></i>
+            </div>
+            <h3>Edit Navbar</h3>
+            <p>Complete navbar editor with live preview and full control over all settings. Customize every aspect of your navigation with real-time updates.</p>
+            <a href="{{ url_for('admin.navbar') }}" class="card-action">
+                <i class="fas fa-arrow-right"></i>
+                Open Editor
+            </a>
+        </div>
+        
+        <div class="management-card brand-settings">
+            <div class="card-icon-wrapper">
+                <i class="fas fa-palette"></i>
+            </div>
+            <h3>Brand Settings</h3>
+            <p>Configure logo, alt text, and brand URL for your website navigation. Perfect branding control with professional customization options.</p>
+            <a href="{{ url_for('admin.navbar') }}" class="card-action">
+                <i class="fas fa-arrow-right"></i>
+                Configure Brand
+            </a>
+        </div>
+        
+        <div class="management-card nav-links">
+            <div class="card-icon-wrapper">
+                <i class="fas fa-link"></i>
+            </div>
+            <h3>Navigation Links</h3>
+            <p>Add, edit, or remove navigation menu items and control active states. Full link management with drag-and-drop reordering.</p>
+            <a href="{{ url_for('admin.navbar') }}" class="card-action">
+                <i class="fas fa-arrow-right"></i>
+                Manage Links
+            </a>
+        </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="quick-actions-section">
+        <h2 class="section-title">
+            <i class="fas fa-rocket"></i>
+            Quick Actions
+        </h2>
+        
+        <div class="quick-actions-grid">
+            <a href="{{ url_for('admin.navbar') }}" class="quick-action-btn">
+                <i class="fas fa-edit"></i>
+                <span>Full Editor</span>
+            </a>
+            <button type="button" class="quick-action-btn" onclick="window.open('{{ url_for('main.home') }}', '_blank')">
+                <i class="fas fa-eye"></i>
+                <span>Preview Site</span>
+            </button>
+            <button type="button" class="quick-action-btn" onclick="resetToDefault()">
+                <i class="fas fa-undo"></i>
+                <span>Reset Default</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Information Section -->
+    <div class="info-section">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            About Navbar Management
+        </h2>
+        
+        <div class="info-grid">
+            <div class="info-column">
+                <h4>
+                    <i class="fas fa-cog"></i>
+                    Available Features
+                </h4>
+                <ul>
+                    <li>Live preview with real-time updates</li>
+                    <li>Complete brand control and customization</li>
+                    <li>Dynamic link management system</li>
+                    <li>Active state control for navigation</li>
+                    <li>Reset to default settings</li>
+                    <li>Professional interface design</li>
+                </ul>
+            </div>
+            
+            <div class="info-column">
+                <h4>
+                    <i class="fas fa-lightbulb"></i>
+                    Pro Tips
+                </h4>
+                <ul>
+                    <li>Use live preview to see changes instantly</li>
+                    <li>Keep navigation links concise and clear</li>
+                    <li>Set appropriate alt text for accessibility</li>
+                    <li>Test all links after making changes</li>
+                    <li>Use reset function if needed</li>
+                    <li>Save changes frequently</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function resetToDefault() {
+    if (confirm('Are you sure you want to reset navbar to default settings? This will remove all your customizations.')) {
+        window.location.href = '{{ url_for("admin.navbar") }}?reset=true';
+    }
+}
+
+// Add smooth scroll behavior
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+</script>
+{% endblock %}

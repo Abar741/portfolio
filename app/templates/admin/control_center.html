@@ -174,6 +174,67 @@
             transform: translateX(0);
         }
         
+        /* Sidebar Section Styles */
+        .sidebar-section {
+            margin: 10px 0;
+        }
+        
+        .sidebar-section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .sidebar-section-header:hover {
+            color: white;
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .sidebar-section-header .section-arrow {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+            font-size: 12px;
+        }
+        
+        .sidebar-section-header.active .section-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .sidebar-submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            margin-left: 15px;
+        }
+        
+        .sidebar-submenu.active {
+            max-height: 500px;
+        }
+        
+        .sidebar-submenu .sidebar-menu-item {
+            padding: 8px 20px;
+            margin: 2px 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .sidebar-submenu .sidebar-menu-item:hover {
+            color: white;
+            background: rgba(99, 102, 241, 0.05);
+        }
+        
+        .sidebar-submenu .sidebar-menu-item.active {
+            color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
         /* Main Content */
         .main-content {
             margin-left: 280px;
@@ -546,6 +607,34 @@
                 <i class="fas fa-cogs"></i>
                 <span>Control Center</span>
             </a>
+            
+            <!-- Navbar Management Section -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-header" onclick="toggleSection('navbar-section')">
+                    <i class="fas fa-bars"></i>
+                    <span>Navbar Management</span>
+                    <i class="fas fa-chevron-down section-arrow"></i>
+                </div>
+                <div class="sidebar-submenu" id="navbar-section">
+                    <a href="{{ url_for('admin.navbar_management') }}" class="sidebar-menu-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Overview</span>
+                    </a>
+                    <a href="{{ url_for('admin.navbar') }}" class="sidebar-menu-item">
+                        <i class="fas fa-edit"></i>
+                        <span>Edit Navbar</span>
+                    </a>
+                    <a href="{{ url_for('admin.navbar') }}" class="sidebar-menu-item">
+                        <i class="fas fa-palette"></i>
+                        <span>Brand Settings</span>
+                    </a>
+                    <a href="{{ url_for('admin.navbar') }}" class="sidebar-menu-item">
+                        <i class="fas fa-link"></i>
+                        <span>Navigation Links</span>
+                    </a>
+                </div>
+            </div>
+            
             <a href="{{ url_for('admin.hero_editor') }}" class="sidebar-menu-item">
                 <i class="fas fa-user"></i>
                 <span>Hero Section</span>
@@ -1105,6 +1194,36 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
             updateColorPreview();
+        });
+        
+        // Toggle Sidebar Section
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const header = section.previousElementSibling;
+            
+            if (section.classList.contains('active')) {
+                section.classList.remove('active');
+                header.classList.remove('active');
+            } else {
+                // Close other sections
+                document.querySelectorAll('.sidebar-submenu.active').forEach(otherSection => {
+                    otherSection.classList.remove('active');
+                    otherSection.previousElementSibling.classList.remove('active');
+                });
+                
+                // Open this section
+                section.classList.add('active');
+                header.classList.add('active');
+            }
+        }
+        
+        // Auto-open navbar section on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbarSection = document.getElementById('navbar-section');
+            if (navbarSection) {
+                navbarSection.classList.add('active');
+                navbarSection.previousElementSibling.classList.add('active');
+            }
         });
     </script>
 </body>

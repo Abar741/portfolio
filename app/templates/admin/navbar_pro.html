@@ -1,0 +1,631 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Navbar Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Enhanced Navbar Page Styles */
+    .navbar-header {
+        background: linear-gradient(135deg, #6f42c1 0%, #8b5cf6 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px 15px 0 0;
+        margin-bottom: 0;
+    }
+    
+    .navbar-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .navbar-header p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+    
+    .navbar-container {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 0;
+        margin-bottom: 25px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .navbar-toolbar {
+        background: #f8f9fa;
+        padding: 20px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .navbar-content {
+        padding: 30px;
+    }
+    
+    .navbar-preview {
+        background: #1a1a1a;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 20px 0;
+        border: 2px solid #333;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .navbar-preview .navbar {
+        background: rgba(15, 23, 42, 0.95) !important;
+        backdrop-filter: blur(20px);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .navbar-preview .navbar-brand {
+        color: white !important;
+        font-weight: 800;
+        font-size: 1.5rem;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .navbar-preview .navbar-nav .nav-link {
+        color: rgba(255, 255, 255, 0.8) !important;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        margin: 0 2px;
+    }
+    
+    .navbar-preview .navbar-nav .nav-link:hover,
+    .navbar-preview .navbar-nav .nav-link.active {
+        color: white !important;
+        background: rgba(99, 102, 241, 0.2);
+    }
+    
+    .navbar-preview .navbar-logo {
+        height: 40px;
+        width: auto;
+        max-width: 160px;
+        filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.6));
+        border-radius: 4px;
+    }
+    
+    .navbar-section {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .navbar-section h5 {
+        color: #333;
+        margin-bottom: 20px;
+        font-weight: 600;
+        border-bottom: 2px solid #6f42c1;
+        padding-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .navbar-section h5 i {
+        color: #6f42c1;
+    }
+    
+    .form-control:focus {
+        border-color: #6f42c1;
+        box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.1);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #6f42c1 0%, #8b5cf6 100%);
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(111, 66, 193, 0.3);
+    }
+    
+    .btn-outline-primary {
+        border: 2px solid #6f42c1;
+        color: #6f42c1;
+        background: transparent;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, #6f42c1 0%, #8b5cf6 100%);
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    .link-item {
+        background: white;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 15px;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    .link-item:hover {
+        border-color: #6f42c1;
+        box-shadow: 0 4px 15px rgba(111, 66, 193, 0.1);
+        transform: translateY(-2px);
+    }
+    
+    .link-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .link-number {
+        background: linear-gradient(135deg, #6f42c1 0%, #8b5cf6 100%);
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(111, 66, 193, 0.3);
+    }
+    
+    .remove-link {
+        background: #ef4444;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    .remove-link:hover {
+        background: #dc2626;
+        transform: translateY(-1px);
+    }
+    
+    .add-link-btn {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin-top: 15px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .add-link-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+    }
+    
+    .alert-success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border: none;
+        color: white;
+        border-radius: 10px;
+        padding: 15px 20px;
+    }
+    
+    .alert-error {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        border: none;
+        color: white;
+        border-radius: 10px;
+        padding: 15px 20px;
+    }
+    
+    .status-badge {
+        background: linear-gradient(135deg, #6f42c1 0%, #8b5cf6 100%);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .navbar-header {
+            padding: 1.5rem;
+        }
+        
+        .navbar-header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .navbar-header p {
+            font-size: 1rem;
+        }
+        
+        .navbar-content {
+            padding: 20px;
+        }
+        
+        .navbar-section {
+            padding: 20px;
+        }
+        
+        .link-item {
+            padding: 15px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h3 mb-0">
+                    <i class="fas fa-bars me-2"></i>Navbar Management
+                </h2>
+                <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'success' if category == 'success' else 'error' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Navbar Header -->
+    <div class="navbar-header fade-in">
+        <div class="d-sm-flex align-items-center justify-content-between">
+            <div>
+                <h1>
+                    <i class="fas fa-bars me-2"></i>Navbar Management
+                </h1>
+                <p class="mb-0">Configure your website navigation menu and brand settings</p>
+            </div>
+            <div class="d-flex gap-2">
+                <span class="status-badge">
+                    <i class="fas fa-circle me-1"></i>Live Active
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar Container -->
+    <div class="navbar-container fade-in">
+        <!-- Toolbar -->
+        <div class="navbar-toolbar">
+            <div class="d-flex align-items-center gap-3">
+                <span class="badge bg-primary rounded-pill px-3 py-2">
+                    <i class="fas fa-bars me-2"></i>Navigation Editor
+                </span>
+                <span class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Changes apply instantly to your website
+                </span>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-outline-primary" onclick="resetToDefault()">
+                    <i class="fas fa-undo me-2"></i>Reset to Default
+                </button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="navbar-content">
+            <form method="POST" action="{{ url_for('admin.update_navbar') }}">
+                <!-- Live Preview Section -->
+                <div class="navbar-section">
+                    <h5>
+                        <i class="fas fa-eye me-2"></i>Live Preview
+                    </h5>
+                    
+                    <div class="navbar-preview">
+                        <nav class="navbar navbar-expand-lg">
+                            <div class="container-fluid">
+                                <a class="navbar-brand" href="#" id="preview-brand">
+                                    <img src="{{ navbar_data.brand.logo }}" alt="{{ navbar_data.brand.alt }}" class="navbar-logo">
+                                </a>
+                                <div class="navbar-nav ms-auto" id="preview-links">
+                                    <!-- Links will be updated by JavaScript -->
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <div class="alert alert-info mt-3">
+                        <h6><i class="fas fa-info-circle me-2"></i>Preview Notes</h6>
+                        <ul class="mb-0">
+                            <li>Changes are reflected in real-time as you type</li>
+                            <li>Active links are highlighted with a blue background</li>
+                            <li>Click "Save Changes" to apply updates to your live site</li>
+                            <li>The preview shows exactly how your navbar will appear</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Brand Settings Section -->
+                <div class="navbar-section">
+                    <h5>
+                        <i class="fas fa-brand me-2"></i>Brand Settings
+                    </h5>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="brand_logo" class="form-label">Logo URL</label>
+                            <input type="text" class="form-control" id="brand_logo" name="brand_logo" 
+                                   value="{{ navbar_data.brand.logo }}" placeholder="/static/images/logo.png" onchange="updatePreview()">
+                            <div class="form-text">Enter the path to your logo image</div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="brand_alt" class="form-label">Alt Text</label>
+                            <input type="text" class="form-control" id="brand_alt" name="brand_alt" 
+                                   value="{{ navbar_data.brand.alt }}" placeholder="Graphic Nest" onchange="updatePreview()">
+                            <div class="form-text">Alt text for accessibility</div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="brand_url" class="form-label">Brand URL</label>
+                            <input type="text" class="form-control" id="brand_url" name="brand_url" 
+                                   value="{{ navbar_data.brand.url }}" placeholder="#hero" onchange="updatePreview()">
+                            <div class="form-text">Where the logo links to</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Links Section -->
+                <div class="navbar-section">
+                    <h5>
+                        <i class="fas fa-link me-2"></i>Navigation Links
+                    </h5>
+                    
+                    <div id="links-container">
+                        {% for link in navbar_data.links %}
+                        <div class="link-item" data-index="{{ loop.index0 }}">
+                            <div class="link-header">
+                                <span class="link-number">{{ loop.index }}</span>
+                                <button type="button" class="remove-link" onclick="removeLink(this)">
+                                    <i class="fas fa-times me-1"></i>Remove
+                                </button>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Link Text</label>
+                                    <input type="text" class="form-control" name="link_text" 
+                                           value="{{ link.text }}" placeholder="Link Text" onchange="updatePreview()">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Link URL</label>
+                                    <input type="text" class="form-control" name="link_url" 
+                                           value="{{ link.url }}" placeholder="#section" onchange="updatePreview()">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check mt-4">
+                                        <input class="form-check-input" type="checkbox" name="link_active" 
+                                               value="on" {% if link.active %}checked{% endif %} onchange="updatePreview()">
+                                        <label class="form-check-label">Active</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <button type="button" class="add-link-btn" onclick="addNewLink()">
+                        <i class="fas fa-plus me-2"></i>Add New Link
+                    </button>
+                </div>
+
+                <!-- Save Section -->
+                <div class="navbar-section">
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+let linkCounter = {{ navbar_data.links|length }};
+
+function updatePreview() {
+    // Update brand preview
+    const logoUrl = document.getElementById('brand_logo').value;
+    const altText = document.getElementById('brand_alt').value;
+    const brandUrl = document.getElementById('brand_url').value;
+    
+    const brandElement = document.getElementById('preview-brand');
+    brandElement.href = brandUrl;
+    brandElement.innerHTML = `<img src="${logoUrl}" alt="${altText}" class="navbar-logo">`;
+    
+    // Update links preview
+    const linksContainer = document.getElementById('preview-links');
+    linksContainer.innerHTML = '';
+    
+    const linkTexts = document.getElementsByName('link_text');
+    const linkUrls = document.getElementsByName('link_url');
+    const linkActives = document.getElementsByName('link_active');
+    
+    for (let i = 0; i < linkTexts.length; i++) {
+        if (linkTexts[i].value.trim()) {
+            const linkElement = document.createElement('a');
+            linkElement.className = 'nav-link';
+            if (linkActives[i].checked) {
+                linkElement.classList.add('active');
+            }
+            linkElement.href = linkUrls[i].value;
+            linkElement.textContent = linkTexts[i].value;
+            linksContainer.appendChild(linkElement);
+        }
+    }
+    
+    // Update link numbers
+    updateLinkNumbers();
+}
+
+function addNewLink() {
+    linkCounter++;
+    const linksContainer = document.getElementById('links-container');
+    
+    const newLink = document.createElement('div');
+    newLink.className = 'link-item fade-in';
+    newLink.dataset.index = linkCounter - 1;
+    newLink.innerHTML = `
+        <div class="link-header">
+            <span class="link-number">${linkCounter}</span>
+            <button type="button" class="remove-link" onclick="removeLink(this)">
+                <i class="fas fa-times me-1"></i>Remove
+            </button>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Link Text</label>
+                <input type="text" class="form-control" name="link_text" 
+                       placeholder="Link Text" onchange="updatePreview()">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Link URL</label>
+                <input type="text" class="form-control" name="link_url" 
+                       placeholder="#section" onchange="updatePreview()">
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" name="link_active" 
+                           value="on" onchange="updatePreview()">
+                    <label class="form-check-label">Active</label>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    linksContainer.appendChild(newLink);
+    updatePreview();
+}
+
+function removeLink(button) {
+    const linkItem = button.closest('.link-item');
+    linkItem.style.opacity = '0';
+    linkItem.style.transform = 'translateX(-20px)';
+    setTimeout(() => {
+        linkItem.remove();
+        updatePreview();
+    }, 300);
+}
+
+function updateLinkNumbers() {
+    const linkItems = document.querySelectorAll('.link-item');
+    linkItems.forEach((item, index) => {
+        const numberElement = item.querySelector('.link-number');
+        if (numberElement) {
+            numberElement.textContent = index + 1;
+        }
+    });
+}
+
+function resetToDefault() {
+    if (confirm('Are you sure you want to reset to default navbar settings? This will remove all your customizations.')) {
+        // Reset form to default values
+        document.getElementById('brand_logo').value = '/static/images/logo.png';
+        document.getElementById('brand_alt').value = 'Graphic Nest';
+        document.getElementById('brand_url').value = '#hero';
+        
+        // Clear and reset links
+        const linksContainer = document.getElementById('links-container');
+        linksContainer.innerHTML = `
+            <div class="link-item" data-index="0">
+                <div class="link-header">
+                    <span class="link-number">1</span>
+                    <button type="button" class="remove-link" onclick="removeLink(this)">
+                        <i class="fas fa-times me-1"></i>Remove
+                    </button>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Link Text</label>
+                        <input type="text" class="form-control" name="link_text" 
+                               value="Home" placeholder="Link Text" onchange="updatePreview()">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Link URL</label>
+                        <input type="text" class="form-control" name="link_url" 
+                               value="#hero" placeholder="#section" onchange="updatePreview()">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="form-check mt-4">
+                            <input class="form-check-input" type="checkbox" name="link_active" 
+                                   value="on" checked onchange="updatePreview()">
+                            <label class="form-check-label">Active</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        linkCounter = 1;
+        updatePreview();
+    }
+}
+
+// Initialize preview on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updatePreview();
+    
+    // Add fade-in animation to sections
+    const sections = document.querySelectorAll('.navbar-section');
+    sections.forEach((section, index) => {
+        setTimeout(() => {
+            section.classList.add('fade-in');
+        }, index * 100);
+    });
+});
+</script>
+{% endblock %}

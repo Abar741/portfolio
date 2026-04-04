@@ -26,6 +26,51 @@ def get_unread_feedback_count():
         Message.subject.like("%Feedback Submission%")
     ).count()
 
+def get_navbar_data():
+    """Get navbar data from JSON file"""
+    navbar_data_file = os.path.join(current_app.root_path, 'static', 'data', 'navbar_data.json')
+    
+    if os.path.exists(navbar_data_file):
+        try:
+            with open(navbar_data_file, 'r') as f:
+                return json.load(f)
+        except Exception as e:
+            current_app.logger.error(f"Error loading navbar data: {str(e)}")
+    
+    # Return default data if file doesn't exist or error occurred
+    return {
+        "brand": {
+            "logo": "/static/images/logo.png",
+            "alt": "Graphic Nest",
+            "url": "#hero"
+        },
+        "links": [
+            {"text": "Home", "url": "#hero", "active": True},
+            {"text": "About", "url": "#about", "active": False},
+            {"text": "Services", "url": "#services", "active": False},
+            {"text": "Projects", "url": "#projects", "active": False},
+            {"text": "Skills", "url": "#skills", "active": False},
+            {"text": "Testimonials", "url": "#testimonials", "active": False},
+            {"text": "Feedback", "url": "#feedback", "active": False},
+            {"text": "Contact", "url": "#contact", "active": False}
+        ]
+    }
+
+def save_navbar_data(navbar_data):
+    """Save navbar data to JSON file"""
+    navbar_data_file = os.path.join(current_app.root_path, 'static', 'data', 'navbar_data.json')
+    
+    try:
+        # Ensure directory exists
+        os.makedirs(os.path.dirname(navbar_data_file), exist_ok=True)
+        
+        with open(navbar_data_file, 'w') as f:
+            json.dump(navbar_data, f, indent=2)
+        return True
+    except Exception as e:
+        current_app.logger.error(f"Error saving navbar data: {str(e)}")
+        return False
+
 
 # CONTROL CENTER
 @admin.route("/control-center")
@@ -630,9 +675,79 @@ def delete_feedback(id):
     
     db.session.delete(message)
     db.session.commit()
-    
+
     flash("Feedback Deleted Successfully!", "success")
     return redirect(url_for("admin.feedback"))
+
+
+# NAVBAR MANAGEMENT
+@admin.route("/navbar")
+@login_required
+def navbar():
+    """Navbar management page"""
+    navbar_data = get_navbar_data()
+    unread_count = get_unread_messages_count()
+    return render_template("admin/navbar_pro.html", 
+                         navbar_data=navbar_data, 
+                         unread_count=unread_count, 
+                         feedback_unread_count=get_unread_feedback_count())
+
+@admin.route("/navbar-management")
+@login_required
+def navbar_management():
+    """Navbar management overview page"""
+    navbar_data = get_navbar_data()
+    unread_count = get_unread_messages_count()
+    return render_template("admin/navbar_management.html", 
+                         navbar_data=navbar_data, 
+                         unread_count=unread_count, 
+                         feedback_unread_count=get_unread_feedback_count())
+
+@admin.route("/navbar/update", methods=["POST"])
+@login_required
+def update_navbar():
+    """Update navbar data"""
+    try:
+        # Get form data
+        brand_logo = request.form.get("brand_logo")
+        brand_alt = request.form.get("brand_alt")
+        brand_url = request.form.get("brand_url")
+        
+        # Get links data
+        link_texts = request.form.getlist("link_text")
+        link_urls = request.form.getlist("link_url")
+        link_actives = request.form.getlist("link_active")
+        
+        # Build navbar data structure
+        navbar_data = {
+            "brand": {
+                "logo": brand_logo,
+                "alt": brand_alt,
+                "url": brand_url
+            },
+            "links": []
+        }
+        
+        # Build links array
+        for i in range(len(link_texts)):
+            if link_texts[i].strip():  # Only add if text is not empty
+                navbar_data["links"].append({
+                    "text": link_texts[i],
+                    "url": link_urls[i],
+                    "active": link_actives[i] == "on"
+                })
+        
+        # Save navbar data
+        if save_navbar_data(navbar_data):
+            flash("Navbar updated successfully! ✅", "success")
+        else:
+            flash("Error saving navbar data!", "error")
+            
+    except Exception as e:
+        current_app.logger.error(f"Error updating navbar: {str(e)}")
+        flash("Error updating navbar!", "error")
+    
+    return redirect(url_for("admin.navbar"))
 
 
 def parse_feedback_message(message_text):

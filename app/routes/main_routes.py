@@ -13,6 +13,36 @@ import os
 import json
 import time
 
+def get_navbar_data():
+    """Get navbar data from JSON file or return default data"""
+    navbar_data_file = os.path.join(current_app.root_path, 'static', 'data', 'navbar_data.json')
+    
+    if os.path.exists(navbar_data_file):
+        try:
+            with open(navbar_data_file, 'r') as f:
+                return json.load(f)
+        except Exception as e:
+            current_app.logger.error(f"Error loading navbar data: {str(e)}")
+    
+    # Return default data if file doesn't exist or error occurred
+    return {
+        "brand": {
+            "logo": "/static/images/logo.png",
+            "alt": "Graphic Nest",
+            "url": "#hero"
+        },
+        "links": [
+            {"text": "Home", "url": "#hero", "active": True},
+            {"text": "About", "url": "#about", "active": False},
+            {"text": "Services", "url": "#services", "active": False},
+            {"text": "Projects", "url": "#projects", "active": False},
+            {"text": "Skills", "url": "#skills", "active": False},
+            {"text": "Testimonials", "url": "#testimonials", "active": False},
+            {"text": "Feedback", "url": "#feedback", "active": False},
+            {"text": "Contact", "url": "#contact", "active": False}
+        ]
+    }
+
 def get_hero_data():
     """Get hero data from JSON file or return default data"""
     hero_data_file = os.path.join(current_app.root_path, 'static', 'data', 'hero_data.json')
@@ -72,8 +102,9 @@ def home():
         featured_projects = ProjectService.get_featured_projects(6)
         skills = SkillService.get_all_skills()
         
-        # Get hero data
+        # Get dynamic data
         hero_data = get_hero_data()
+        navbar_data = get_navbar_data()
         
         # Get active testimonials ordered by display_order
         from app.models.testimonial import Testimonial
@@ -89,6 +120,7 @@ def home():
                              featured_projects=featured_projects,
                              skills=skills,
                              hero_data=hero_data,
+                             navbar_data=navbar_data,
                              testimonials=testimonials)
     
     except DatabaseError as e:
@@ -99,6 +131,7 @@ def home():
                              featured_projects=[], 
                              skills=[],
                              hero_data=get_hero_data(),
+                             navbar_data=get_navbar_data(),
                              testimonials=[])
     except Exception as e:
         current_app.logger.error(f"Unexpected error on home page: {str(e)}")
@@ -108,6 +141,7 @@ def home():
                              featured_projects=[], 
                              skills=[],
                              hero_data=get_hero_data(),
+                             navbar_data=get_navbar_data(),
                              testimonials=[])
 
 
@@ -196,12 +230,14 @@ def portfolio():
         
         return render_template("portfolio/projects.html",
                              projects=projects,
-                             hero_data=get_hero_data())
+                             hero_data=get_hero_data(),
+                             navbar_data=get_navbar_data())
     except Exception as e:
         current_app.logger.error(f"Error fetching projects for portfolio page: {str(e)}")
         return render_template("portfolio/projects.html",
                              projects=[],
-                             hero_data=get_hero_data())
+                             hero_data=get_hero_data(),
+                             navbar_data=get_navbar_data())
 
 
 # API: RECENT PROJECTS FOR NEWS SLIDER

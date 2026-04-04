@@ -539,7 +539,7 @@ p {
 
 .section-subtitle {
     text-align: center;
-    color: var(--light-color);
+    color: var(--text-secondary);
     margin-bottom: var(--spacing-xl);
 }
 
