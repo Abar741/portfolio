@@ -30,13 +30,13 @@
     {
       "icon": "fas fa-envelope",
       "text": "Get In Touch",
-      "url": "#contact",
+      "url": "#feedback-contact-section",
       "style": "secondary"
     }
   ],
   "stats": [
     {
-      "value": "50+",
+      "value": "9",
       "label": "Projects"
     },
     {

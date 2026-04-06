@@ -522,7 +522,7 @@
                                     <input type="text" class="form-control" placeholder="Text" name="button_text[]" value="Get In Touch">
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" placeholder="URL" name="button_url[]" value="#contact">
+                                    <input type="text" class="form-control" placeholder="URL" name="button_url[]" value="#feedback-contact-section">
                                 </div>
                                 <div class="col-md-2">
                                     <select class="form-select" name="button_style[]">
@@ -892,14 +892,7 @@
         URL.revokeObjectURL(url);
     }
 
-    // Form submission
-    document.getElementById('heroForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        loadPreview();
-        
-        // Submit the form normally
-        this.submit();
-    });
+    // Form submission - Let it submit normally without JavaScript interference
 
     // Add fade out animation
     const style = document.createElement('style');

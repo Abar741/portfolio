@@ -491,10 +491,14 @@ def hero_editor():
             os.makedirs(data_dir)
             
         try:
+            current_app.logger.info(f"Saving hero data to: {hero_data_file}")
+            current_app.logger.info(f"Hero data being saved: {hero_data}")
             with open(hero_data_file, 'w') as f:
                 json.dump(hero_data, f, indent=2)
+            current_app.logger.info("Hero data saved successfully")
             flash("Hero section updated successfully! ✅", "success")
         except Exception as e:
+            current_app.logger.error(f"Error saving hero data: {str(e)}")
             flash(f"Error saving hero data: {str(e)}", "error")
         
         return redirect(url_for("admin.hero_editor"))

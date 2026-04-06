@@ -47,7 +47,19 @@ def get_navbar_data():
 def get_hero_data():
     """Get hero data from JSON file or return default data with dynamic stats"""
     hero_data_file = os.path.join(current_app.root_path, 'static', 'data', 'hero_data.json')
-    base_data = {
+    
+    # Load custom data from file if exists
+    if os.path.exists(hero_data_file):
+        try:
+            with open(hero_data_file, 'r') as f:
+                custom_data = json.load(f)
+                # Return custom data if file exists and is valid
+                return custom_data
+        except Exception as e:
+            current_app.logger.error(f"Error loading hero data: {str(e)}")
+    
+    # Return default data only if file doesn't exist
+    return {
         "name": "Muhammad Abrar",
         "subtitle": "I transform creative ideas into exceptional digital experiences through innovative web development, stunning graphic design, and compelling video editing. Let's create something extraordinary together!",
         "profile_image": None,
@@ -60,56 +72,16 @@ def get_hero_data():
             {"icon": "fas fa-palette", "title": "Graphic Designer"},
             {"icon": "fas fa-video", "title": "Video Editor"}
         ],
-        "buttons": [
-            {"icon": "fas fa-briefcase", "text": "View Portfolio", "url": "#projects", "style": "primary"},
-            {"icon": "fas fa-envelope", "text": "Get In Touch", "url": "#contact", "style": "secondary"}
-        ]
-    }
-    
-    # Load custom data from file if exists
-    if os.path.exists(hero_data_file):
-        try:
-            with open(hero_data_file, 'r') as f:
-                custom_data = json.load(f)
-                # Merge with base data, preserving custom fields
-                base_data.update(custom_data)
-        except Exception as e:
-            current_app.logger.error(f"Error loading hero data: {str(e)}")
-    
-    # Calculate dynamic stats
-    try:
-        # Get projects count from database
-        from app.models.project import Project
-        projects_count = Project.query.filter_by(status='published').count()
-        
-        # Get testimonials stats for happy clients
-        from app.models.testimonials_stats import TestimonialsStats
-        testimonials_stats = TestimonialsStats.get_active_stats()
-        happy_clients = testimonials_stats.happy_clients if testimonials_stats else 0
-        
-        # Dynamic stats
-        dynamic_stats = [
-            {"value": f"{projects_count}+", "label": "Projects"},
+        "stats": [
+            {"value": "50+", "label": "Projects"},
             {"value": "5+", "label": "Years"},
             {"value": "100%", "label": "Satisfaction"}
+        ],
+        "buttons": [
+            {"icon": "fas fa-briefcase", "text": "View Portfolio", "url": "#projects", "style": "primary"},
+            {"icon": "fas fa-envelope", "text": "Get In Touch", "url": "#feedback-contact-section", "style": "secondary"}
         ]
-        
-        # Override the stats with dynamic data
-        base_data["stats"] = dynamic_stats
-        
-        current_app.logger.info(f"Dynamic hero stats: Projects={projects_count}, Happy Clients={happy_clients}")
-        
-    except Exception as e:
-        current_app.logger.error(f"Error calculating dynamic stats: {str(e)}")
-        # Fallback to default stats if there's an error
-        if "stats" not in base_data:
-            base_data["stats"] = [
-                {"value": "50+", "label": "Projects"},
-                {"value": "5+", "label": "Years"},
-                {"value": "100%", "label": "Satisfaction"}
-            ]
-    
-    return base_data
+    }
 
 # HOME PAGE
 @main.route("/")
