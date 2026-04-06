@@ -1845,69 +1845,10 @@
 
 {% block scripts %}
 <script>
-// Mobile dropdown functionality
+// Let Bootstrap handle all dropdowns natively - no custom interference
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle mobile dropdown toggle
-    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-    
-    dropdownToggles.forEach(function(toggle) {
-        toggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const dropdown = this.nextElementSibling;
-            const isShowing = dropdown.classList.contains('show');
-            
-            // Close all other dropdowns
-            document.querySelectorAll('.dropdown-menu-enhanced.show').forEach(function(menu) {
-                if (menu !== dropdown) {
-                    menu.classList.remove('show');
-                }
-            });
-            
-            // Toggle current dropdown
-            if (isShowing) {
-                dropdown.classList.remove('show');
-            } else {
-                dropdown.classList.add('show');
-            }
-        });
-    });
-    
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.dropdown')) {
-            document.querySelectorAll('.dropdown-menu-enhanced.show').forEach(function(menu) {
-                menu.classList.remove('show');
-            });
-        }
-    });
-    
-    // Close dropdown when clicking close button
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('dropdown-close') || e.target.parentElement.classList.contains('dropdown-close')) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.querySelectorAll('.dropdown-menu-enhanced.show').forEach(function(menu) {
-                menu.classList.remove('show');
-            });
-        }
-    });
-    
-    // Handle dropdown item clicks
-    document.querySelectorAll('.dropdown-item-enhanced').forEach(function(item) {
-        item.addEventListener('click', function(e) {
-            // Close dropdown after clicking an item
-            document.querySelectorAll('.dropdown-menu-enhanced.show').forEach(function(menu) {
-                menu.classList.remove('show');
-            });
-        });
-    });
-    
-    // Add close button class to dropdown close elements
-    document.querySelectorAll('.dropdown-menu-enhanced::after').forEach(function(element) {
-        element.classList.add('dropdown-close');
-    });
+    // Initialize Bootstrap dropdowns - let Bootstrap handle everything
+    console.log('Bootstrap dropdowns initialized');
 });
 
 // Delete project function

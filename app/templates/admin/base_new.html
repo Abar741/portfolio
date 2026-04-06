@@ -14,14 +14,37 @@
     
     <style>
         :root {
-            --primary-color: #4e73df;
-            --secondary-color: #858796;
-            --success-color: #1cc88a;
-            --info-color: #36b9cc;
-            --warning-color: #f6c23e;
-            --danger-color: #e74a3b;
-            --dark-color: #5a5c69;
-            --light-color: #f8f9fc;
+            /* Modern Color Palette */
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --info-color: #06b6d4;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            
+            /* Enhanced Design System */
+            --sidebar-bg: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            --sidebar-hover: rgba(99, 102, 241, 0.1);
+            --sidebar-active: rgba(99, 102, 241, 0.15);
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            --card-shadow-hover: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         * {
@@ -32,8 +55,11 @@
         
         body {
             font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--light-color);
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             min-height: 100vh;
+            color: var(--gray-700);
+            font-size: 14px;
+            line-height: 1.6;
         }
         
         .wrapper {
@@ -42,82 +68,109 @@
             min-height: 100vh;
         }
         
-        /* Sidebar Styles */
+        /* Enhanced Sidebar Styles */
         .sidebar {
-            width: 250px;
+            width: 280px;
             min-height: 100vh;
-            background: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
-            transition: all 0.3s;
+            background: var(--sidebar-bg);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
             z-index: 100;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+        
+        .sidebar.collapsed {
+            width: 80px;
+        }
+        
+        .sidebar.collapsed .sidebar-brand span,
+        .sidebar.collapsed .sidebar-heading,
+        .sidebar.collapsed .nav-link span {
+            display: none;
         }
         
         .sidebar-brand {
-            height: 4.375rem;
+            height: 70px;
             text-decoration: none;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             font-size: 1.25rem;
             font-weight: 700;
             color: white;
-            padding: 1rem;
+            padding: 1.5rem 1.5rem 1.5rem 2rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            position: relative;
         }
         
         .sidebar-brand:hover {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--primary-light);
+            background-color: var(--sidebar-hover);
+        }
+        
+        .sidebar-brand i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            background: var(--primary-color);
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
         }
         
         .sidebar-divider {
             height: 0;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
             overflow: hidden;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .sidebar-heading {
-            text-align: center;
-            padding: 0 1rem;
-            font-weight: 800;
-            font-size: 0.85rem;
+            padding: 0 1.5rem 0.5rem 2rem;
+            font-weight: 600;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 0.1rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.05rem;
             margin-top: 1rem;
             margin-bottom: 0.5rem;
         }
         
         .nav-item {
             position: relative;
+            margin: 0.25rem 0;
         }
         
         .nav-link {
-            display: block;
-            padding: 0.75rem 1rem;
-            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1.5rem 0.875rem 2rem;
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            transition: all 0.3s;
+            transition: var(--transition);
             border-left: 3px solid transparent;
+            position: relative;
+            font-weight: 500;
         }
         
         .nav-link:hover {
             color: white;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: var(--sidebar-hover);
             border-left-color: var(--primary-color);
         }
         
         .nav-link.active {
             color: white;
-            background-color: rgba(255, 255, 255, 0.15);
-            border-left-color: white;
+            background-color: var(--sidebar-active);
+            border-left-color: var(--primary-color);
         }
         
         .nav-link i {
-            margin-right: 0.5rem;
+            margin-right: 1rem;
             width: 20px;
             text-align: center;
+            font-size: 1rem;
         }
         
         /* Main Content */
@@ -127,25 +180,37 @@
             flex-direction: column;
             min-height: 100vh;
             overflow-x: hidden;
+            margin-left: 280px;
+            transition: var(--transition);
+        }
+        
+        .content-wrapper.sidebar-collapsed {
+            margin-left: 80px;
         }
         
         .content {
             flex: 1;
             padding: 2rem;
-            background: var(--light-color);
+            background: transparent;
             overflow-x: hidden;
             width: 100%;
+            min-height: calc(100vh - 70px);
         }
         
-        /* Top Bar */
+        /* Enhanced Top Bar */
         .topbar {
-            height: 4.375rem;
-            background-color: white;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 1.5rem;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+            border-bottom: 1px solid var(--gray-200);
         }
         
         .topbar-brand {
@@ -156,42 +221,196 @@
             width: 0;
             height: 2.1875rem;
             margin: 0 1rem;
-            border-left: 1px solid var(--secondary-color);
+            border-left: 1px solid var(--gray-300);
         }
         
-        /* Hamburger Menu Button */
+        /* Modern Card Styles */
+        .admin-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+        
+        .admin-card:hover {
+            box-shadow: var(--card-shadow-hover);
+            transform: translateY(-2px);
+        }
+        
+        .admin-card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-bottom: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+        
+        .admin-card-header h1,
+        .admin-card-header h2,
+        .admin-card-header h3,
+        .admin-card-header h4,
+        .admin-card-header h5,
+        .admin-card-header h6 {
+            margin: 0;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .admin-card-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .admin-card-body {
+            padding: 2rem;
+        }
+        
+        .admin-card-footer {
+            background: var(--gray-50);
+            padding: 1rem 2rem;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        /* Enhanced Hamburger Menu Button */
         #sidebarToggle {
-            color: #5a5c69 !important;
-            background-color: #f8f9fc !important;
-            border: 1px solid #dddfeb !important;
-            padding: 0.5rem 0.75rem !important;
+            color: var(--gray-600) !important;
+            background: white !important;
+            border: 1px solid var(--gray-300) !important;
+            padding: 0.625rem 0.875rem !important;
             font-size: 1rem !important;
             line-height: 1 !important;
-            border-radius: 0.35rem !important;
-            transition: all 0.3s ease !important;
-            margin-right: 0.75rem !important;
+            border-radius: var(--border-radius) !important;
+            transition: var(--transition) !important;
+            margin-right: 1rem !important;
+            box-shadow: var(--card-shadow);
         }
         
         #sidebarToggle:hover {
-            background-color: #eaecf4 !important;
-            border-color: #d1d3e2 !important;
-            color: #5a5c69 !important;
-            transform: none !important;
+            background: var(--gray-50) !important;
+            border-color: var(--primary-color) !important;
+            color: var(--primary-color) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: var(--card-shadow-hover) !important;
         }
         
         #sidebarToggle:focus {
-            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25) !important;
-            border-color: #4e73df !important;
+            box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25) !important;
+            border-color: var(--primary-color) !important;
         }
         
         #sidebarToggle:active {
-            background-color: #dddfeb !important;
+            background: var(--gray-100) !important;
+            transform: translateY(0) !important;
         }
         
         #sidebarToggle i {
-            font-size: 1rem !important;
-            width: 1rem !important;
+            font-size: 1.125rem !important;
+            width: 1.125rem !important;
             text-align: center !important;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 260px;
+            }
+            
+            .content-wrapper {
+                margin-left: 260px;
+            }
+            
+            .content-wrapper.sidebar-collapsed {
+                margin-left: 80px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .sidebar.collapsed {
+                width: 100%;
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.collapsed.show {
+                transform: translateX(0);
+            }
+            
+            .content-wrapper {
+                margin-left: 0;
+            }
+            
+            .content-wrapper.sidebar-collapsed {
+                margin-left: 0;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+            
+            .topbar {
+                padding: 0 1rem;
+            }
+            
+            .admin-card-body {
+                padding: 1rem;
+            }
+            
+            .admin-card-header {
+                padding: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .topbar {
+                padding: 0 0.75rem;
+            }
+            
+            .content {
+                padding: 0.75rem;
+            }
+            
+            .admin-card-body {
+                padding: 0.75rem;
+            }
+            
+            .admin-card-header {
+                padding: 0.75rem;
+            }
+            
+            .admin-card-header h1 {
+                font-size: 1.25rem;
+            }
+            
+            .admin-card-header p {
+                font-size: 0.8rem;
+            }
         }
         
         .navbar-nav {
@@ -206,51 +425,320 @@
             position: relative;
         }
         
-        .nav-link-dropdown {
-            color: var(--dark-color);
+        /* Professional Enhanced Navbar Dropdown */
+        .nav-link.dropdown-toggle {
+            color: #2c3e50;
             padding: 0.5rem 1rem;
-            border-radius: 0.35rem;
-            transition: all 0.3s;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             text-decoration: none;
+            background: transparent;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
         }
         
-        .nav-link-dropdown:hover {
-            background-color: var(--light-color);
-            color: var(--primary-color);
-        }
-        
-        .dropdown-menu {
+        .nav-link.dropdown-toggle::before {
+            content: '';
             position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: white;
-            border: 1px solid var(--border-color);
-            border-radius: 0.35rem;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
-            min-width: 12rem;
-            padding: 0.5rem 0;
-            margin-top: 0.25rem;
-            display: none;
-            z-index: 1000;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(78, 115, 223, 0.1), transparent);
+            transition: left 0.5s ease;
         }
         
-        .dropdown-menu.show {
-            display: block;
+        .nav-link.dropdown-toggle:hover::before {
+            left: 100%;
         }
         
+        /* Admin Avatar */
+        .admin-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link.dropdown-toggle:hover .admin-avatar {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Admin Info */
+        .admin-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .admin-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #2c3e50;
+            line-height: 1.2;
+        }
+        
+        .admin-role {
+            font-size: 0.75rem;
+            color: #6c757d;
+            line-height: 1;
+        }
+        
+        .nav-link.dropdown-toggle:hover .admin-name {
+            color: #3b82f6;
+        }
+        
+        .nav-link.dropdown-toggle:hover .admin-role {
+            color: #3b82f6;
+        }
+        
+        .nav-link.dropdown-toggle:hover .fa-chevron-down {
+            color: #3b82f6;
+            transform: rotate(180deg);
+        }
+        
+        .fa-chevron-down {
+            transition: all 0.3s ease;
+            color: #6c757d;
+        }
+        
+        /* Enhanced Dropdown Menu */
+        .dropdown-menu-lg {
+            min-width: 320px;
+            max-width: 400px;
+            padding: 0;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            position: absolute !important;
+            top: 100% !important;
+            right: 0 !important;
+            left: auto !important;
+            transform: none !important;
+            margin-top: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            transform: translateY(-10px) !important;
+        }
+        
+        .dropdown-menu-lg.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) !important;
+        }
+        
+        /* Ensure dropdown appears below button */
+        .nav-item.dropdown.show .dropdown-menu-lg {
+            top: 100% !important;
+            bottom: auto !important;
+        }
+        
+        /* User Profile Header */
+        .user-profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 16px 16px 0 0;
+            border: none;
+        }
+        
+        .profile-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .profile-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+        
+        .profile-email {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        
+        .status-text {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+        
+        /* Enhanced Dropdown Items */
         .dropdown-item {
-            display: block;
-            padding: 0.5rem 1rem;
-            color: var(--dark-color);
+            padding: 0.875rem 1.5rem;
+            color: #4a5568 !important;
+            transition: all 0.2s ease;
+            border-radius: 0;
+            margin: 0;
             text-decoration: none;
-            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
         }
         
         .dropdown-item:hover {
-            background-color: var(--light-color);
-            color: var(--primary-color);
+            background: linear-gradient(90deg, rgba(78, 115, 223, 0.1) 0%, rgba(78, 115, 223, 0.05) 100%) !important;
+            color: #3b82f6 !important;
+            transform: translateX(4px);
+        }
+        
+        .dropdown-item:hover i {
+            color: #3b82f6 !important;
+        }
+        
+        .dropdown-item i {
+            width: 20px;
+            text-align: center;
+            color: #6c757d;
+            transition: all 0.2s ease;
+        }
+        
+        .dropdown-item small {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+        
+        .dropdown-item:hover small {
+            color: #3b82f6;
+        }
+        
+        .dropdown-item.text-danger {
+            color: #ef4444 !important;
+        }
+        
+        .dropdown-item.text-danger:hover {
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%) !important;
+            color: #ef4444 !important;
+        }
+        
+        .dropdown-item.text-danger:hover i {
+            color: #ef4444 !important;
+        }
+        
+        /* Badge Styling */
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .admin-info {
+                display: none;
+            }
+            
+            .dropdown-menu-lg {
+                min-width: 280px;
+            }
+        }
+        
+        .dropdown-menu {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            background: white;
+            min-width: 200px;
+            margin-top: 0.5rem;
+            animation: dropdownFadeIn 0.3s ease;
+        }
+        
+        @keyframes dropdownFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .dropdown-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 12px 12px 0 0;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            color: #4a5568 !important;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            margin: 0.25rem 0.5rem;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            transform: translateX(4px);
+        }
+        
+        .dropdown-item:hover i {
+            color: white !important;
+        }
+        
+        .dropdown-item i {
+            width: 20px;
+            text-align: center;
+            margin-right: 0.5rem;
+        }
+        
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            border-color: #e2e8f0;
         }
         
         /* Cards */
@@ -690,7 +1178,7 @@
         <nav class="sidebar">
             <a class="sidebar-brand" href="{{ url_for('admin.dashboard') }}">
                 <i class="fas fa-code me-2"></i>
-                Portfolio Admin
+                Admin Dashboard
             </a>
             
             <hr class="sidebar-divider">
@@ -731,22 +1219,34 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.endpoint == 'admin.skills' %}active{% endif %}" href="{{ url_for('admin.skills') }}">
+                    <a href="{{ url_for('admin.skills') }}" class="nav-link {% if request.endpoint == 'admin.skills' %}active{% endif %}">
                         <i class="fas fa-cogs"></i>
-                        <span>Skills</span>
+                        Skills
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('about_me.index') }}" class="nav-link {% if request.endpoint.startswith('about_me') %}active{% endif %}">
+                        <i class="fas fa-id-card"></i>
+                        About Me
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('testimonials_stats.index') }}" class="nav-link {% if request.endpoint.startswith('testimonials_stats') %}active{% endif %}">
+                        <i class="fas fa-chart-bar"></i>
+                        Testimonials Stats
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ url_for('admin.testimonials') }}" class="nav-link">
                         <i class="fas fa-star"></i>
-                        <span>Testimonials</span>
+                        Testimonials
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ url_for('admin.feedback') }}" class="nav-link">
                         <i class="fas fa-comment-dots"></i>
-                        <span>Feedback</span>
-                        {% if current_user.is_authenticated and feedback_unread_count and feedback_unread_count > 0 %}
+                        Feedback
+                        {% if current_user.is_authenticated and feedback_unread_count is defined and feedback_unread_count and feedback_unread_count > 0 %}
                         <span class="badge bg-warning rounded-pill ms-auto">{{ feedback_unread_count }}</span>
                         {% endif %}
                     </a>
@@ -755,7 +1255,7 @@
                     <a class="nav-link {% if request.endpoint == 'admin.messages' %}active{% endif %}" href="{{ url_for('admin.messages') }}">
                         <i class="fas fa-envelope"></i>
                         Messages
-                        {% if current_user.is_authenticated and unread_count > 0 %}
+                        {% if current_user.is_authenticated and unread_count is defined and unread_count and unread_count > 0 %}
                         <span class="badge bg-danger rounded-pill ms-auto">{{ unread_count }}</span>
                         {% endif %}
                     </a>
@@ -807,16 +1307,111 @@
                 
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link-dropdown" href="#" id="userDropdown">
-                            <i class="fas fa-user-circle fa-lg"></i>
-                            <span class="ms-2 d-none d-lg-inline">Admin</span>
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="d-flex align-items-center">
+                                <div class="admin-avatar">
+                                    <i class="fas fa-user-shield"></i>
+                                </div>
+                                <div class="admin-info ms-2 d-none d-lg-block">
+                                    <div class="admin-name">Admin</div>
+                                    <div class="admin-role">Administrator</div>
+                                </div>
+                                <i class="fas fa-chevron-down ms-2"></i>
+                            </div>
                         </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ url_for('auth.logout') }}">
-                                <i class="fas fa-sign-out-alt me-2"></i>
-                                Logout
-                            </a>
-                        </div>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg" aria-labelledby="userDropdown" data-bs-popper="static">
+                            <!-- User Profile Section -->
+                            <li class="dropdown-header user-profile-header">
+                                <div class="d-flex align-items-center">
+                                    <div class="profile-avatar">
+                                        <i class="fas fa-user-shield"></i>
+                                    </div>
+                                    <div class="profile-info ms-3">
+                                        <div class="profile-name">Admin User</div>
+                                        <div class="profile-email">admin@portfolio.com</div>
+                                        <div class="profile-status">
+                                            <span class="status-indicator online"></span>
+                                            <span class="status-text">Online</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <!-- Quick Actions -->
+                            <li><h6 class="dropdown-header">Quick Actions</h6></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('admin.dashboard') }}">
+                                    <i class="fas fa-tachometer-alt me-3"></i>
+                                    <span>Dashboard</span>
+                                    <small class="text-muted ms-auto">Overview</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('admin.add_project') }}">
+                                    <i class="fas fa-plus-circle me-3"></i>
+                                    <span>Add Project</span>
+                                    <small class="text-muted ms-auto">Create</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('admin.messages') }}">
+                                    <i class="fas fa-envelope me-3"></i>
+                                    <span>Messages</span>
+                                    <span class="badge bg-primary ms-auto">{{ unread_count if unread_count else 0 }}</span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <!-- Settings -->
+                            <li><h6 class="dropdown-header">Settings</h6></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('admin.hero_editor') }}">
+                                    <i class="fas fa-palette me-3"></i>
+                                    <span>Hero Settings</span>
+                                    <small class="text-muted ms-auto">Customize</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="openThemeModal()">
+                                    <i class="fas fa-cog me-3"></i>
+                                    <span>Theme Settings</span>
+                                    <small class="text-muted ms-auto">Appearance</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="openSettingsModal()">
+                                    <i class="fas fa-sliders-h me-3"></i>
+                                    <span>Preferences</span>
+                                    <small class="text-muted ms-auto">Configure</small>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <!-- Account Actions -->
+                            <li><h6 class="dropdown-header">Account</h6></li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="openProfileModal()">
+                                    <i class="fas fa-user-edit me-3"></i>
+                                    <span>Edit Profile</span>
+                                    <small class="text-muted ms-auto">Manage</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="openSecurityModal()">
+                                    <i class="fas fa-shield-alt me-3"></i>
+                                    <span>Security</span>
+                                    <small class="text-muted ms-auto">Password</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">
+                                    <i class="fas fa-sign-out-alt me-3"></i>
+                                    <span>Logout</span>
+                                    <small class="text-muted ms-auto">Sign out</small>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </nav>
@@ -842,33 +1437,239 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
+    <!-- Sortable.js for drag and drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    
     <script>
-        // Sidebar Toggle
+        // Enhanced Sidebar Toggle
         document.getElementById('sidebarToggle')?.addEventListener('click', function(e) {
             e.preventDefault();
             const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('show');
+            const contentWrapper = document.querySelector('.content-wrapper');
             
-            // Prevent body scroll when sidebar is open on mobile
             if (window.innerWidth <= 768) {
+                // Mobile: Show/hide sidebar as overlay
+                sidebar.classList.toggle('show');
                 document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : '';
+            } else {
+                // Desktop: Collapse/expand sidebar
+                sidebar.classList.toggle('collapsed');
+                contentWrapper.classList.toggle('sidebar-collapsed');
             }
         });
         
-        // Dropdown Toggle
-        document.getElementById('userDropdown')?.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const dropdown = document.querySelector('.dropdown-menu');
-            dropdown.classList.toggle('show');
-        });
+        // Bootstrap dropdowns are now handled automatically
         
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.nav-item-dropdown')) {
-                document.querySelector('.dropdown-menu')?.classList.remove('show');
+        // Fix dropdown positioning - works on all pages
+        function initializeDropdown() {
+            const userDropdown = document.getElementById('userDropdown');
+            if (userDropdown) {
+                // Check if already initialized
+                if (!userDropdown.hasAttribute('data-bs-initialized')) {
+                    const dropdown = new bootstrap.Dropdown(userDropdown);
+                    userDropdown.setAttribute('data-bs-initialized', 'true');
+                    
+                    // Override the positioning to always show below
+                    userDropdown.addEventListener('show.bs.dropdown', function(e) {
+                        const menu = e.target.nextElementSibling;
+                        if (menu) {
+                            // Force positioning below the button
+                            setTimeout(() => {
+                                menu.style.position = 'absolute';
+                                menu.style.top = '100%';
+                                menu.style.right = '0';
+                                menu.style.left = 'auto';
+                                menu.style.bottom = 'auto';
+                                menu.style.transform = 'translateY(0)';
+                            }, 0);
+                        }
+                    });
+                }
+            }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeDropdown);
+        
+        // Re-initialize when content changes (for SPA navigation)
+        if (window.MutationObserver) {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList') {
+                        // Check if dropdown was added to DOM
+                        const dropdown = document.getElementById('userDropdown');
+                        if (dropdown && !dropdown.hasAttribute('data-bs-initialized')) {
+                            initializeDropdown();
+                        }
+                    }
+                });
+            });
+            
+            // Start observing the document body
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
+        
+        // Fallback: Check periodically (for older browsers)
+        setInterval(initializeDropdown, 1000);
+        
+        // Also initialize immediately in case DOM is already loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeDropdown);
+        } else {
+            // DOM is already loaded
+            initializeDropdown();
+        }
+        
+        // Re-initialize on page visibility changes (for SPA navigation)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                setTimeout(initializeDropdown, 100);
             }
         });
+        
+        // Modal Functions for Enhanced Dropdown
+        function openThemeModal() {
+            // Create and show theme settings modal
+            const modalHtml = `
+                <div class="modal fade" id="themeModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Theme Settings</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Theme customization options coming soon!</p>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Advanced theme settings will be available in the next update.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing modal if present
+            const existingModal = document.getElementById('themeModal');
+            if (existingModal) existingModal.remove();
+            
+            // Add modal to body and show it
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const modal = new bootstrap.Modal(document.getElementById('themeModal'));
+            modal.show();
+        }
+        
+        function openSettingsModal() {
+            // Create and show settings modal
+            const modalHtml = `
+                <div class="modal fade" id="settingsModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Preferences</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>User preferences and settings coming soon!</p>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Personalized settings will be available in the next update.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing modal if present
+            const existingModal = document.getElementById('settingsModal');
+            if (existingModal) existingModal.remove();
+            
+            // Add modal to body and show it
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const modal = new bootstrap.Modal(document.getElementById('settingsModal'));
+            modal.show();
+        }
+        
+        function openProfileModal() {
+            // Create and show profile modal
+            const modalHtml = `
+                <div class="modal fade" id="profileModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Profile</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Profile editing functionality coming soon!</p>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Profile management will be available in the next update.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing modal if present
+            const existingModal = document.getElementById('profileModal');
+            if (existingModal) existingModal.remove();
+            
+            // Add modal to body and show it
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const modal = new bootstrap.Modal(document.getElementById('profileModal'));
+            modal.show();
+        }
+        
+        function openSecurityModal() {
+            // Create and show security modal
+            const modalHtml = `
+                <div class="modal fade" id="securityModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Security Settings</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Security and password management coming soon!</p>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Security features will be available in the next update.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing modal if present
+            const existingModal = document.getElementById('securityModal');
+            if (existingModal) existingModal.remove();
+            
+            // Add modal to body and show it
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const modal = new bootstrap.Modal(document.getElementById('securityModal'));
+            modal.show();
+        }
         
         // Close sidebar when clicking outside on mobile
         document.addEventListener('click', function(e) {
@@ -891,7 +1692,21 @@
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(function() {
                 const sidebar = document.querySelector('.sidebar');
+                const contentWrapper = document.querySelector('.content-wrapper');
+                
                 if (window.innerWidth > 768) {
+                    // Reset to desktop state
+                    sidebar.classList.remove('show');
+                    document.body.style.overflow = '';
+                    
+                    // If sidebar was collapsed on mobile and we're back to desktop, keep it collapsed
+                    if (!sidebar.classList.contains('collapsed')) {
+                        contentWrapper.classList.remove('sidebar-collapsed');
+                    }
+                } else {
+                    // Reset to mobile state
+                    sidebar.classList.remove('collapsed');
+                    contentWrapper.classList.remove('sidebar-collapsed');
                     sidebar.classList.remove('show');
                     document.body.style.overflow = '';
                 }

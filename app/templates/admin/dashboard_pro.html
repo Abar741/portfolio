@@ -5,54 +5,115 @@
 {% block extra_css %}
 <style>
     /* Enhanced Dashboard Page Styles */
-    .dashboard-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 2rem;
-        border-radius: 15px 15px 0 0;
-        margin-bottom: 0;
-    }
-    
-    .dashboard-header h1 {
-        margin: 0;
-        font-size: 2rem;
-        font-weight: 600;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .dashboard-header p {
-        margin: 10px 0 0 0;
-        opacity: 0.9;
-        font-size: 1.1rem;
-    }
-    
     .dashboard-container {
-        background: white;
-        border-radius: 0 0 15px 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        padding: 0;
-        margin-bottom: 25px;
-        overflow: hidden;
-        border: 1px solid #e5e7eb;
-    }
-    
-    .dashboard-toolbar {
-        background: #f8f9fa;
-        padding: 20px;
-        border-bottom: 1px solid #e5e7eb;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 15px;
-        flex-wrap: wrap;
+        margin-bottom: 2rem;
     }
     
     .dashboard-content {
-        padding: 25px;
+        padding: 0;
     }
+    
+    /* Professional Dashboard Spacing */
+    .dashboard-content {
+        padding: 2rem 0;
+    }
+    
+    .dashboard-stats-section {
+        margin-top: 2rem;
+    }
+    
+    /* Enhanced Professional Cards */
+    .stats-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .stats-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--card-color) 0%, var(--card-color-light) 100%);
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+    
+    .stats-card .card-body {
+        padding: 2rem 1.5rem;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        min-height: 140px;
+    }
+    
+    .stats-card .h3 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 0.5rem;
+        line-height: 1;
+    }
+    
+    .stats-card .text-uppercase {
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #64748b;
+        margin-bottom: 0.75rem;
+    }
+    
+    .stats-card .fa-2x {
+        font-size: 2rem;
+        opacity: 0.8;
+        transition: all 0.3s ease;
+    }
+    
+    .stats-card:hover .fa-2x {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    
+    /* Card Color Variables */
+    .stats-card:nth-child(1) { --card-color: #3b82f6; --card-color-light: #60a5fa; }
+    .stats-card:nth-child(2) { --card-color: #10b981; --card-color-light: #34d399; }
+    .stats-card:nth-child(3) { --card-color: #06b6d4; --card-color-light: #22d3ee; }
+    .stats-card:nth-child(4) { --card-color: #f59e0b; --card-color-light: #fbbf24; }
     
     /* Mobile Responsive Styles */
     @media (max-width: 768px) {
+        .dashboard-content {
+            padding: 1rem 0;
+        }
+        
+        .dashboard-stats-section {
+            margin-top: 1rem;
+        }
+        
+        .stats-card .card-body {
+            padding: 1.5rem 1rem;
+            min-height: 120px;
+        }
+        
+        .stats-card .h3 {
+            font-size: 1.75rem;
+        }
+        
+        .stats-card .text-uppercase {
+            font-size: 0.7rem;
+        }
+        
+        .stats-card .fa-2x {
+            font-size: 1.5rem;
+        }
+        
         .dashboard-header {
             padding: 1.5rem;
         }
@@ -904,50 +965,49 @@
 
 {% block content %}
 <!-- Dashboard Header -->
-<div class="dashboard-header fade-in">
-    <div class="d-sm-flex align-items-center justify-content-between">
-        <div>
-            <h1>
-                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-            </h1>
-            <p class="mb-0">Welcome back! Here's an overview of your portfolio management</p>
+<div class="admin-card fade-in">
+    <div class="admin-card-header">
+        <h1>
+            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+        </h1>
+        <p>Welcome back! Here's an overview of your portfolio management</p>
+    </div>
+    <div class="admin-card-body">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div>
+                <span class="badge bg-primary rounded-pill px-3 py-2">
+                    <i class="fas fa-chart-line me-2"></i>Portfolio Overview
+                </span>
+                <span class="text-muted ms-3">
+                    <i class="fas fa-info-circle me-2"></i>Real-time statistics
+                </span>
+            </div>
+            <a href="{{ url_for('admin.add_project') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Add New Project
+            </a>
         </div>
-        <a href="{{ url_for('admin.add_project') }}" class="btn btn-primary">
-            <i class="fas fa-plus me-2"></i>Add New Project
-        </a>
     </div>
 </div>
 
-<!-- Dashboard Container -->
-<div class="dashboard-container">
-    <!-- Toolbar -->
-    <div class="dashboard-toolbar">
-        <div class="d-flex align-items-center gap-3">
-            <span class="badge bg-primary rounded-pill px-3 py-2">
-                <i class="fas fa-chart-line me-2"></i>Portfolio Overview
-            </span>
-            <span class="text-muted">
-                <i class="fas fa-info-circle me-2"></i>Real-time statistics
-            </span>
-        </div>
-    </div>
-
-    <div class="dashboard-content">
-        <!-- Statistics Cards -->
-        <div class="row">
+<!-- Dashboard Content -->
+<div class="dashboard-content">
+    <div class="container-fluid px-4">
+        <!-- Statistics Section -->
+        <div class="dashboard-stats-section py-4">
+            <div class="row g-4">
             <!-- Projects Card -->
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="stats-card-enhanced projects fade-in">
+            <div class="col-xl-3 col-md-6">
+                <div class="admin-card stats-card fade-in">
                     <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <div class="text-uppercase small fw-bold text-primary mb-1">
                                     Total Projects
                                 </div>
-                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ projects|length }}</div>
+                                <div class="h3 mb-0 fw-bold text-gray-800">{{ projects|length }}</div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-project-diagram stats-icon-enhanced text-primary"></i>
+                            <div class="ms-3">
+                                <i class="fas fa-project-diagram fa-2x text-primary opacity-75"></i>
                             </div>
                         </div>
                     </div>
@@ -955,18 +1015,18 @@
             </div>
 
             <!-- Skills Card -->
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="stats-card-enhanced skills fade-in">
+            <div class="col-xl-3 col-md-6">
+                <div class="admin-card stats-card fade-in">
                     <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <div class="text-uppercase small fw-bold text-success mb-1">
                                     Total Skills
                                 </div>
-                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ skills|length }}</div>
+                                <div class="h3 mb-0 fw-bold text-gray-800">{{ skills|length }}</div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-chart-bar stats-icon-enhanced text-success"></i>
+                            <div class="ms-3">
+                                <i class="fas fa-chart-bar fa-2x text-success opacity-75"></i>
                             </div>
                         </div>
                     </div>
@@ -974,18 +1034,18 @@
             </div>
 
             <!-- Messages Card -->
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="stats-card-enhanced messages fade-in">
+            <div class="col-xl-3 col-md-6">
+                <div class="admin-card stats-card fade-in">
                     <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <div class="text-uppercase small fw-bold text-info mb-1">
                                     Messages
                                 </div>
-                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ messages|length }}</div>
+                                <div class="h3 mb-0 fw-bold text-gray-800">{{ messages|length }}</div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-envelope stats-icon-enhanced text-info"></i>
+                            <div class="ms-3">
+                                <i class="fas fa-envelope fa-2x text-info opacity-75"></i>
                             </div>
                         </div>
                     </div>
@@ -993,18 +1053,18 @@
             </div>
 
             <!-- Published Projects Card -->
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="stats-card-enhanced published fade-in">
+            <div class="col-xl-3 col-md-6">
+                <div class="admin-card stats-card fade-in">
                     <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <div class="text-uppercase small fw-bold text-warning mb-1">
                                     Published
                                 </div>
-                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ projects|selectattr('status', 'equalto', 'published')|list|length }}</div>
+                                <div class="h3 mb-0 fw-bold text-gray-800">{{ projects|selectattr('status', 'equalto', 'published')|list|length }}</div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-eye stats-icon-enhanced text-warning"></i>
+                            <div class="ms-3">
+                                <i class="fas fa-check-circle fa-2x text-warning opacity-75"></i>
                             </div>
                         </div>
                     </div>

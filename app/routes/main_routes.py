@@ -12,6 +12,7 @@ main = Blueprint("main", __name__)
 import os
 import json
 import time
+import re
 
 def get_navbar_data():
     """Get navbar data from JSON file or return default data"""
@@ -44,18 +45,9 @@ def get_navbar_data():
     }
 
 def get_hero_data():
-    """Get hero data from JSON file or return default data"""
+    """Get hero data from JSON file or return default data with dynamic stats"""
     hero_data_file = os.path.join(current_app.root_path, 'static', 'data', 'hero_data.json')
-    
-    if os.path.exists(hero_data_file):
-        try:
-            with open(hero_data_file, 'r') as f:
-                return json.load(f)
-        except Exception as e:
-            current_app.logger.error(f"Error loading hero data: {str(e)}")
-    
-    # Return default data if file doesn't exist or error occurred
-    return {
+    base_data = {
         "name": "Muhammad Abrar",
         "subtitle": "I transform creative ideas into exceptional digital experiences through innovative web development, stunning graphic design, and compelling video editing. Let's create something extraordinary together!",
         "profile_image": None,
@@ -71,35 +63,67 @@ def get_hero_data():
         "buttons": [
             {"icon": "fas fa-briefcase", "text": "View Portfolio", "url": "#projects", "style": "primary"},
             {"icon": "fas fa-envelope", "text": "Get In Touch", "url": "#contact", "style": "secondary"}
-        ],
-        "stats": [
-            {"value": "50+", "label": "Projects"},
+        ]
+    }
+    
+    # Load custom data from file if exists
+    if os.path.exists(hero_data_file):
+        try:
+            with open(hero_data_file, 'r') as f:
+                custom_data = json.load(f)
+                # Merge with base data, preserving custom fields
+                base_data.update(custom_data)
+        except Exception as e:
+            current_app.logger.error(f"Error loading hero data: {str(e)}")
+    
+    # Calculate dynamic stats
+    try:
+        # Get projects count from database
+        from app.models.project import Project
+        projects_count = Project.query.filter_by(status='published').count()
+        
+        # Get testimonials stats for happy clients
+        from app.models.testimonials_stats import TestimonialsStats
+        testimonials_stats = TestimonialsStats.get_active_stats()
+        happy_clients = testimonials_stats.happy_clients if testimonials_stats else 0
+        
+        # Dynamic stats
+        dynamic_stats = [
+            {"value": f"{projects_count}+", "label": "Projects"},
             {"value": "5+", "label": "Years"},
             {"value": "100%", "label": "Satisfaction"}
-        ],
-        "floating_icons": [
-            {"icon_class": "fas fa-code", "label": "Web Dev", "animation": "down", "delay": 600},
-            {"icon_class": "fas fa-palette", "label": "Design", "animation": "up", "delay": 700},
-            {"icon_class": "fas fa-video", "label": "Video", "animation": "down", "delay": 800},
-            {"icon_class": "fas fa-mobile-alt", "label": "Mobile", "animation": "up", "delay": 900},
-            {"icon_class": "fas fa-camera", "label": "Photo", "animation": "down", "delay": 1000}
-        ],
-        "timeline": {
-            "title": "5+ Years Experience",
-            "subtitle": "Professional Development"
-        },
-        "scroll_text": "Scroll Down",
-        "show_scroll_indicator": True
-    }
+        ]
+        
+        # Override the stats with dynamic data
+        base_data["stats"] = dynamic_stats
+        
+        current_app.logger.info(f"Dynamic hero stats: Projects={projects_count}, Happy Clients={happy_clients}")
+        
+    except Exception as e:
+        current_app.logger.error(f"Error calculating dynamic stats: {str(e)}")
+        # Fallback to default stats if there's an error
+        if "stats" not in base_data:
+            base_data["stats"] = [
+                {"value": "50+", "label": "Projects"},
+                {"value": "5+", "label": "Years"},
+                {"value": "100%", "label": "Satisfaction"}
+            ]
+    
+    return base_data
 
 # HOME PAGE
 @main.route("/")
 def home():
     """Home page with portfolio content"""
     try:
-        # Get portfolio data
-        projects = ProjectService.get_all_projects('published')
-        featured_projects = ProjectService.get_featured_projects(6)
+        # Import Project model
+        from app.models.project import Project
+        
+        # Get featured projects for home page (client view)
+        featured_projects = Project.query.filter_by(status='published', featured=True).order_by(Project.created_at.desc()).limit(6).all()
+        
+        # Use featured projects as the main projects for home page
+        projects = featured_projects
         skills = SkillService.get_all_skills()
         
         # Get dynamic data
@@ -112,6 +136,14 @@ def home():
             .order_by(Testimonial.display_order.asc(), Testimonial.created_at.desc())\
             .all()
         
+        # Get testimonials stats (real-time calculation)
+        from app.models.testimonials_stats import TestimonialsStats
+        testimonials_stats = TestimonialsStats.get_calculated_stats()
+        
+        # Get About Me content
+        from app.models.about_me import AboutMe
+        about_me_content = AboutMe.get_active_content()
+        
         # Log analytics
         AnalyticsService.track_page_view('home', get_remote_address())
         
@@ -121,7 +153,9 @@ def home():
                              skills=skills,
                              hero_data=hero_data,
                              navbar_data=navbar_data,
-                             testimonials=testimonials)
+                             testimonials=testimonials,
+                             testimonials_stats=testimonials_stats,
+                             about_me_content=about_me_content)
     
     except DatabaseError as e:
         current_app.logger.error(f"Database error on home page: {str(e)}")
@@ -150,45 +184,95 @@ def home():
 def contact():
     """Handle contact form submissions"""
     try:
+        # Check if this is an AJAX request
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest' or \
+                 request.headers.get('Content-Type') == 'application/json'
+        
         # Get request metadata for security logging
         ip_address = get_remote_address()
-        user_agent = request.headers.get('User-Agent')
+        user_agent = request.headers.get('User-Agent', '')
         
-        # Prepare message data
+        # Get form data
+        name = request.form.get('name', '').strip()
+        email = request.form.get('email', '').strip()
+        phone = request.form.get('phone', '').strip()
+        subject = request.form.get('subject', '').strip()
+        message_text = request.form.get('message', '').strip()
+        budget = request.form.get('budget', '').strip()
+        newsletter = request.form.get('newsletter') == 'on'
+        
+        # Validate required fields
+        if not name or not email or not subject or not message_text:
+            error_msg = "Please fill in all required fields."
+            if is_ajax:
+                return jsonify({"success": False, "message": error_msg})
+            flash(error_msg, "error")
+            return redirect("/")
+        
+        # Validate email format
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_regex, email):
+            error_msg = "Please enter a valid email address."
+            if is_ajax:
+                return jsonify({"success": False, "message": error_msg})
+            flash(error_msg, "error")
+            return redirect("/")
+        
+        # Create message data
         message_data = {
-            'name': request.form.get("name", "").strip(),
-            'email': request.form.get("email", "").strip(),
-            'subject': request.form.get("subject", "").strip(),
-            'message': request.form.get("message", "").strip(),
+            'name': name,
+            'email': email,
+            'phone': phone,
+            'subject': subject,
+            'message': message_text,
+            'budget': budget,
             'ip_address': ip_address,
-            'user_agent': user_agent
+            'user_agent': user_agent,
+            'newsletter_signup': newsletter
         }
         
-        # Create message using service layer
+        # Save message to database
         message = MessageService.create_message(message_data)
         
         # Log successful submission
         log_security_event('contact_form_submitted', ip_address, user_agent, 
                          f"Message from {message.name}")
         
-        flash("Message sent successfully! ✅", "success")
-        
         # Track analytics
         AnalyticsService.track_contact_form_submission(ip_address)
         
+        success_msg = "Message sent successfully! We'll get back to you soon."
+        if is_ajax:
+            return jsonify({"success": True, "message": success_msg})
+        
+        flash("Message sent successfully! ", "success")
+        
     except ValidationError as e:
-        flash(str(e), "error")
+        error_msg = str(e)
+        if is_ajax:
+            return jsonify({"success": False, "message": error_msg})
+        flash(error_msg, "error")
         log_security_event('contact_form_validation_failed', ip_address, user_agent, str(e))
         
     except DatabaseError as e:
-        flash("An error occurred while saving your message. Please try again.", "error")
+        error_msg = "An error occurred while saving your message. Please try again."
+        if is_ajax:
+            return jsonify({"success": False, "message": error_msg})
+        flash(error_msg, "error")
         current_app.logger.error(f"Database error in contact form: {str(e)}")
         
     except Exception as e:
-        flash("An unexpected error occurred. Please try again.", "error")
+        error_msg = "An unexpected error occurred. Please try again."
+        if is_ajax:
+            return jsonify({"success": False, "message": error_msg})
+        flash(error_msg, "error")
         current_app.logger.error(f"Unexpected error in contact form: {str(e)}")
         
-    return redirect("/")
+    # Only redirect for non-AJAX requests
+    if not is_ajax:
+        return redirect("/")
+    else:
+        return jsonify({"success": False, "message": "Request failed"})
 
 
 # LEGAL PAGES

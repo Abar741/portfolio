@@ -5,6 +5,7 @@ from app.models.project import Project
 import os
 import json
 import time
+from datetime import datetime
 from werkzeug.utils import secure_filename
 from app.models.skill import Skill
 from app.models.message import Message
@@ -70,6 +71,14 @@ def save_navbar_data(navbar_data):
     except Exception as e:
         current_app.logger.error(f"Error saving navbar data: {str(e)}")
         return False
+
+
+# ADMIN ROOT - Redirect to Dashboard
+@admin.route("/")
+@login_required
+def admin_root():
+    """Admin root route - redirect to dashboard"""
+    return redirect(url_for("admin.dashboard"))
 
 
 # CONTROL CENTER
@@ -462,7 +471,15 @@ def hero_editor():
     
     # GET request - show the editor
     unread_count = get_unread_messages_count()
-    return render_template("admin/hero_editor.html", hero_data=hero_data, unread_count=unread_count, feedback_unread_count=get_unread_feedback_count())
+    
+    # Get dynamic projects count
+    try:
+        from app.models.project import Project
+        projects_count = Project.query.filter_by(status='published').count()
+    except:
+        projects_count = 0
+    
+    return render_template("admin/hero_editor.html", hero_data=hero_data, projects_count=projects_count, unread_count=unread_count, feedback_unread_count=get_unread_feedback_count())
 
 
 # TESTIMONIALS MANAGEMENT
@@ -797,3 +814,114 @@ def parse_feedback_message(message_text):
         data['project_type_icon'] = project_type_icons.get(data['project_type'], "fa-laptop-code")
     
     return data
+
+
+# MARK MESSAGE AS READ
+@admin.route("/messages/<int:id>/read", methods=["POST"])
+@login_required
+def mark_message_as_read(id):
+    """Mark a specific message as read"""
+    try:
+        message = Message.query.get_or_404(id)
+        
+        # Ensure it's not a feedback message
+        if "Feedback Submission" in message.subject:
+            return jsonify({
+                "success": False,
+                "message": "Cannot mark feedback message as read from this endpoint"
+            })
+        
+        if message.status == 'unread':
+            message.status = 'read'
+            message.read_at = datetime.utcnow()
+            db.session.commit()
+            
+            return jsonify({
+                "success": True,
+                "message": "Message marked as read"
+            })
+        else:
+            return jsonify({
+                "success": True,
+                "message": "Message was already read"
+            })
+            
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "success": False,
+            "message": f"Error marking message as read: {str(e)}"
+        })
+
+
+# MARK ALL MESSAGES AS READ
+@admin.route("/messages/mark-all-read", methods=["POST"])
+@login_required
+def mark_all_messages_as_read():
+    """Mark all unread messages as read"""
+    try:
+        # Get all unread messages (excluding feedback)
+        unread_messages = Message.query.filter_by(status='unread').filter(
+            ~Message.subject.like("%Feedback Submission%")
+        ).all()
+        
+        if not unread_messages:
+            return jsonify({
+                "success": False,
+                "message": "No unread messages to mark as read"
+            })
+        
+        # Mark all as read
+        for message in unread_messages:
+            message.status = 'read'
+            message.read_at = datetime.utcnow()
+        
+        db.session.commit()
+        
+        return jsonify({
+            "success": True,
+            "message": f"Marked {len(unread_messages)} messages as read"
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "success": False,
+            "message": f"Error marking messages as read: {str(e)}"
+        })
+
+
+# DELETE ALL READ MESSAGES
+@admin.route("/messages/delete-all-read", methods=["POST"])
+@login_required
+def delete_all_read_messages():
+    """Delete all read messages"""
+    try:
+        # Get all read messages (excluding feedback)
+        read_messages = Message.query.filter_by(status='read').filter(
+            ~Message.subject.like("%Feedback Submission%")
+        ).all()
+        
+        if not read_messages:
+            return jsonify({
+                "success": False,
+                "message": "No read messages to delete"
+            })
+        
+        # Delete all read messages
+        for message in read_messages:
+            db.session.delete(message)
+        
+        db.session.commit()
+        
+        return jsonify({
+            "success": True,
+            "message": f"Deleted {len(read_messages)} read messages"
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "success": False,
+            "message": f"Error deleting read messages: {str(e)}"
+        })

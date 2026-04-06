@@ -4,8 +4,14 @@
 
 // ===== INITIALIZATION ===== //
 document.addEventListener('DOMContentLoaded', function() {
-    // Load all projects initially
-    fetchAndRenderProjects('all');
+    // Check if we're on the portfolio page - if so, don't fetch projects
+    const isPortfolioPage = window.location.pathname === '/portfolio';
+    
+    if (!isPortfolioPage) {
+        // Only fetch projects for non-portfolio pages (like home page)
+        fetchAndRenderProjects('all');
+    }
+    
     initializePortfolio();
 });
 
@@ -16,12 +22,36 @@ function initializePortfolio() {
     initializeContactForm();
     initializeFeedbackForm();
     initializeParticles();
+    
+    // Ensure all category badges are visible
+    ensureAllBadgesVisible();
+    
     initializeActiveNavigation();
     initializeProjectsSlider();
     initializeSkillsSlider();
     initializeFooter();
     initializeTestimonialsSlider();
     initializeNewsSlider();
+}
+
+// ===== ENSURE ALL BADGES ARE VISIBLE ===== //
+function ensureAllBadgesVisible() {
+    // Force all category badges to be visible
+    const badges = document.querySelectorAll('.project-category-badge');
+    badges.forEach(badge => {
+        badge.style.display = 'flex';
+        badge.style.opacity = '1';
+        badge.style.visibility = 'visible';
+        badge.style.zIndex = '1000';
+        badge.style.position = 'absolute';
+        badge.style.top = '15px';
+        badge.style.left = '15px';
+        
+        // Add debug logging
+        console.log('Badge found and made visible:', badge.textContent.trim());
+    });
+    
+    console.log(`Total badges found and made visible: ${badges.length}`);
 }
 
 // ===== SCROLL INDICATOR FUNCTIONALITY ===== //
@@ -210,6 +240,141 @@ function hideSubmitLoading() {
 function showSuccessMessage() {
     // In production, this would show a success message
     alert('Message sent successfully! We\'ll get back to you soon.');
+}
+
+// Show notification function
+function showNotification(message, type = 'success') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <span>${message}</span>
+            <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    // Add notification styles if not already present
+    if (!document.querySelector('#notification-styles')) {
+        const style = document.createElement('style');
+        style.id = 'notification-styles';
+        style.textContent = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+                max-width: 400px;
+                padding: 0;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                animation: slideInRight 0.3s ease-out;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            }
+            
+            .notification-success {
+                background: linear-gradient(135deg, #48bb78, #38a169);
+                color: white;
+            }
+            
+            .notification-error {
+                background: linear-gradient(135deg, #e53e3e, #c53030);
+                color: white;
+            }
+            
+            .notification-content {
+                display: flex;
+                align-items: center;
+                padding: 16px 20px;
+                gap: 12px;
+            }
+            
+            .notification-content i {
+                font-size: 18px;
+                flex-shrink: 0;
+            }
+            
+            .notification-content span {
+                flex: 1;
+                font-weight: 500;
+                line-height: 1.4;
+            }
+            
+            .notification-close {
+                background: none;
+                border: none;
+                color: currentColor;
+                cursor: pointer;
+                padding: 4px;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: background-color 0.2s;
+                flex-shrink: 0;
+            }
+            
+            .notification-close:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+            
+            .notification-close i {
+                font-size: 14px;
+            }
+            
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+            
+            @media (max-width: 768px) {
+                .notification {
+                    top: 10px;
+                    right: 10px;
+                    left: 10px;
+                    min-width: auto;
+                    max-width: none;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.animation = 'slideOutRight 0.3s ease-out';
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 300);
+        }
+    }, 5000);
 }
 
 function resetContactForm() {
@@ -832,76 +997,93 @@ function initializeContactForm() {
                 formLoading.style.display = 'block';
             }
             
-            // Simulate form submission
-            setTimeout(() => {
+            // Submit form using fetch
+            const formData = new FormData(contactForm);
+            
+            fetch('/contact', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
                 // Hide loading state
                 if (submitBtn) {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="fas fa-check"></i> <span>Message Sent!</span>';
-                    submitBtn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
                 }
                 
                 if (formLoading) {
                     formLoading.style.display = 'none';
                 }
                 
-                // Reset form after 3 seconds
-                setTimeout(() => {
-                    contactForm.reset();
+                if (data.success) {
+                    // Success - show success state and notification
                     if (submitBtn) {
-                        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>Send Message</span>';
-                        submitBtn.style.background = '';
+                        submitBtn.innerHTML = '<i class="fas fa-check"></i> <span>Message Sent!</span>';
+                        submitBtn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
                     }
-                    if (charCount) {
-                        charCount.textContent = '0';
-                        charCount.style.color = '#a0aec0';
-                    }
-                }, 3000);
-                
-                // Actually submit the form to the server
-                const formData = new FormData(contactForm);
-                
-                // Submit form using fetch
-                fetch('/contact', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (response.redirected) {
-                        // If server redirects, follow the redirect
-                        window.location.href = response.url;
-                    } else {
-                        // Otherwise, show success and reset form
-                        showSuccessMessage();
-                        setTimeout(() => {
-                            contactForm.reset();
-                            if (submitBtn) {
-                                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>Send Message</span>';
-                                submitBtn.style.background = '';
-                            }
-                            if (charCount) {
-                                charCount.textContent = '0';
-                                charCount.style.color = '#a0aec0';
-                            }
-                        }, 3000);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error submitting form:', error);
-                    // Show error message
+                    
+                    // Show success notification
+                    showNotification(data.message, 'success');
+                    
+                    // Reset form after 3 seconds
+                    setTimeout(() => {
+                        contactForm.reset();
+                        if (submitBtn) {
+                            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>Send Message</span>';
+                            submitBtn.style.background = '';
+                        }
+                        if (charCount) {
+                            charCount.textContent = '0';
+                            charCount.style.color = '#a0aec0';
+                        }
+                    }, 3000);
+                } else {
+                    // Error - show error state and notification
                     if (submitBtn) {
                         submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> <span>Error!</span>';
                         submitBtn.style.background = 'linear-gradient(135deg, #e53e3e, #c53030)';
                     }
+                    
+                    // Show error notification
+                    showNotification(data.message, 'error');
+                    
+                    // Reset button after 2 seconds
                     setTimeout(() => {
                         if (submitBtn) {
                             submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>Send Message</span>';
                             submitBtn.style.background = '';
                         }
                     }, 2000);
-                });
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
                 
-            }, 2000);
+                // Hide loading state
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> <span>Error!</span>';
+                    submitBtn.style.background = 'linear-gradient(135deg, #e53e3e, #c53030)';
+                }
+                
+                if (formLoading) {
+                    formLoading.style.display = 'none';
+                }
+                
+                // Show error notification
+                showNotification('An error occurred while sending your message. Please try again.', 'error');
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    if (submitBtn) {
+                        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>Send Message</span>';
+                        submitBtn.style.background = '';
+                    }
+                }, 2000);
+            });
         });
     }
     
@@ -1058,6 +1240,8 @@ function initializeTestimonialsSlider() {
 
 // ===== RECENT PROJECTS NEWS SLIDER ===== //
 let newsRefreshInterval;
+let lastRequestTime = 0;
+let requestInProgress = false;
 
 function initializeNewsSlider() {
     const newsTrack = document.getElementById('newsSliderTrack');
@@ -1066,8 +1250,13 @@ function initializeNewsSlider() {
     // Fetch projects immediately
     fetchRecentProjects();
     
-    // Auto-refresh every 60 seconds
-    newsRefreshInterval = setInterval(fetchRecentProjects, 60000);
+    // Auto-refresh every 5 minutes (300 seconds) with exponential backoff
+    newsRefreshInterval = setInterval(() => {
+        // Only refresh if no request is in progress and enough time has passed
+        if (!requestInProgress && Date.now() - lastRequestTime > 5000) {
+            fetchRecentProjects();
+        }
+    }, 300000);
     
     // Handle visibility change to pause/resume
     document.addEventListener('visibilitychange', () => {
@@ -1075,17 +1264,43 @@ function initializeNewsSlider() {
             clearInterval(newsRefreshInterval);
         } else {
             fetchRecentProjects();
-            newsRefreshInterval = setInterval(fetchRecentProjects, 60000);
+            newsRefreshInterval = setInterval(fetchRecentProjects, 120000);
         }
     });
 }
 
 async function fetchRecentProjects() {
+    // Prevent duplicate requests
+    if (requestInProgress) {
+        console.log('Request already in progress, skipping');
+        return;
+    }
+    
     const newsTrack = document.getElementById('newsSliderTrack');
     if (!newsTrack) return;
     
+    requestInProgress = true;
+    lastRequestTime = Date.now();
+    
     try {
         const response = await fetch('/recent-projects');
+        
+        // Handle rate limiting and other HTTP errors
+        if (!response.ok) {
+            if (response.status === 429) {
+                console.log('Rate limit reached, implementing exponential backoff');
+                // Implement exponential backoff
+                setTimeout(() => {
+                    requestInProgress = false;
+                }, Math.min(30000, Math.pow(2, Math.floor(Math.random() * 3)))); // 30s max random backoff
+                return;
+            } else {
+                console.error('HTTP error:', response.status, response.statusText);
+                requestInProgress = false;
+                return;
+            }
+        }
+        
         const data = await response.json();
         
         if (data.success && data.projects && data.projects.length > 0) {
@@ -1103,6 +1318,8 @@ async function fetchRecentProjects() {
     } catch (error) {
         console.error('Error fetching recent projects:', error);
         // Don't clear existing content on error, just log it
+    } finally {
+        requestInProgress = false;
     }
 }
 
@@ -1138,6 +1355,55 @@ function renderNewsItems(projects) {
     const duplicatedHtml = projectsHtml + projectsHtml; // Duplicate for infinite loop
     
     newsTrack.innerHTML = duplicatedHtml;
+    
+    // Initialize Swiper for news slider
+    const newsSliderWrapper = newsTrack.parentElement;
+    if (typeof Swiper !== 'undefined' && newsSliderWrapper) {
+        new Swiper(newsSliderWrapper, {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                dynamicBullets: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+            },
+            preventClicks: true,
+            preventClicksPropagation: true,
+            noSwiping: false,
+            noSwipingClass: 'swiper-no-swiping',
+            containerModifierClass: 'swiper-',
+            slideClass: 'swiper-slide',
+            slideActiveClass: 'swiper-slide-active',
+            slideDuplicateActiveClass: 'swiper-slide-duplicate-active',
+            slideVisibleClass: 'swiper-slide-visible',
+            slideNextClass: 'swiper-slide-next',
+            slideDuplicateNextClass: 'swiper-slide-duplicate-next',
+            slidePrevClass: 'swiper-slide-prev',
+            slideDuplicatePrevClass: 'swiper-slide-duplicate-prev',
+            wrapperClass: 'swiper-wrapper',
+            runCallbacksOnInit: true,
+        });
+    }
 }
 
 function escapeHtml(text) {
@@ -1163,6 +1429,8 @@ function filterProjects(category) {
     const projectCards = document.querySelectorAll('.project-card');
     const projectsGrid = document.getElementById('projectsGrid');
     
+    if (!projectsGrid) return;
+    
     // Add loading state
     projectsGrid.classList.add('loading');
     
@@ -1170,10 +1438,19 @@ function filterProjects(category) {
         const cardCategory = card.dataset.category || 'web_dev';
         
         if (category === 'all' || cardCategory === category) {
-            // Show card with animation
+            // Show card with animation - preserve all content including badges
             card.classList.remove('hiding');
             card.classList.add('showing');
             card.style.display = '';
+            
+            // Ensure category badge is visible
+            const badge = card.querySelector('.project-category-badge');
+            if (badge) {
+                badge.style.display = 'flex';
+                badge.style.opacity = '1';
+                badge.style.visibility = 'visible';
+                badge.style.zIndex = '1000';
+            }
             
             // Stagger animation
             setTimeout(() => {
@@ -1244,16 +1521,40 @@ function getCategoryName(category) {
     return names[category] || 'Projects';
 }
 
+function getCategoryIcon(category) {
+    const icons = {
+        'web_dev': '<i class="fas fa-laptop-code"></i>',
+        'graphic_design': '<i class="fas fa-paint-brush"></i>',
+        'video_editing': '<i class="fas fa-video"></i>'
+    };
+    return icons[category] || '<i class="fas fa-code"></i>';
+}
+
 // ===== FETCH AND RENDER PROJECTS ===== //
 async function fetchAndRenderProjects(category) {
     const projectsGrid = document.getElementById('projectsGrid');
     if (!projectsGrid) return;
     
-    // If grid already has content from server, don't fetch
-    if (projectsGrid.children.length > 0) return;
+    // Check if we're on home page or portfolio page
+    const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+    const isPortfolioPage = window.location.pathname === '/portfolio';
+    
+    // NEVER override server-side content on portfolio page
+    if (isPortfolioPage) {
+        console.log('Portfolio page detected - preserving all server-side content');
+        return;
+    }
+    
+    // On home page, only fetch if grid is empty (preserve server-side featured projects)
+    if (isHomePage && projectsGrid.children.length > 0) {
+        console.log('Home page already has server-rendered featured projects, skipping fetch');
+        return;
+    }
+    
+    const limit = isHomePage ? 6 : 12;  // 6 featured for home, 12 for portfolio
     
     try {
-        const response = await fetch(`/api/projects?category=${category}&limit=12`);
+        const response = await fetch(`/api/projects?category=${category}&limit=${limit}`);
         const data = await response.json();
         
         if (data.success && data.projects.length > 0) {
@@ -1270,34 +1571,61 @@ function renderProjectsToGrid(projects, grid) {
     const projectsHtml = projects.map(project => {
         const categoryBadge = getCategoryBadge(project.category);
         const linkButton = getProjectLinkButton(project);
-        const techTags = project.technologies ? project.technologies.split(',').slice(0, 4).map(tech => 
+        const techTags = project.technologies ? project.technologies.split(',').slice(0, 6).map(tech => 
             `<span class="tech-tag">${tech.trim()}</span>`
         ).join('') : '';
         
+        // Ensure category is properly set
+        const projectCategory = project.category || 'web_dev';
+        
         return `
-        <div class="col-lg-4 col-md-6 project-item" data-category="${project.category || 'web_dev'}" data-aos="fade-up">
-            <div class="project-card">
-                <div class="project-image">
-                    ${project.image ? 
-                        `<img src="/static/uploads/${project.image}" alt="${escapeHtml(project.title)}">` :
-                        `<img src="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="${escapeHtml(project.title)}">`
-                    }
-                    <div class="project-overlay"></div>
-                    <div class="project-category-badge">
-                        ${categoryBadge}
+        <div class="project-card" data-category="${projectCategory}" data-aos="fade-up">
+            <div class="project-media">
+                ${project.image ? 
+                    `<div class="project-image">
+                        <img src="/static/uploads/${project.image}" alt="${escapeHtml(project.title)}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\\'>📷 Image unavailable</div>'">
+                        <div class="project-overlay"></div>
+                        <div class="project-category-badge" data-category="${projectCategory}" style="position: absolute; top: 15px; left: 15px; z-index: 100; display: flex;">
+                            ${categoryBadge}
+                        </div>
+                    </div>` :
+                    `<div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="${escapeHtml(project.title)}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\\'>📷 No image available</div>'">
+                        <div class="project-overlay"></div>
+                        <div class="project-category-badge" data-category="${projectCategory}" style="position: absolute; top: 15px; left: 15px; z-index: 100; display: flex;">
+                            ${categoryBadge}
+                        </div>
+                    </div>`
+                }
+            </div>
+            <div class="project-content">
+                <div class="project-header">
+                    <h3 class="project-title">${escapeHtml(project.title)}</h3>
+                    <div class="project-meta">
+                        ${project.category ? `
+                        <span class="project-type">
+                            ${getCategoryIcon(project.category)}
+                            ${getCategoryName(project.category)}
+                        </span>` : ''}
                     </div>
                 </div>
-                <div class="project-content">
-                    <h3 class="project-title">${escapeHtml(project.title)}</h3>
-                    <p class="project-description">
-                        ${project.short_description || 'No description available.'}
-                    </p>
-                    
-                    ${techTags ? `<div class="project-tech">${techTags}</div>` : ''}
-                    
-                    <div class="project-links">
-                        ${linkButton}
+                
+                <p class="project-description">
+                    ${project.short_description || 'No description available.'}
+                </p>
+                
+                ${techTags ? `
+                <div class="project-tech">
+                    <div class="tech-label">
+                        <i class="fas fa-tools"></i> Technologies Used
                     </div>
+                    <div class="tech-tags">
+                        ${techTags}
+                    </div>
+                </div>` : ''}
+                
+                <div class="project-links">
+                    ${linkButton}
                 </div>
             </div>
         </div>`;

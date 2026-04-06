@@ -18,6 +18,9 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    
+    <!-- Simple Theme Toggle Script -->
+    <script src="{{ url_for('static', filename='js/simple-theme-toggle.js') }}"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -36,6 +39,12 @@
                         <a class="nav-link{% if link.active %} active{% endif %}" href="{{ link.url }}">{{ link.text }}</a>
                     </li>
                     {% endfor %}
+                    <li class="nav-item">
+                        <button class="nav-link theme-toggle-navbar" onclick="toggleThemeDirect()" aria-label="Toggle theme" title="Toggle between light, dark, and auto themes">
+                            <i class="fas fa-sun sun-icon"></i>
+                            <i class="fas fa-moon moon-icon"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -181,6 +190,104 @@
     <!-- About Section -->
     <section id="about" class="section section-light">
         <div class="container">
+            {% if about_me_content %}
+            <h2 class="section-title" data-aos="fade-up">{{ about_me_content.section_title }}</h2>
+            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+                {{ about_me_content.section_subtitle }}
+            </p>
+            
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="about-card">
+                        <div class="about-header">
+                            <h3 class="mb-4">{{ about_me_content.main_title }}</h3>
+                            <p class="lead mb-4">
+                                {{ about_me_content.main_description }}
+                            </p>
+                        </div>
+                        
+                        <div class="about-story mb-4">
+                            <p>{{ about_me_content.story_paragraph1 }}</p>
+                            <p>{{ about_me_content.story_paragraph2 }}</p>
+                        </div>
+                        
+                        {% if about_me_content.skills_enabled %}
+                        <div class="about-skills">
+                            <h5 class="mb-3">{{ about_me_content.skills_title }}</h5>
+                            <div class="skills-grid">
+                                {% if about_me_content.skills %}
+                                    {% for skill in about_me_content.skills %}
+                                    <div class="skill-item">
+                                        <i class="{{ skill.icon }}"></i>
+                                        <span>{{ skill.name }}</span>
+                                    </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if about_me_content.cta_enabled %}
+                        <div class="about-cta">
+                            <a href="{{ about_me_content.cta_link }}" class="btn-hero btn-hero-primary">
+                                <i class="{{ about_me_content.cta_icon }}"></i> 
+                                {{ about_me_content.cta_text }}
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="col-lg-6" data-aos="fade-left">
+                    {% if about_me_content.highlights_enabled %}
+                    <!-- About Highlights -->
+                    <div class="about-highlights">
+                        {% if about_me_content.highlights %}
+                            {% for highlight in about_me_content.highlights %}
+                            <div class="highlight-card">
+                                <div class="highlight-icon">
+                                    <i class="{{ highlight.icon }}"></i>
+                                </div>
+                                <div class="highlight-content">
+                                    <h4>{{ highlight.title }}</h4>
+                                    <p>{{ highlight.description }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Recent Projects News Slider -->
+                    <div class="news-slider-container mt-4">
+                        <div class="news-slider-header">
+                            <i class="fas fa-broadcast-tower"></i>
+                            <h4>Latest Projects</h4>
+                        </div>
+                        <div class="news-slider-wrapper swiper">
+                            <div class="news-slider-track swiper-wrapper" id="newsSliderTrack">
+                                <!-- News items will be loaded here via JavaScript -->
+                            </div>
+                        </div>
+                        <!-- Swiper Navigation -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <!-- Swiper Pagination -->
+                        <div class="swiper-pagination"></div>
+                        <div class="news-slider-footer">
+                            <span class="live-indicator">
+                                <span class="pulse"></span>
+                                Live Updates
+                            </span>
+                            <a href="#projects" class="view-all-link">
+                                View All <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <!-- Fallback content when no database content exists -->
             <h2 class="section-title" data-aos="fade-up">About Me</h2>
             <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
                 Passionate about creating innovative digital solutions that make a difference
@@ -198,14 +305,10 @@
                         
                         <div class="about-story mb-4">
                             <p>
-                                With over 5 years of experience in web development and design, I specialize in building 
-                                modern, scalable applications that solve real-world problems. My passion lies in creating 
-                                intuitive user interfaces and robust backend systems that deliver exceptional results.
+                                With over 5 years of experience in web development and design, I specialize in building modern, scalable applications that solve real-world problems. My passion lies in creating intuitive user interfaces and robust backend systems that deliver exceptional results.
                             </p>
                             <p>
-                                I believe in the power of technology to transform businesses and improve lives. 
-                                Whether it's a startup MVP or an enterprise solution, I bring dedication, creativity, 
-                                and technical expertise to every project.
+                                I believe in the power of technology to transform businesses and improve lives. Whether it's a startup MVP or an enterprise solution, I bring dedication, creativity, and technical expertise to every project.
                             </p>
                         </div>
                         
@@ -241,7 +344,8 @@
                         
                         <div class="about-cta">
                             <a href="#contact" class="btn-hero btn-hero-primary">
-                                <i class="fas fa-envelope"></i> Let's Work Together
+                                <i class="fas fa-envelope"></i> 
+                                Let's Work Together
                             </a>
                         </div>
                     </div>
@@ -297,11 +401,16 @@
                             <i class="fas fa-broadcast-tower"></i>
                             <h4>Latest Projects</h4>
                         </div>
-                        <div class="news-slider-wrapper">
-                            <div class="news-slider-track" id="newsSliderTrack">
+                        <div class="news-slider-wrapper swiper">
+                            <div class="news-slider-track swiper-wrapper" id="newsSliderTrack">
                                 <!-- News items will be loaded here via JavaScript -->
                             </div>
                         </div>
+                        <!-- Swiper Navigation -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <!-- Swiper Pagination -->
+                        <div class="swiper-pagination"></div>
                         <div class="news-slider-footer">
                             <span class="live-indicator">
                                 <span class="pulse"></span>
@@ -314,6 +423,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </section>
 
@@ -621,7 +731,13 @@
                             <div class="project-media">
                                 {% if project.video %}
                                 <div class="project-video">
-                                    <video class="project-video-player" controls poster="{{ url_for('static', filename='uploads/' + project.image) if project.image else 'https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format' }}">
+                                    {% if project.image and project.image.startswith('http') %}
+                                        <video class="project-video-player" controls poster="{{ project.image }}">
+                                    {% elif project.image %}
+                                        <video class="project-video-player" controls poster="{{ url_for('static', filename='uploads/' + project.image) }}">
+                                    {% else %}
+                                        <video class="project-video-player" controls poster="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format">
+                                    {% endif %}
                                         <source src="{{ url_for('static', filename='uploads/' + project.video) }}" type="video/mp4">
                                         Your browser does not support the video tag.
                                     </video>
@@ -640,7 +756,13 @@
                                 </div>
                                 {% elif project.image %}
                                 <div class="project-image">
-                                    <img src="{{ url_for('static', filename='uploads/' + project.image) }}" alt="{{ project.title }}">
+                                    {% if project.image.startswith('http') %}
+                                        <!-- External image URL -->
+                                        <img src="{{ project.image }}" alt="{{ project.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\'>📷 Image unavailable</div>'">
+                                    {% else %}
+                                        <!-- Local uploaded image -->
+                                        <img src="{{ url_for('static', filename='uploads/' + project.image) }}" alt="{{ project.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\'>📷 Image unavailable</div>'">
+                                    {% endif %}
                                     <div class="project-overlay"></div>
                                     <div class="project-category-badge" data-category="{{ project.category or 'web_dev' }}">
                                         {% if project.category == 'web_dev' %}
@@ -656,7 +778,7 @@
                                 </div>
                                 {% else %}
                                 <div class="project-image">
-                                    <img src="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="{{ project.title }}">
+                                    <img src="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="{{ project.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\'>📷 No image available</div>'">
                                     <div class="project-overlay"></div>
                                     <div class="project-category-badge" data-category="{{ project.category or 'web_dev' }}">
                                         {% if project.category == 'web_dev' %}
@@ -676,11 +798,6 @@
                                 <div class="project-header">
                                     <h3 class="project-title">{{ project.title }}</h3>
                                     <div class="project-meta">
-                                        {% if project.created_at %}
-                                        <span class="project-date">
-                                            <i class="far fa-calendar"></i> {{ project.created_at }}
-                                        </span>
-                                        {% endif %}
                                         {% if project.category %}
                                         <span class="project-type">
                                             {% if project.category == 'web_dev' %}
@@ -1219,49 +1336,49 @@
             </div>
             
             <!-- Testimonials Stats -->
-            <div class="testimonials-stats" data-aos="fade-up" data-aos-delay="400">
+            <div class="testimonials-stats" data-aos="fade-up" data-aos-delay="400" id="testimonialsStats">
                 <div class="row g-4">
                     <div class="col-md-3 col-6">
                         <div class="stat-card">
                             <div class="stat-icon">
-                                <i class="fas fa-users"></i>
+                                <i class="{{ testimonials_stats.happy_clients_icon if testimonials_stats else 'fas fa-users' }}"></i>
                             </div>
                             <div class="stat-content">
-                                <h3 class="stat-number">50+</h3>
-                                <p class="stat-label">Happy Clients</p>
+                                <h3 class="stat-number">{{ testimonials_stats.happy_clients if testimonials_stats else '50+' }}</h3>
+                                <p class="stat-label">{{ testimonials_stats.happy_clients_label if testimonials_stats else 'Happy Clients' }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="stat-card">
                             <div class="stat-icon">
-                                <i class="fas fa-briefcase"></i>
+                                <i class="{{ testimonials_stats.projects_completed_icon if testimonials_stats else 'fas fa-briefcase' }}"></i>
                             </div>
                             <div class="stat-content">
-                                <h3 class="stat-number">100+</h3>
-                                <p class="stat-label">Projects Completed</p>
+                                <h3 class="stat-number">{{ testimonials_stats.projects_completed if testimonials_stats else '100+' }}</h3>
+                                <p class="stat-label">{{ testimonials_stats.projects_completed_label if testimonials_stats else 'Projects Completed' }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="stat-card">
                             <div class="stat-icon">
-                                <i class="fas fa-star"></i>
+                                <i class="{{ testimonials_stats.average_rating_icon if testimonials_stats else 'fas fa-star' }}"></i>
                             </div>
                             <div class="stat-content">
-                                <h3 class="stat-number">5.0</h3>
-                                <p class="stat-label">Average Rating</p>
+                                <h3 class="stat-number">{{ testimonials_stats.average_rating if testimonials_stats else '5.0' }}</h3>
+                                <p class="stat-label">{{ testimonials_stats.average_rating_label if testimonials_stats else 'Average Rating' }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="stat-card">
                             <div class="stat-icon">
-                                <i class="fas fa-award"></i>
+                                <i class="{{ testimonials_stats.awards_won_icon if testimonials_stats else 'fas fa-award' }}"></i>
                             </div>
                             <div class="stat-content">
-                                <h3 class="stat-number">15+</h3>
-                                <p class="stat-label">Awards Won</p>
+                                <h3 class="stat-number">{{ testimonials_stats.awards_won if testimonials_stats else '15+' }}</h3>
+                                <p class="stat-label">{{ testimonials_stats.awards_won_label if testimonials_stats else 'Awards Won' }}</p>
                             </div>
                         </div>
                     </div>

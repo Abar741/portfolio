@@ -1,0 +1,732 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Testimonials Statistics Management{% endblock %}
+
+{% block content %}
+<!-- Testimonials Stats Header -->
+<div class="admin-card fade-in">
+    <div class="admin-card-header">
+        <h1>
+            <i class="fas fa-chart-bar me-2"></i>Testimonials Statistics
+        </h1>
+        <p>Manage and monitor your portfolio statistics and performance metrics</p>
+    </div>
+    <div class="admin-card-body">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div>
+                <span class="badge bg-primary rounded-pill px-3 py-2">
+                    <i class="fas fa-users me-2"></i>{{ stats.happy_clients if stats else '0' }} Happy Clients
+                </span>
+                <span class="badge bg-success rounded-pill px-3 py-2 ms-2">
+                    <i class="fas fa-briefcase me-2"></i>{{ stats.projects_completed if stats else '0' }} Projects
+                </span>
+                <span class="badge bg-warning rounded-pill px-3 py-2 ms-2">
+                    <i class="fas fa-star me-2"></i>{{ stats.average_rating if stats else '5.0' }} Avg Rating
+                </span>
+                <span class="badge bg-info rounded-pill px-3 py-2 ms-2">
+                    <i class="fas fa-award me-2"></i>{{ stats.awards_won if stats else '0' }} Awards
+                </span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-outline-info btn-sm" onclick="debugStats()">
+                    <i class="fas fa-bug me-2"></i>Debug
+                </button>
+                <button class="btn btn-outline-success btn-sm" onclick="refreshStats()">
+                    <i class="fas fa-sync-alt me-2"></i>Refresh
+                </button>
+                <button class="btn btn-outline-warning btn-sm" onclick="resetStats()">
+                    <i class="fas fa-undo me-2"></i>Reset
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Auto-Calculation Info -->
+<div class="admin-card fade-in mb-4">
+    <div class="admin-card-header">
+        <h2>
+            <i class="fas fa-info-circle me-2"></i>Auto-Calculation Information
+        </h2>
+        <p>Understanding how statistics are calculated and managed</p>
+    </div>
+    <div class="admin-card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="badge bg-primary rounded-pill me-3">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <strong>Happy Clients:</strong>
+                        <p class="text-muted mb-0 small">Count of active testimonials</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="badge bg-success rounded-pill me-3">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div>
+                        <strong>Projects Completed:</strong>
+                        <p class="text-muted mb-0 small">Count of published projects</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="badge bg-warning rounded-pill me-3">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div>
+                        <strong>Average Rating:</strong>
+                        <p class="text-muted mb-0 small">Average rating from testimonials with ratings</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="badge bg-info rounded-pill me-3">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div>
+                        <strong>Awards Won:</strong>
+                        <p class="text-muted mb-0 small">Manually set (not calculated)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Real-Time Stats Display -->
+<div class="admin-card fade-in mb-4">
+    <div class="admin-card-header">
+        <h2>
+            <i class="fas fa-chart-line me-2"></i>Real-Time Statistics
+        </h2>
+        <p>Live monitoring of your portfolio performance metrics</p>
+    </div>
+    <div class="admin-card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="badge bg-success rounded-pill px-3 py-2">
+                <i class="fas fa-circle me-2"></i>Live
+            </span>
+            <div class="d-flex align-items-center gap-3">
+                <small class="text-muted">Last updated: <span id="lastUpdated">Just now</span></small>
+                <small class="text-muted" id="autoRefreshStatus" style="display: none;">
+                    <i class="fas fa-sync-alt fa-spin me-1"></i>Auto-refreshing...
+                </small>
+            </div>
+        </div>
+            <div class="row">
+                <!-- Happy Clients -->
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="admin-card stats-card h-100">
+                        <div class="card-body text-center">
+                            <div class="d-flex align-items-center justify-content-center mb-3">
+                                <div class="badge bg-primary rounded-pill p-2 me-2">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="text-primary fw-bold">Happy Clients</div>
+                            </div>
+                            <div class="h2 mb-0 fw-bold text-gray-800" id="realTimeHappyClients">
+                                {{ stats.happy_clients if stats else '0' }}
+                            </div>
+                            <div class="text-muted small">
+                                <i class="{{ stats.happy_clients_icon if stats else 'fas fa-users' }}"></i>
+                                {{ stats.happy_clients_label if stats else 'Happy Clients' }}
+                            </div>
+                            <div class="mt-2">
+                                <span class="badge bg-light text-dark rounded-pill">Auto-calculated</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projects Completed -->
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="admin-card stats-card h-100">
+                        <div class="card-body text-center">
+                            <div class="d-flex align-items-center justify-content-center mb-3">
+                                <div class="badge bg-success rounded-pill p-2 me-2">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <div class="text-success fw-bold">Projects</div>
+                            </div>
+                            <div class="h2 mb-0 fw-bold text-gray-800" id="realTimeProjects">
+                                {{ stats.projects_completed if stats else '0' }}
+                            </div>
+                            <div class="text-muted small">
+                                <i class="{{ stats.projects_completed_icon if stats else 'fas fa-briefcase' }}"></i>
+                                {{ stats.projects_completed_label if stats else 'Projects Completed' }}
+                            </div>
+                            <div class="mt-2">
+                                <span class="badge bg-light text-dark rounded-pill">Auto-calculated</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Average Rating -->
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="admin-card stats-card h-100">
+                        <div class="card-body text-center">
+                            <div class="d-flex align-items-center justify-content-center mb-3">
+                                <div class="badge bg-warning rounded-pill p-2 me-2">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="text-warning fw-bold">Rating</div>
+                            </div>
+                            <div class="h2 mb-0 fw-bold text-gray-800" id="realTimeRating">
+                                {{ stats.average_rating if stats else '5.0' }}
+                            </div>
+                            <div class="text-muted small">
+                                <i class="{{ stats.average_rating_icon if stats else 'fas fa-star' }}"></i>
+                                {{ stats.average_rating_label if stats else 'Average Rating' }}
+                            </div>
+                            <div class="mt-2">
+                                <span class="badge bg-light text-dark rounded-pill">Manual setting</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Awards Won -->
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="admin-card stats-card h-100">
+                        <div class="card-body text-center">
+                            <div class="d-flex align-items-center justify-content-center mb-3">
+                                <div class="badge bg-info rounded-pill p-2 me-2">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                                <div class="text-info fw-bold">Awards</div>
+                            </div>
+                            <div class="h2 mb-0 fw-bold text-gray-800" id="realTimeAwards">
+                                {{ stats.awards_won if stats else '0' }}
+                            </div>
+                            <div class="text-muted small">
+                                <i class="{{ stats.awards_won_icon if stats else 'fas fa-award' }}"></i>
+                                {{ stats.awards_won_label if stats else 'Awards Won' }}
+                            </div>
+                            <div class="mt-2">
+                                <span class="badge bg-light text-dark rounded-pill">Manual setting</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Form -->
+<div class="admin-card fade-in mb-4">
+    <div class="admin-card-header">
+        <h2>
+            <i class="fas fa-edit me-2"></i>Edit Statistics
+        </h2>
+        <p>Update your portfolio statistics and performance metrics</p>
+    </div>
+    <div class="admin-card-body">
+            {% if stats %}
+            <form method="POST" action="{{ url_for('testimonials_stats.update_stats') }}" id="statsUpdateForm">
+                <div class="row">
+                    <!-- Note: Happy Clients and Projects Completed are automatically calculated from database -->
+
+                    <!-- Average Rating -->
+                    <div class="col-md-6 mb-3">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="average_rating" class="form-label">Average Rating</label>
+                                <input type="number" 
+                                       class="form-control" 
+                                       id="average_rating" 
+                                       name="average_rating" 
+                                       value="{{ stats.average_rating }}" 
+                                       min="0" 
+                                       max="5" 
+                                       step="0.1" 
+                                       required>
+                            </div>
+                            <div class="col-md-4">
+                                <i class="{{ stats.average_rating_icon }} fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Awards Won -->
+                    <div class="col-md-6 mb-3">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="awards_won" class="form-label">Manage Awards</label>
+                                <input type="number" 
+                                       class="form-control" 
+                                       id="awards_won" 
+                                       name="awards_won" 
+                                       value="0" 
+                                       min="-999" 
+                                       max="999"
+                                       placeholder="Enter number to add (+) or reduce (-)"
+                                       required>
+                                <small class="form-text text-muted">
+                                    Current total: <strong>{{ stats.awards_won }}</strong> awards<br>
+                                    <span class="text-success">Enter positive number to add awards</span><br>
+                                    <span class="text-danger">Enter negative number to reduce awards</span>
+                                </small>
+                            </div>
+                            <div class="col-md-4">
+                                <i class="{{ stats.awards_won_icon }} fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Labels and Icons for Manual Fields Only -->
+                <div class="alert alert-info mb-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Note:</strong> 
+                    <ul class="mb-0">
+                        <li>Happy Clients and Projects Completed are automatically calculated from your database and cannot be manually edited.</li>
+                        <li>Awards field: Enter positive number to add awards, negative number to reduce awards.</li>
+                        <li>Rating field sets the exact rating value.</li>
+                        <li>Awards cannot go below 0 - the system will automatically prevent negative totals.</li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <label for="average_rating_label" class="form-label">Label</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="average_rating_label" 
+                               name="average_rating_label" 
+                               value="{{ stats.average_rating_label }}" 
+                               placeholder="Average Rating">
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label for="average_rating_icon" class="form-label">Icon Class</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="average_rating_icon" 
+                               name="average_rating_icon" 
+                               value="{{ stats.average_rating_icon }}" 
+                               placeholder="fas fa-star">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <label for="awards_won_label" class="form-label">Label</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="awards_won_label" 
+                               name="awards_won_label" 
+                               value="{{ stats.awards_won_label }}" 
+                               placeholder="Awards Won">
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label for="awards_won_icon" class="form-label">Icon Class</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="awards_won_icon" 
+                               name="awards_won_icon" 
+                               value="{{ stats.awards_won_icon }}" 
+                               placeholder="fas fa-award">
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Last updated: {{ stats.updated_at.strftime('%Y-%m-%d %H:%M:%S') if stats.updated_at else 'Never' }}
+                            </small>
+                            <div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% else %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                No statistics found. Default statistics will be created when you save.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Preview Card -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Preview</h6>
+        </div>
+        <div class="card-body">
+            <div class="testimonials-stats" id="previewStats">
+                <div class="row g-4">
+                    <div class="col-md-3 col-6">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="{{ stats.happy_clients_icon if stats else 'fas fa-users' }}"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-number">{{ stats.happy_clients if stats else '0' }}</h3>
+                                <p class="stat-label">{{ stats.happy_clients_label if stats else 'Happy Clients' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="{{ stats.projects_completed_icon if stats else 'fas fa-briefcase' }}"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-number">{{ stats.projects_completed if stats else '0' }}</h3>
+                                <p class="stat-label">{{ stats.projects_completed_label if stats else 'Projects Completed' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="{{ stats.average_rating_icon if stats else 'fas fa-star' }}"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-number">{{ stats.average_rating if stats else '5.0' }}</h3>
+                                <p class="stat-label">{{ stats.average_rating_label if stats else 'Average Rating' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="{{ stats.awards_won_icon if stats else 'fas fa-award' }}"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-number">{{ stats.awards_won if stats else '0' }}</h3>
+                                <p class="stat-label">{{ stats.awards_won_label if stats else 'Awards Won' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.testimonials-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Store stats data in JavaScript scope
+const statsData = {{ stats | tojson if stats else '{"happy_clients": 0, "projects_completed": 0, "average_rating": 5.0, "awards_won": 0}' }};
+
+function updateRealTimeDisplay() {
+    if (statsData && statsData.happy_clients !== undefined) {
+        document.getElementById('realTimeHappyClients').textContent = statsData.happy_clients;
+        document.getElementById('realTimeProjects').textContent = statsData.projects_completed;
+        document.getElementById('realTimeRating').textContent = statsData.average_rating;
+        document.getElementById('realTimeAwards').textContent = statsData.awards_won;
+    }
+}
+
+function updatePreview() {
+    if (statsData && statsData.happy_clients !== undefined) {
+        const previewHTML = `
+            <div class="row g-4">
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="${statsData.happy_clients_icon}"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number">${statsData.happy_clients}</h3>
+                            <p class="stat-label">${statsData.happy_clients_label}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="${statsData.projects_completed_icon}"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number">${statsData.projects_completed}</h3>
+                            <p class="stat-label">${statsData.projects_completed_label}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="${statsData.average_rating_icon}"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number">${statsData.average_rating}</h3>
+                            <p class="stat-label">${statsData.average_rating_label}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="${statsData.awards_won_icon}"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number">${statsData.awards_won}</h3>
+                            <p class="stat-label">${statsData.awards_won_label}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('previewStats').innerHTML = previewHTML;
+    }
+}
+
+function showNotification(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    const container = document.querySelector('.container-fluid');
+    container.insertBefore(alertDiv, container.firstChild);
+    
+    // Remove alert after 3 seconds
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 3000);
+}
+
+function refreshStats() {
+    if (confirm('Are you sure you want to refresh statistics from database?')) {
+        fetch('/admin/testimonials-stats/refresh', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update the stats data
+                if (data.stats) {
+                    statsData = data.stats;
+                    updateRealTimeDisplay();
+                    updatePreview();
+                }
+                showNotification('Statistics refreshed successfully!', 'success');
+            } else {
+                showNotification('Error refreshing statistics: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Error refreshing statistics', 'error');
+        });
+    }
+}
+
+function resetStats() {
+    if (confirm('Are you sure you want to reset all statistics to default values? This action cannot be undone.')) {
+        fetch('/admin/testimonials-stats/reset', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                showNotification('Error resetting statistics: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Error resetting statistics', 'error');
+        });
+    }
+}
+
+function debugStats() {
+    console.log('Current stats data:', statsData);
+    console.log('Real-time elements:', {
+        happyClients: document.getElementById('realTimeHappyClients'),
+        projects: document.getElementById('realTimeProjects'),
+        rating: document.getElementById('realTimeRating'),
+        awards: document.getElementById('realTimeAwards')
+    });
+    
+    // Test updating display
+    updateRealTimeDisplay();
+    updatePreview();
+    
+    showNotification('Debug mode activated. Check console for stats data.', 'info');
+}
+
+// Auto-refresh stats every 30 seconds
+function autoRefreshStats() {
+    console.log('🔄 Starting auto-refresh...');
+    
+    // Show auto-refresh status
+    const statusElement = document.getElementById('autoRefreshStatus');
+    const lastUpdatedElement = document.getElementById('lastUpdated');
+    
+    statusElement.style.display = 'inline';
+    
+    fetch('/admin/testimonials-stats/api/stats', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => {
+        console.log('📡 API Response status:', response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log('📊 API Response data:', data);
+        
+        if (data.success && data.stats) {
+            // Update the global statsData variable
+            Object.assign(statsData, data.stats);
+            console.log('✅ Updated statsData:', statsData);
+            
+            updateRealTimeDisplay();
+            updatePreview();
+            
+            // Update timestamp
+            const now = new Date();
+            lastUpdatedElement.textContent = now.toLocaleTimeString();
+            
+            console.log('🎉 Stats auto-refreshed successfully:', data.stats);
+        } else {
+            console.error('❌ API returned error:', data.message || 'Unknown error');
+        }
+    })
+    .catch(error => {
+        console.error('❌ Error auto-refreshing stats:', error);
+    })
+    .finally(() => {
+        // Hide auto-refresh status
+        statusElement.style.display = 'none';
+        console.log('✅ Auto-refresh completed');
+    });
+}
+
+// Handle form submission
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle stats update form submission
+    const statsForm = document.getElementById('statsUpdateForm');
+    if (statsForm) {
+        statsForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            console.log('🔄 Submitting stats update form...');
+            
+            // Show loading state
+            const submitButton = statsForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+            submitButton.disabled = true;
+            
+            // Create FormData
+            const formData = new FormData(statsForm);
+            
+            // Submit via fetch
+            fetch(statsForm.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('📊 Form submission response:', data);
+                
+                if (data.success) {
+                    // Show success message
+                    showNotification('Statistics updated successfully!', 'success');
+                    
+                    // Refresh stats from server
+                    setTimeout(autoRefreshStats, 500);
+                    
+                    console.log('✅ Stats updated successfully');
+                } else {
+                    showNotification('Error updating statistics: ' + (data.message || 'Unknown error'), 'error');
+                    console.error('❌ Update failed:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('❌ Form submission error:', error);
+                showNotification('Error updating statistics. Please try again.', 'error');
+            })
+            .finally(() => {
+                // Restore button state
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+            });
+        });
+    }
+    
+    updateRealTimeDisplay();
+    updatePreview();
+    
+    // Start auto-refresh every 30 seconds
+    setInterval(autoRefreshStats, 30000);
+    
+    // Also do an immediate refresh to get latest data
+    setTimeout(autoRefreshStats, 1000);
+    
+    // Add a global function for manual testing
+    window.testAutoRefresh = function() {
+        console.log('🧪 Manual test triggered');
+        autoRefreshStats();
+    };
+    
+    console.log('🚀 Auto-refresh initialized. Use testAutoRefresh() in console to test manually.');
+});
+</script>
+{% endblock %}

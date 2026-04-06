@@ -9,8 +9,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    
+    <!-- Simple Theme Toggle Script -->
+    <script src="{{ url_for('static', filename='js/simple-theme-toggle.js') }}"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -29,6 +39,12 @@
                         <a class="nav-link{% if link.active %} active{% endif %}" href="{% if link.url == '#projects' %}{{ url_for('main.portfolio') }}{% else %}{{ url_for('main.home') }}{{ link.url }}{% endif %}">{{ link.text }}</a>
                     </li>
                     {% endfor %}
+                    <li class="nav-item">
+                        <button class="nav-link theme-toggle-navbar" onclick="toggleThemeDirect()" aria-label="Toggle theme" title="Toggle between light, dark, and auto themes">
+                            <i class="fas fa-sun sun-icon"></i>
+                            <i class="fas fa-moon moon-icon"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -74,7 +90,13 @@
                             <div class="project-media">
                                 {% if project.video %}
                                 <div class="project-video">
-                                    <video class="project-video-player" controls poster="{{ url_for('static', filename='uploads/' + project.image) if project.image else 'https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format' }}">
+                                    {% if project.image and project.image.startswith('http') %}
+                                        <video class="project-video-player" controls poster="{{ project.image }}">
+                                    {% elif project.image %}
+                                        <video class="project-video-player" controls poster="{{ url_for('static', filename='uploads/' + project.image) }}">
+                                    {% else %}
+                                        <video class="project-video-player" controls poster="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format">
+                                    {% endif %}
                                         <source src="{{ url_for('static', filename='uploads/' + project.video) }}" type="video/mp4">
                                         Your browser does not support the video tag.
                                     </video>
@@ -93,7 +115,13 @@
                                 </div>
                                 {% elif project.image %}
                                 <div class="project-image">
-                                    <img src="{{ url_for('static', filename='uploads/' + project.image) }}" alt="{{ project.title }}">
+                                    {% if project.image.startswith('http') %}
+                                        <!-- External image URL -->
+                                        <img src="{{ project.image }}" alt="{{ project.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\'>📷 Image unavailable</div>'">
+                                    {% else %}
+                                        <!-- Local uploaded image -->
+                                        <img src="{{ url_for('static', filename='uploads/' + project.image) }}" alt="{{ project.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\'>📷 Image unavailable</div>'">
+                                    {% endif %}
                                     <div class="project-overlay"></div>
                                     <div class="project-category-badge" data-category="{{ project.category or 'web_dev' }}">
                                         {% if project.category == 'web_dev' %}
@@ -109,7 +137,7 @@
                                 </div>
                                 {% else %}
                                 <div class="project-image">
-                                    <img src="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="{{ project.title }}">
+                                    <img src="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="{{ project.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\'>📷 No image available</div>'">
                                     <div class="project-overlay"></div>
                                     <div class="project-category-badge" data-category="{{ project.category or 'web_dev' }}">
                                         {% if project.category == 'web_dev' %}
@@ -129,11 +157,6 @@
                                 <div class="project-header">
                                     <h3 class="project-title">{{ project.title }}</h3>
                                     <div class="project-meta">
-                                        {% if project.created_at %}
-                                        <span class="project-date">
-                                            <i class="far fa-calendar"></i> {{ project.created_at }}
-                                        </span>
-                                        {% endif %}
                                         {% if project.category %}
                                         <span class="project-type">
                                             {% if project.category == 'web_dev' %}

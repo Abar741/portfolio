@@ -3,6 +3,7 @@
 {% block title %}Messages Management{% endblock %}
 
 {% block extra_css %}
+<meta name="csrf-token" content="">
 <style>
     /* Enhanced Messages Page Styles */
     .messages-header {
@@ -1943,7 +1944,7 @@
                         </thead>
                         <tbody>
                             {% for message in messages %}
-                            <tr class="{{ 'unread-row' if message.status == 'unread' else '' }}">
+                            <tr class="{{ 'unread-row' if message.status == 'unread' else '' }}" data-message-id="{{ message.id }}">
                                 <td>
                                     <div class="form-check">
                                         <input class="form-check-input message-checkbox" type="checkbox" value="{{ message.id }}">
@@ -2178,18 +2179,69 @@ function markAsRead(id) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': ''
+            'X-CSRFToken': getCsrfToken()
         }
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            location.reload();
+            // Update UI without reload
+            updateMessageUI(id, 'read');
+            updateUnreadCount();
+        } else {
+            alert('Error marking message as read: ' + data.message);
         }
     })
     .catch(error => {
         console.error('Error:', error);
+        alert('Error marking message as read');
     });
+}
+
+// Update message UI after marking as read
+function updateMessageUI(id, status) {
+    const row = document.querySelector(`tr[data-message-id="${id}"]`);
+    if (row) {
+        // Remove unread styling
+        row.classList.remove('unread-row');
+        
+        // Update status badge
+        const statusBadge = row.querySelector('.badge-danger');
+        if (statusBadge) {
+            statusBadge.className = 'text-muted';
+            statusBadge.innerHTML = '<i class="fas fa-envelope-open"></i>';
+        }
+        
+        // Update message data
+        const message = messages.find(m => m.id === id);
+        if (message) {
+            message.status = status;
+        }
+    }
+}
+
+// Update unread count
+function updateUnreadCount() {
+    const unreadCount = messages.filter(m => m.status === 'unread').length;
+    const unreadBadge = document.querySelector('.badge-danger');
+    if (unreadBadge) {
+        if (unreadCount > 0) {
+            unreadBadge.textContent = unreadCount + ' Unread';
+        } else {
+            unreadBadge.style.display = 'none';
+        }
+    }
+    
+    // Update stats card
+    const unreadStatsCard = document.querySelector('.stats-card-enhanced.unread .h3');
+    if (unreadStatsCard) {
+        unreadStatsCard.textContent = unreadCount;
+    }
+}
+
+// Get CSRF token (disabled for now)
+function getCsrfToken() {
+    return '';
 }
 
 // Custom dropdown functionality (No Bootstrap conflicts)
@@ -2338,11 +2390,11 @@ function deleteAllRead() {
     }
     
     if (confirm(`Delete ${readIds.length} read message(s)? This action cannot be undone.`)) {
-        fetch('/admin/messages/delete-read', {
+        fetch('/admin/messages/delete-all-read', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': ''
+                'X-CSRFToken': getCsrfToken()
             }
         })
         .then(response => response.json())

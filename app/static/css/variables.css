@@ -1,0 +1,153 @@
+/* =============================================
+   Portfolio - CSS Variables
+   ============================================= */
+
+/* Light Theme (Default) */
+:root {
+    /* Theme Toggle Variables */
+    --theme-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Primary Colors - Professional Blue Palette */
+    --primary-color: #3b82f6;
+    --primary-light: #60a5fa;
+    --primary-dark: #2563eb;
+    --secondary-color: #8b5cf6;
+    --accent-color: #ec4899;
+    
+    /* Neutral Colors - Light Theme - Refined Grays */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    --bg-accent: #e0f2fe;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --text-inverse: #ffffff;
+    --border-color: #e2e8f0;
+    --border-light: #f1f5f9;
+    --border-accent: #cbd5e1;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --overlay-bg: rgba(255, 255, 255, 0.9);
+    
+    /* Component Specific - Light Theme */
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --input-bg: #ffffff;
+    --input-border: #d1d5db;
+    --input-focus: #3b82f6;
+    --input-focus-border: #93c5fd;
+    --button-primary: #3b82f6;
+    --button-primary-hover: #2563eb;
+    --button-primary-text: #ffffff;
+    --button-secondary: #f1f5f9;
+    --button-secondary-hover: #e2e8f0;
+    --button-secondary-text: #475569;
+    --navbar-bg: rgba(255, 255, 255, 0.95);
+    --navbar-text: #0f172a;
+    --navbar-border: rgba(226, 232, 240, 0.8);
+    --navbar-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    
+    /* Hero Section Colors */
+    --hero-bg: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    --hero-text: #0f172a;
+    --hero-subtitle: #475569;
+    --hero-accent: #3b82f6;
+    
+    /* Section Colors */
+    --section-light-bg: #ffffff;
+    --section-dark-bg: #f8fafc;
+    --section-accent-bg: #f1f5f9;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
+    
+    /* Typography */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    /* Border Radius */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.5rem;
+    --radius-full: 9999px;
+    
+    /* Z-index */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+    --z-toast: 1080;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    /* Primary Colors - Dark Theme */
+    --primary-color: #60a5fa;
+    --primary-light: #93c5fd;
+    --primary-dark: #3b82f6;
+    --secondary-color: #a78bfa;
+    --accent-color: #f472b6;
+    
+    /* Neutral Colors - Dark Theme */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --bg-accent: #1e3a8a;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-inverse: #0f172a;
+    --border-color: #334155;
+    --border-light: #475569;
+    --border-accent: #64748b;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --overlay-bg: rgba(15, 23, 42, 0.9);
+    
+    /* Component Specific - Dark Theme */
+    --card-bg: #1e293b;
+    --card-border: #334155;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --input-bg: #0f172a;
+    --input-border: #475569;
+    --input-focus: #60a5fa;
+    --input-focus-border: #1e40af;
+    --button-primary: #3b82f6;
+    --button-primary-hover: #2563eb;
+    --button-primary-text: #ffffff;
+    --button-secondary: #334155;
+    --button-secondary-hover: #475569;
+    --button-secondary-text: #cbd5e1;
+    --navbar-bg: rgba(15, 23, 42, 0.95);
+    --navbar-text: #f8fafc;
+    --navbar-border: rgba(51, 65, 85, 0.8);
+    --navbar-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    
+    /* Hero Section Colors - Dark Theme */
+    --hero-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --hero-text: #f8fafc;
+    --hero-subtitle: #cbd5e1;
+    --hero-accent: #60a5fa;
+    
+    /* Section Colors - Dark Theme */
+    --section-light-bg: #1e293b;
+    --section-dark-bg: #0f172a;
+    --section-accent-bg: #334155;
+}
