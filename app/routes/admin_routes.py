@@ -23,9 +23,7 @@ def get_unread_messages_count():
 
 def get_unread_feedback_count():
     """Get count of unread feedback submissions"""
-    return Message.query.filter_by(status='unread').filter(
-        Message.subject.like("%Feedback Submission%")
-    ).count()
+    return Message.query.filter(Message.subject.contains('Feedback Submission')).filter_by(status='unread').count()
 
 def get_navbar_data():
     """Get navbar data from JSON file"""
@@ -52,24 +50,56 @@ def get_navbar_data():
             {"text": "Projects", "url": "#projects", "active": False},
             {"text": "Skills", "url": "#skills", "active": False},
             {"text": "Testimonials", "url": "#testimonials", "active": False},
-            {"text": "Feedback", "url": "#feedback", "active": False},
-            {"text": "Contact", "url": "#contact", "active": False}
+            {"text": "Feedback", "url": "#feedback-contact-section", "active": False},
+            {"text": "Contact", "url": "#feedback-contact-section", "active": False}
         ]
     }
 
 def save_navbar_data(navbar_data):
     """Save navbar data to JSON file"""
-    navbar_data_file = os.path.join(current_app.root_path, 'static', 'data', 'navbar_data.json')
-    
     try:
-        # Ensure directory exists
-        os.makedirs(os.path.dirname(navbar_data_file), exist_ok=True)
+        # Use absolute path to avoid any path issues
+        navbar_data_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'data', 'navbar_data.json'))
         
+        # Debug: Log the file path and data
+        current_app.logger.info(f"Saving navbar data to: {navbar_data_file}")
+        current_app.logger.info(f"Navbar data to save: {navbar_data}")
+        current_app.logger.info(f"Current working directory: {os.getcwd()}")
+        current_app.logger.info(f"Current app root path: {current_app.root_path}")
+        
+        # Ensure directory exists
+        dir_path = os.path.dirname(navbar_data_file)
+        os.makedirs(dir_path, exist_ok=True)
+        current_app.logger.info(f"Directory created/verified: {dir_path}")
+        
+        # Debug: Check if file is writable
+        if os.path.exists(navbar_data_file):
+            current_app.logger.info(f"File exists and is writable: {os.access(navbar_data_file, os.W_OK)}")
+        else:
+            current_app.logger.info(f"File does not exist, will be created")
+        
+        # Write the file
         with open(navbar_data_file, 'w') as f:
             json.dump(navbar_data, f, indent=2)
+        
+        # Debug: Verify file was saved
+        if os.path.exists(navbar_data_file):
+            current_app.logger.info(f"File saved successfully at: {navbar_data_file}")
+            # Read it back to verify
+            with open(navbar_data_file, 'r') as f:
+                verify_data = json.load(f)
+            current_app.logger.info(f"File verification successful: {len(verify_data)} keys")
+        else:
+            current_app.logger.error(f"File was not created!")
+            return False
+            
         return True
     except Exception as e:
         current_app.logger.error(f"Error saving navbar data: {str(e)}")
+        current_app.logger.error(f"Exception type: {type(e).__name__}")
+        current_app.logger.error(f"Exception args: {e.args}")
+        import traceback
+        current_app.logger.error(f"Traceback: {traceback.format_exc()}")
         return False
 
 
@@ -602,11 +632,22 @@ def feedback():
         Message.subject.like("%Feedback Submission%")
     ).order_by(Message.id.desc()).all()
     
+    # Get associated testimonials for avatar images
+    testimonials = {}
+    for message in feedback_messages:
+        # Try to find a testimonial that matches this feedback message by client name
+        testimonial = Testimonial.query.filter_by(
+            client_name=message.name
+        ).first()
+        if testimonial:
+            testimonials[message.id] = testimonial
+    
     unread_count = get_unread_messages_count()
     feedback_unread_count = get_unread_feedback_count()
     
     return render_template("admin/feedback_pro.html", 
                          feedback_messages=feedback_messages, 
+                         testimonials=testimonials,
                          unread_count=unread_count,
                          feedback_unread_count=feedback_unread_count)
 
@@ -717,25 +758,68 @@ def navbar_management():
     unread_count = get_unread_messages_count()
     return render_template("admin/navbar_management.html", 
                          navbar_data=navbar_data, 
-                         unread_count=unread_count, 
+                         unread_count=unread_count,
                          feedback_unread_count=get_unread_feedback_count())
+
+@admin.route("/test-navbar-save")
+@login_required
+def test_navbar_save():
+    """Test navbar save functionality"""
+    try:
+        # Direct file update - bypass the save_navbar_data function
+        file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'data', 'navbar_data.json'))
+        
+        # Create test data
+        test_data = {
+            "brand": {
+                "logo": "/static/images/logo.png",
+                "alt": "Graphic Nest",
+                "url": "#hero"
+            },
+            "links": [
+                {"text": "Home", "url": "#hero", "active": True},
+                {"text": "About", "url": "#about", "active": False},
+                {"text": "Services", "url": "#services", "active": False},
+                {"text": "Projects", "url": "#projects", "active": False},
+                {"text": "Skills", "url": "#skills", "active": False},
+                {"text": "Testimonials", "url": "#testimonials", "active": False},
+                {"text": "Feedback", "url": "#feedback-contact-section", "active": False},
+                {"text": "Contact", "url": "#feedback-contact-section", "active": False},
+                {"text": "TEST LINK", "url": "#test", "active": True}
+            ]
+        }
+        
+        # Write directly to file
+        with open(file_path, 'w') as f:
+            json.dump(test_data, f, indent=2)
+        
+        flash("Direct file update successful! TEST LINK added to navbar", "success")
+        current_app.logger.info(f"Direct file update successful at: {file_path}")
+        
+    except Exception as e:
+        flash(f"Direct file update error: {str(e)}", "error")
+        current_app.logger.error(f"Direct file update error: {str(e)}")
+        import traceback
+        current_app.logger.error(f"Traceback: {traceback.format_exc()}")
+    
+    return redirect(url_for("admin.navbar"))
 
 @admin.route("/navbar/update", methods=["POST"])
 @login_required
 def update_navbar():
-    """Update navbar data"""
+    """Update navbar data - Respects form data"""
     try:
         # Get form data
-        brand_logo = request.form.get("brand_logo")
-        brand_alt = request.form.get("brand_alt")
-        brand_url = request.form.get("brand_url")
+        brand_logo = request.form.get("brand_logo", "/static/images/logo.png")
+        brand_alt = request.form.get("brand_alt", "Graphic Nest")
+        brand_url = request.form.get("brand_url", "#hero")
         
         # Get links data
         link_texts = request.form.getlist("link_text")
         link_urls = request.form.getlist("link_url")
         link_actives = request.form.getlist("link_active")
         
-        # Build navbar data structure
+        # Build navbar data structure from form data
         navbar_data = {
             "brand": {
                 "logo": brand_logo,
@@ -745,24 +829,26 @@ def update_navbar():
             "links": []
         }
         
-        # Build links array
+        # Build links array from form data
         for i in range(len(link_texts)):
-            if link_texts[i].strip():  # Only add if text is not empty
+            if link_texts[i] and link_texts[i].strip():  # Only add if text is not empty
                 navbar_data["links"].append({
-                    "text": link_texts[i],
-                    "url": link_urls[i],
-                    "active": link_actives[i] == "on"
+                    "text": link_texts[i].strip(),
+                    "url": link_urls[i] if link_urls[i] else "#",
+                    "active": link_actives[i] == "on" if i < len(link_actives) else False
                 })
         
-        # Save navbar data
-        if save_navbar_data(navbar_data):
-            flash("Navbar updated successfully! ✅", "success")
-        else:
-            flash("Error saving navbar data!", "error")
-            
+        # Direct file write
+        file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'data', 'navbar_data.json'))
+        with open(file_path, 'w') as f:
+            json.dump(navbar_data, f, indent=2)
+        
+        flash("Navbar updated successfully! Changes saved", "success")
+        current_app.logger.info(f"Form-based navbar update successful at: {file_path}")
+        
     except Exception as e:
-        current_app.logger.error(f"Error updating navbar: {str(e)}")
-        flash("Error updating navbar!", "error")
+        flash(f"Update error: {str(e)}", "error")
+        current_app.logger.error(f"Form-based update error: {str(e)}")
     
     return redirect(url_for("admin.navbar"))
 
@@ -924,4 +1010,62 @@ def delete_all_read_messages():
         return jsonify({
             "success": False,
             "message": f"Error deleting read messages: {str(e)}"
+        })
+
+
+# CONTACT MANAGEMENT ROUTES
+@admin.route("/contact")
+@login_required
+def contact():
+    """Manage all contact form submissions"""
+    from datetime import datetime, timedelta
+    
+    # Get contact messages (excluding feedback submissions)
+    contact_messages = Message.query.filter(
+        ~Message.subject.like("%Feedback Submission%")
+    ).order_by(Message.created_at.desc()).all()
+    
+    # Get unread count
+    unread_count = get_unread_messages_count()
+    feedback_unread_count = get_unread_feedback_count()
+    
+    # Calculate statistics
+    total_contacts = len(contact_messages)
+    recent_contacts = len([msg for msg in contact_messages if msg.created_at > datetime.utcnow() - timedelta(days=7)])
+    
+    return render_template("admin/contact_pro.html", 
+                         messages=contact_messages, 
+                         unread_count=unread_count,
+                         feedback_unread_count=feedback_unread_count,
+                         total_contacts=total_contacts,
+                         recent_contacts=recent_contacts)
+
+
+@admin.route("/contact/delete/<int:id>", methods=["POST"])
+@login_required
+def delete_contact(id):
+    """Delete contact message"""
+    try:
+        message = Message.query.get_or_404(id)
+        
+        # Don't allow deletion of feedback submissions through this route
+        if "Feedback Submission" in message.subject:
+            return jsonify({
+                "success": False,
+                "message": "Please use feedback management to delete feedback submissions"
+            })
+        
+        db.session.delete(message)
+        db.session.commit()
+        
+        return jsonify({
+            "success": True,
+            "message": "Contact message deleted successfully"
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "success": False,
+            "message": f"Error deleting contact message: {str(e)}"
         })

@@ -1224,12 +1224,7 @@
                         Skills
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ url_for('about_me.index') }}" class="nav-link {% if request.endpoint.startswith('about_me') %}active{% endif %}">
-                        <i class="fas fa-id-card"></i>
-                        About Me
-                    </a>
-                </li>
+
                 <li class="nav-item">
                     <a href="{{ url_for('testimonials_stats.index') }}" class="nav-link {% if request.endpoint.startswith('testimonials_stats') %}active{% endif %}">
                         <i class="fas fa-chart-bar"></i>
@@ -1243,6 +1238,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ url_for('admin.contact') }}" class="nav-link {% if request.endpoint == 'admin.contact' %}active{% endif %}">
+                        <i class="fas fa-envelope"></i>
+                        Contact
+                        {% if current_user.is_authenticated and unread_count is defined and unread_count and unread_count > 0 %}
+                        <span class="badge bg-danger rounded-pill ms-auto">{{ unread_count }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ url_for('admin.feedback') }}" class="nav-link">
                         <i class="fas fa-comment-dots"></i>
                         Feedback
@@ -1253,10 +1257,10 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if request.endpoint == 'admin.messages' %}active{% endif %}" href="{{ url_for('admin.messages') }}">
-                        <i class="fas fa-envelope"></i>
+                        <i class="fas fa-inbox"></i>
                         Messages
                         {% if current_user.is_authenticated and unread_count is defined and unread_count and unread_count > 0 %}
-                        <span class="badge bg-danger rounded-pill ms-auto">{{ unread_count }}</span>
+                        <span class="badge bg-primary rounded-pill ms-auto">{{ unread_count }}</span>
                         {% endif %}
                     </a>
                 </li>

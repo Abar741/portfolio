@@ -115,6 +115,48 @@ function initializeNavigation() {
             }
         });
     });
+    
+    // Handle Get In Touch button specifically
+    console.log('Setting up Get In Touch button handler...');
+    
+    const getInTouchBtn = document.getElementById('getInTouchBtn');
+    console.log('Get In Touch button found:', getInTouchBtn);
+    
+    if (getInTouchBtn) {
+        console.log('Adding click event listener...');
+        getInTouchBtn.addEventListener('click', function(e) {
+            console.log('Button clicked! Event fired.');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const target = document.getElementById('feedback-contact-section');
+            console.log('Target section found:', target);
+            
+            if (target) {
+                console.log('Target offsetTop:', target.offsetTop);
+                const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+                console.log('Calculated scroll position:', offsetTop);
+                
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+                
+                console.log('Scroll command executed');
+            } else {
+                console.error('Target section not found!');
+            }
+        });
+        
+        // Test if button is actually clickable
+        getInTouchBtn.addEventListener('mousedown', function() {
+            console.log('Mousedown event fired on button');
+        });
+        
+        console.log('Get In Touch button handler setup complete');
+    } else {
+        console.error('Get In Touch button not found in DOM!');
+    }
 }
 
 // ===== SKILL BARS ===== //

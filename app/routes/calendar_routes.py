@@ -248,6 +248,19 @@ def list_events():
         return jsonify({'success': False, 'message': str(e)}), 500
 
 
+@calendar_bp.route("/calendar")
+@login_required
+def calendar_data():
+    """Get calendar data for frontend"""
+    try:
+        events = CalendarEvent.query.filter_by(status='active').all()
+        return jsonify({
+            'success': True,
+            'events': [event.to_dict() for event in events]
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
+
 @calendar_bp.route("/dashboard-stats")
 @login_required
 def dashboard_stats():

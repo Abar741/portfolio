@@ -39,8 +39,8 @@ def get_navbar_data():
             {"text": "Projects", "url": "#projects", "active": False},
             {"text": "Skills", "url": "#skills", "active": False},
             {"text": "Testimonials", "url": "#testimonials", "active": False},
-            {"text": "Feedback", "url": "#feedback", "active": False},
-            {"text": "Contact", "url": "#contact", "active": False}
+            {"text": "Feedback", "url": "#feedback-contact-section", "active": False},
+            {"text": "Contact", "url": "#feedback-contact-section", "active": False}
         ]
     }
 

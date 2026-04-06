@@ -74,20 +74,20 @@ def create_app():
     from .routes.main_routes import main
     app.register_blueprint(main)
     
-    app.register_blueprint(auth)
-    
-    from .routes.admin_routes import admin
-    app.register_blueprint(admin)
+    from .routes.testimonials_stats_routes import testimonials_stats_bp
+    app.register_blueprint(testimonials_stats_bp)
     
     from .routes.calendar_routes import calendar_bp
     app.register_blueprint(calendar_bp)
     
-    from .routes.testimonials_stats_routes import testimonials_stats_bp
-    app.register_blueprint(testimonials_stats_bp)
-    
     from .routes.about_me_routes import about_me_bp
     app.register_blueprint(about_me_bp)
     
+    app.register_blueprint(auth)
+    
+    from .routes.admin_routes import admin
+    app.register_blueprint(admin)
+            
     # Create upload directory
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
     

@@ -1007,17 +1007,29 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateStatistics() {
     // Update skills count
     const skillsCount = document.querySelectorAll('#skillsTableBody tr[data-skill-id]').length;
-    document.getElementById('skillsCount').textContent = skillsCount || 6;
+    const skillsCountElement = document.getElementById('skillsCount');
+    if (skillsCountElement) {
+        skillsCountElement.textContent = skillsCount || 6;
+    }
     
     // Update highlights count
     const highlightsCount = document.querySelectorAll('#highlightsTableBody tr[data-highlight-id]').length;
-    document.getElementById('highlightsCount').textContent = highlightsCount || 4;
+    const highlightsCountElement = document.getElementById('highlightsCount');
+    if (highlightsCountElement) {
+        highlightsCountElement.textContent = highlightsCount || 4;
+    }
     
     // Update last updated
-    document.getElementById('lastUpdated').textContent = 'Today';
+    const lastUpdatedElement = document.getElementById('lastUpdated');
+    if (lastUpdatedElement) {
+        lastUpdatedElement.textContent = 'Today';
+    }
     
     // Update status
-    document.getElementById('statusStatus').textContent = 'Active';
+    const statusStatusElement = document.getElementById('statusStatus');
+    if (statusStatusElement) {
+        statusStatusElement.textContent = 'Active';
+    }
 }
 
 // Live Preview Functionality

@@ -1,0 +1,601 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Contact Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Enhanced Contact Page Styles */
+    .contact-header {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px 15px 0 0;
+        margin-bottom: 0;
+    }
+    
+    .contact-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .contact-header p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+    
+    .contact-container {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 0;
+        margin-bottom: 25px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .contact-toolbar {
+        background: #f8f9fa;
+        padding: 20px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .contact-content {
+        padding: 0;
+    }
+    
+    .stats-card {
+        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stats-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #48bb78;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stats-label {
+        color: #64748b;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    .message-item {
+        border-bottom: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+    }
+    
+    .message-item:hover {
+        background: #f8fafc;
+    }
+    
+    .message-item.unread {
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        border-left: 4px solid #48bb78;
+    }
+    
+    .message-header {
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .message-meta {
+        flex: 1;
+    }
+    
+    .message-subject {
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+    }
+    
+    .message-from {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .message-time {
+        color: #94a3b8;
+        font-size: 0.8rem;
+    }
+    
+    .message-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    
+    .message-content {
+        padding: 0 1.5rem 1.25rem;
+        color: #475569;
+        line-height: 1.6;
+    }
+    
+    .message-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f8fafc;
+        border-radius: 8px;
+    }
+    
+    .detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .detail-label {
+        font-size: 0.8rem;
+        color: #64748b;
+        font-weight: 500;
+    }
+    
+    .detail-value {
+        font-size: 0.9rem;
+        color: #1e293b;
+        font-weight: 600;
+    }
+    
+    .btn-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-icon:hover {
+        transform: translateY(-2px);
+    }
+    
+    .btn-read {
+        background: #e0f2fe;
+        color: #0284c7;
+    }
+    
+    .btn-read:hover {
+        background: #0284c7;
+        color: white;
+    }
+    
+    .btn-delete {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+    
+    .btn-delete:hover {
+        background: #dc2626;
+        color: white;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #64748b;
+    }
+    
+    .empty-state i {
+        font-size: 4rem;
+        color: #cbd5e1;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state h3 {
+        color: #475569;
+        margin-bottom: 0.5rem;
+    }
+    
+    .filter-section {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .search-box {
+        position: relative;
+        flex: 1;
+        min-width: 250px;
+    }
+    
+    .search-box input {
+        padding-left: 2.5rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .search-box input:focus {
+        border-color: #48bb78;
+        box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.1);
+    }
+    
+    .search-box i {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+    }
+    
+    .badge-unread {
+        background: #48bb78;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contact-header">
+    <h1><i class="fas fa-envelope me-3"></i>Contact Management</h1>
+    <p>Manage all contact form submissions and inquiries</p>
+</div>
+
+<div class="contact-container">
+    <!-- Statistics Toolbar -->
+    <div class="contact-toolbar">
+        <div class="row g-3 flex-fill">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">{{ total_contacts }}</div>
+                    <div class="stats-label">Total Contacts</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">{{ unread_count }}</div>
+                    <div class="stats-label">Unread Messages</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">{{ recent_contacts }}</div>
+                    <div class="stats-label">Last 7 Days</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">{{ feedback_unread_count }}</div>
+                    <div class="stats-label">Feedback Pending</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Filter Section -->
+    <div class="contact-toolbar">
+        <div class="filter-section">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" class="form-control" id="searchMessages" placeholder="Search messages...">
+            </div>
+            <button class="btn btn-outline-primary" onclick="markAllAsRead()">
+                <i class="fas fa-check-double me-2"></i>Mark All Read
+            </button>
+            <button class="btn btn-outline-danger" onclick="deleteAllRead()">
+                <i class="fas fa-trash-alt me-2"></i>Delete Read
+            </button>
+        </div>
+    </div>
+    
+    <!-- Messages List -->
+    <div class="contact-content">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="message-item {% if message.status == 'unread' %}unread{% endif %}" data-message-id="{{ message.id }}">
+                <div class="message-header">
+                    <div class="message-meta">
+                        <div class="message-subject">
+                            {{ message.subject }}
+                            {% if message.status == 'unread' %}
+                            <span class="badge-unread ms-2">NEW</span>
+                            {% endif %}
+                        </div>
+                        <div class="message-from">
+                            <i class="fas fa-user me-2"></i>{{ message.name }}
+                            {% if message.phone %}
+                            <span class="ms-3"><i class="fas fa-phone me-1"></i>{{ message.phone }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="message-time">
+                            <i class="fas fa-clock me-2"></i>{{ message.created_at.strftime('%B %d, %Y at %I:%M %p') }}
+                        </div>
+                    </div>
+                    <div class="message-actions">
+                        {% if message.status == 'unread' %}
+                        <button class="btn-icon btn-read" onclick="markAsRead({{ message.id }})" title="Mark as read">
+                            <i class="fas fa-envelope-open"></i>
+                        </button>
+                        {% endif %}
+                        <button class="btn-icon btn-delete" onclick="deleteMessage({{ message.id }})" title="Delete message">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="message-content">
+                    <p>{{ message.message }}</p>
+                    
+                    {% if message.budget or message.newsletter_signup %}
+                    <div class="message-details">
+                        {% if message.budget %}
+                        <div class="detail-item">
+                            <span class="detail-label">Budget</span>
+                            <span class="detail-value">{{ message.budget }}</span>
+                        </div>
+                        {% endif %}
+                        {% if message.newsletter_signup %}
+                        <div class="detail-item">
+                            <span class="detail-label">Newsletter</span>
+                            <span class="detail-value">
+                                {% if message.newsletter_signup %}
+                                <i class="fas fa-check-circle text-success"></i> Subscribed
+                                {% else %}
+                                <i class="fas fa-times-circle text-muted"></i> Not subscribed
+                                {% endif %}
+                            </span>
+                        </div>
+                        {% endif %}
+                        <div class="detail-item">
+                            <span class="detail-label">Email</span>
+                            <span class="detail-value">
+                                <a href="mailto:{{ message.email }}" class="text-primary">{{ message.email }}</a>
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">IP Address</span>
+                            <span class="detail-value">{{ message.ip_address or 'N/A' }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <h3>No Contact Messages</h3>
+                <p>When people submit the contact form, their messages will appear here.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Quick Links -->
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-comment-dots me-2 text-primary"></i>Feedback Management</h5>
+                <p class="card-text">Manage client feedback and testimonials submissions.</p>
+                <a href="{{ url_for('admin.feedback') }}" class="btn btn-primary">
+                    <i class="fas fa-arrow-right me-2"></i>Go to Feedback
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-chart-line me-2 text-success"></i>Analytics</h5>
+                <p class="card-text">View detailed analytics and statistics about your contacts.</p>
+                <a href="{{ url_for('admin.dashboard') }}" class="btn btn-success">
+                    <i class="fas fa-arrow-right me-2"></i>View Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Search functionality
+document.getElementById('searchMessages').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const messageItems = document.querySelectorAll('.message-item');
+    
+    messageItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+});
+
+// Mark as read
+function markAsRead(messageId) {
+    fetch(`/admin/messages/${messageId}/read`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const messageItem = document.querySelector(`[data-message-id="${messageId}"]`);
+            messageItem.classList.remove('unread');
+            const readBtn = messageItem.querySelector('.btn-read');
+            if (readBtn) readBtn.remove();
+            const badge = messageItem.querySelector('.badge-unread');
+            if (badge) badge.remove();
+            
+            // Update unread count
+            updateUnreadCount();
+            
+            // Show success message
+            showAlert(data.message, 'success');
+        } else {
+            showAlert(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('Error marking message as read', 'error');
+    });
+}
+
+// Delete message
+function deleteMessage(messageId) {
+    if (confirm('Are you sure you want to delete this message?')) {
+        fetch(`/admin/contact/delete/${messageId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const messageItem = document.querySelector(`[data-message-id="${messageId}"]`);
+                messageItem.remove();
+                
+                // Update counts
+                updateUnreadCount();
+                updateTotalCount();
+                
+                // Show success message
+                showAlert(data.message, 'success');
+                
+                // Check if no messages left
+                if (document.querySelectorAll('.message-item').length === 0) {
+                    location.reload();
+                }
+            } else {
+                showAlert(data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('Error deleting message', 'error');
+        });
+    }
+}
+
+// Mark all as read
+function markAllAsRead() {
+    fetch('/admin/messages/mark-all-read', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            showAlert(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('Error marking all messages as read', 'error');
+    });
+}
+
+// Delete all read messages
+function deleteAllRead() {
+    if (confirm('Are you sure you want to delete all read messages?')) {
+        fetch('/admin/messages/delete-all-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                showAlert(data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('Error deleting read messages', 'error');
+        });
+    }
+}
+
+// Update unread count
+function updateUnreadCount() {
+    const unreadCount = document.querySelectorAll('.message-item.unread').length;
+    const badge = document.querySelector('.navbar .badge.bg-danger');
+    if (badge) {
+        badge.textContent = unreadCount;
+        if (unreadCount === 0) {
+            badge.style.display = 'none';
+        }
+    }
+}
+
+// Update total count
+function updateTotalCount() {
+    const totalCount = document.querySelectorAll('.message-item').length;
+    const statsCard = document.querySelector('.stats-number');
+    if (statsCard) {
+        statsCard.textContent = totalCount;
+    }
+}
+
+// Show alert
+function showAlert(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    const container = document.querySelector('.contact-container');
+    container.insertBefore(alertDiv, container.firstChild);
+    
+    // Auto dismiss after 5 seconds
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 5000);
+}
+</script>
+{% endblock %}

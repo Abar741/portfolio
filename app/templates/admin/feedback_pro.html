@@ -321,14 +321,35 @@
         height: 40px;
         border-radius: 50%;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        flex-shrink: 0;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    
+    .avatar-fallback {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         font-weight: 600;
-        font-size: 0.9rem;
-        border: 2px solid #fff;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        font-size: 14px;
     }
     
     /* Empty State */
@@ -749,16 +770,38 @@
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="client-avatar me-3">
-                                        {% set lines = message.message.split('\n') %}
-                                        {% set client_found = false %}
-                                        {% for line in lines %}
-                                            {% if line.startswith('Client:') and not client_found %}
-                                                {{ line.split(':', 1)[1].strip()[:1].upper() }}
-                                                {% set client_found = true %}
-                                            {% endif %}
-                                        {% endfor %}
-                                        {% if not client_found %}
-                                            <i class="fas fa-user"></i>
+                                        {% if testimonials and testimonials.get(message.id) and testimonials[message.id].client_avatar %}
+                                            <img src="{{ url_for('static', filename='uploads/' + testimonials[message.id].client_avatar) }}" 
+                                                 alt="{{ testimonials[message.id].client_name }}" 
+                                                 class="avatar-img"
+                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                            <div class="avatar-fallback" style="display: none;">
+                                                {% set lines = message.message.split('\n') %}
+                                                {% set client_found = false %}
+                                                {% for line in lines %}
+                                                    {% if line.startswith('Client:') and not client_found %}
+                                                        {{ line.split(':', 1)[1].strip()[:1].upper() }}
+                                                        {% set client_found = true %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if not client_found %}
+                                                    <i class="fas fa-user"></i>
+                                                {% endif %}
+                                            </div>
+                                        {% else %}
+                                            <div class="avatar-fallback">
+                                                {% set lines = message.message.split('\n') %}
+                                                {% set client_found = false %}
+                                                {% for line in lines %}
+                                                    {% if line.startswith('Client:') and not client_found %}
+                                                        {{ line.split(':', 1)[1].strip()[:1].upper() }}
+                                                        {% set client_found = true %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if not client_found %}
+                                                    <i class="fas fa-user"></i>
+                                                {% endif %}
+                                            </div>
                                         {% endif %}
                                     </div>
                                     <div>

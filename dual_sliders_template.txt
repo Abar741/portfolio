@@ -1,0 +1,50 @@
+<!-- Dual Sliders Container -->
+                    <div class="dual-sliders-container mt-4">
+                        <!-- Latest Projects Slider -->
+                        <div class="news-slider-container projects-slider">
+                            <div class="news-slider-header">
+                                <i class="fas fa-broadcast-tower"></i>
+                                <h4>Latest Projects</h4>
+                            </div>
+                            <div class="news-slider-wrapper swiper">
+                                <div class="news-slider-track swiper-wrapper" id="newsSliderTrack">
+                                    <!-- News items will be loaded here via JavaScript -->
+                                </div>
+                            </div>
+                            <!-- Swiper Pagination -->
+                            <div class="swiper-pagination"></div>
+                            <div class="news-slider-footer">
+                                <span class="live-indicator">
+                                    <span class="pulse"></span>
+                                    Live Updates
+                                </span>
+                                <a href="#projects" class="view-all-link">
+                                    View All <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Pakistan News Slider -->
+                        <div class="news-slider-container pakistan-news-slider">
+                            <div class="news-slider-header">
+                                <i class="fas fa-newspaper"></i>
+                                <h4>Pakistan News</h4>
+                            </div>
+                            <div class="news-slider-wrapper swiper">
+                                <div class="news-slider-track swiper-wrapper" id="pakistanNewsTrack">
+                                    <!-- Pakistan news items will be loaded here via JavaScript -->
+                                </div>
+                            </div>
+                            <!-- Swiper Pagination -->
+                            <div class="swiper-pagination"></div>
+                            <div class="news-slider-footer">
+                                <span class="live-indicator">
+                                    <span class="pulse"></span>
+                                    Breaking News
+                                </span>
+                                <a href="#" class="view-all-link" target="_blank">
+                                    More News <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>

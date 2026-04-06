@@ -1,17 +1,44 @@
 {
-    "brand": {
-        "logo": "/static/images/logo.png",
-        "alt": "Graphic Nest",
-        "url": "#hero"
+  "brand": {
+    "logo": "/static/images/logo.png",
+    "alt": "Graphic Nest",
+    "url": "#hero"
+  },
+  "links": [
+    {
+      "text": "Home",
+      "url": "#hero",
+      "active": true
     },
-    "links": [
-        {"text": "Home", "url": "#hero", "active": true},
-        {"text": "About", "url": "#about", "active": false},
-        {"text": "Services", "url": "#services", "active": false},
-        {"text": "Projects", "url": "#projects", "active": false},
-        {"text": "Skills", "url": "#skills", "active": false},
-        {"text": "Testimonials", "url": "#testimonials", "active": false},
-        {"text": "Feedback", "url": "#feedback", "active": false},
-        {"text": "Contact", "url": "#contact", "active": false}
-    ]
+    {
+      "text": "About",
+      "url": "#about",
+      "active": false
+    },
+    {
+      "text": "Services",
+      "url": "#services",
+      "active": false
+    },
+    {
+      "text": "Projects",
+      "url": "#projects",
+      "active": false
+    },
+    {
+      "text": "Skills",
+      "url": "#skills",
+      "active": false
+    },
+    {
+      "text": "Testimonials",
+      "url": "#testimonials",
+      "active": false
+    },
+    {
+      "text": "Contact",
+      "url": "#feedback-contact-section",
+      "active": false
+    }
+  ]
 }
