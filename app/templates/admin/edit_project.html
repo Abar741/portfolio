@@ -156,6 +156,219 @@
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     
+    .software-tags {
+        min-height: 40px;
+        padding: 8px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .software-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: white;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+        transition: all 0.2s ease;
+    }
+    
+    .software-tag:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(79, 70, 229, 0.3);
+    }
+    
+    .software-tag .remove-tag {
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        transition: background 0.2s ease;
+    }
+    
+    .software-tag .remove-tag:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .tech-tags {
+        min-height: 40px;
+        padding: 8px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .tech-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: linear-gradient(135deg, #059669, #047857);
+        color: white;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2);
+        transition: all 0.2s ease;
+    }
+    
+    .tech-tag:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(5, 150, 105, 0.3);
+    }
+    
+    .tech-tag .remove-tag {
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        transition: background 0.2s ease;
+    }
+    
+    .tech-tag .remove-tag:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    /* Media Upload Styles */
+    .current-media-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        margin-bottom: 8px;
+    }
+    
+    .media-filename {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+    
+    .media-filename-small {
+        font-size: 0.8rem;
+        color: #6c757d;
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .media-icon {
+        color: #6c757d;
+        font-size: 1.2rem;
+    }
+    
+    .media-icon-small {
+        color: #6c757d;
+        font-size: 1rem;
+    }
+    
+    .additional-media-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+    }
+    
+    .remove-media-btn {
+        margin-left: auto;
+        padding: 2px 8px;
+        font-size: 0.7rem;
+        border-radius: 12px;
+    }
+    
+    .multiple-upload-area {
+        border: 2px dashed #dee2e6;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+    
+    .multiple-upload-area:hover {
+        border-color: #6366f1;
+        background: #f1f3f4;
+    }
+    
+    .upload-btn-area {
+        cursor: pointer;
+        color: #6c757d;
+    }
+    
+    .upload-btn-area i {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        display: block;
+    }
+    
+    .multiple-preview-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .multiple-preview-item {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .multiple-preview-item img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+    }
+    
+    .multiple-preview-item video {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+    }
+    
+    .multiple-preview-item .remove-preview {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: rgba(220, 53, 69, 0.9);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .category-fields {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 15px;
+    }
+    
     .link-input-group {
         position: relative;
     }
@@ -264,56 +477,326 @@
                         <select class="form-control form-control-lg" 
                                 id="category" 
                                 name="category" 
+                                onchange="updateProjectTypeOptions()"
                                 required>
                             <option value="">Select a category...</option>
-                            <option value="web_dev" {% if project.category == 'web_dev' %}selected{% endif %}>🌐 Web Development</option>
-                            <option value="graphic_design" {% if project.category == 'graphic_design' %}selected{% endif %}>🎨 Graphic Design</option>
-                            <option value="video_editing" {% if project.category == 'video_editing' %}selected{% endif %}>🎬 Video Editing</option>
+                            <option value="web_dev" {% if project.category == 'web_dev' %}selected{% endif %}>Web Development</option>
+                            <option value="graphic_design" {% if project.category == 'graphic_design' %}selected{% endif %}>Graphic Design</option>
+                            <option value="video_editing" {% if project.category == 'video_editing' %}selected{% endif %}>Video Editing</option>
                         </select>
                         <div class="form-text">Choose the category that best describes your project</div>
                     </div>
+                    
+                    <div class="mb-4">
+                        <label for="project_type" class="form-label">
+                            <i class="fas fa-tag me-2"></i>Project Type
+                        </label>
+                        <select class="form-control form-control-lg" 
+                                id="project_type" 
+                                name="project_type">
+                            <option value="">Select project type...</option>
+                            <!-- Options will be populated based on category -->
+                        </select>
+                        <div class="form-text">Specify the type of project (e.g., E-commerce, Portfolio, Logo Design)</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="software_used" class="form-label">
+                            <i class="fas fa-tools me-2"></i>Software/Tools Used
+                        </label>
+                        <div class="software-input-container">
+                            <div class="d-flex gap-2 mb-2">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="software_input" 
+                                       placeholder="Enter software or tool name...">
+                                <button type="button" class="btn btn-outline-primary" onclick="addSoftware()">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
+                            <div id="software_tags" class="software-tags d-flex flex-wrap gap-2"></div>
+                            <input type="hidden" id="software_used" name="software_used" value="{{ project.software_used or '' }}">
+                        </div>
+                        <div class="form-text">Add the software, tools, or platforms used in this project</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="technologies" class="form-label">
+                            <i class="fas fa-code me-2"></i>Technologies Used
+                        </label>
+                        <div class="technologies-input-container">
+                            <div class="d-flex gap-2 mb-2">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="tech_input" 
+                                       placeholder="Enter technology name...">
+                                <button type="button" class="btn btn-outline-primary" onclick="addTechnology()">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
+                            <div id="tech_tags" class="tech-tags d-flex flex-wrap gap-2"></div>
+                            <input type="hidden" id="technologies" name="technologies" value="{{ project.technologies or '' }}">
+                        </div>
+                        <div class="form-text">Add programming languages, frameworks, libraries, and technologies used</div>
+                    </div>
+                    
+                    <!-- Category-Specific Fields -->
+                    <div id="categorySpecificFields" class="mb-4">
+                        <!-- Web Development Fields -->
+                        <div id="webDevFields" class="category-fields" style="display: none;">
+                            <h6 class="mb-3"><i class="fas fa-laptop-code me-2"></i>Web Development Stack</h6>
+                            <div class="mb-3">
+                                <label for="frontend_stack" class="form-label">Frontend Technologies</label>
+                                <input type="text" class="form-control" id="frontend_stack" name="frontend_stack" 
+                                       placeholder="e.g., React, Vue.js, Angular, HTML, CSS, JavaScript"
+                                       value="{{ project.web_dev_stack | from_json | attr('frontend', '') if project.web_dev_stack else '' }}">
+                                <div class="form-text">Frontend frameworks and libraries used</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="backend_stack" class="form-label">Backend Technologies</label>
+                                <input type="text" class="form-control" id="backend_stack" name="backend_stack" 
+                                       placeholder="e.g., Node.js, Python, Django, Flask, Express"
+                                       value="{{ project.web_dev_stack | from_json | attr('backend', '') if project.web_dev_stack else '' }}">
+                                <div class="form-text">Backend technologies and frameworks</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="database_stack" class="form-label">Database</label>
+                                <input type="text" class="form-control" id="database_stack" name="database_stack" 
+                                       placeholder="e.g., PostgreSQL, MySQL, MongoDB, SQLite"
+                                       value="{{ project.web_dev_stack | from_json | attr('database', '') if project.web_dev_stack else '' }}">
+                                <div class="form-text">Database technologies used</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deployment_stack" class="form-label">Deployment/DevOps</label>
+                                <input type="text" class="form-control" id="deployment_stack" name="deployment_stack" 
+                                       placeholder="e.g., Docker, AWS, Vercel, Netlify, Heroku"
+                                       value="{{ project.web_dev_stack | from_json | attr('deployment', '') if project.web_dev_stack else '' }}">
+                                <div class="form-text">Deployment platforms and DevOps tools</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Graphic Design Fields -->
+                        <div id="graphicDesignFields" class="category-fields" style="display: none;">
+                            <h6 class="mb-3"><i class="fas fa-palette me-2"></i>Graphic Design Details</h6>
+                            <div class="mb-3">
+                                <label for="design_type" class="form-label">Design Type</label>
+                                <select class="form-control" id="design_type" name="design_type">
+                                    <option value="">Select design type...</option>
+                                    <option value="logo_design" {% if project.graphic_design_type == 'logo_design' %}selected{% endif %}>Logo Design</option>
+                                    <option value="branding" {% if project.graphic_design_type == 'branding' %}selected{% endif %}>Branding</option>
+                                    <option value="poster" {% if project.graphic_design_type == 'poster' %}selected{% endif %}>Poster Design</option>
+                                    <option value="social_graphics" {% if project.graphic_design_type == 'social_graphics' %}selected{% endif %}>Social Media Graphics</option>
+                                    <option value="ui_design" {% if project.graphic_design_type == 'ui_design' %}selected{% endif %}>UI Design</option>
+                                    <option value="print_design" {% if project.graphic_design_type == 'print_design' %}selected{% endif %}>Print Design</option>
+                                    <option value="illustration" {% if project.graphic_design_type == 'illustration' %}selected{% endif %}>Illustration</option>
+                                    <option value="motion_graphics" {% if project.graphic_design_type == 'motion_graphics' %}selected{% endif %}>Motion Graphics</option>
+                                </select>
+                                <div class="form-text">Primary type of graphic design work</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="design_tools" class="form-label">Design Tools</label>
+                                <input type="text" class="form-control" id="design_tools" name="design_tools" 
+                                       placeholder="e.g., Adobe Photoshop, Illustrator, Figma, Sketch, Canva"
+                                       value="{{ project.graphic_design_tools | from_json | join(', ') if project.graphic_design_tools else '' }}">
+                                <div class="form-text">Design software and tools used (comma-separated)</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="color_scheme" class="form-label">Color Scheme</label>
+                                <input type="text" class="form-control" id="color_scheme" name="color_scheme" 
+                                       placeholder="e.g., Blue and White, Minimalist, Vibrant, Corporate"
+                                       value="{{ project.web_dev_stack | from_json | attr('color_scheme', '') if project.web_dev_stack else '' }}">
+                                <div class="form-text">Primary color palette and design style</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Video Editing Fields -->
+                        <div id="videoEditingFields" class="category-fields" style="display: none;">
+                            <h6 class="mb-3"><i class="fas fa-video me-2"></i>Video Editing Details</h6>
+                            <div class="mb-3">
+                                <label for="video_type" class="form-label">Video Type</label>
+                                <select class="form-control" id="video_type" name="video_type">
+                                    <option value="">Select video type...</option>
+                                    <option value="music_video" {% if project.video_editing_type == 'music_video' %}selected{% endif %}>Music Video</option>
+                                    <option value="commercial" {% if project.video_editing_type == 'commercial' %}selected{% endif %}>Commercial</option>
+                                    <option value="documentary" {% if project.video_editing_type == 'documentary' %}selected{% endif %}>Documentary</option>
+                                    <option value="tutorial" {% if project.video_editing_type == 'tutorial' %}selected{% endif %}>Tutorial</option>
+                                    <option value="vlog" {% if project.video_editing_type == 'vlog' %}selected{% endif %}>Vlog</option>
+                                    <option value="corporate" {% if project.video_editing_type == 'corporate' %}selected{% endif %}>Corporate Video</option>
+                                    <option value="short_film" {% if project.video_editing_type == 'short_film' %}selected{% endif %}>Short Film</option>
+                                    <option value="animation" {% if project.video_editing_type == 'animation' %}selected{% endif %}>Animation</option>
+                                </select>
+                                <div class="form-text">Type of video editing project</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editing_software" class="form-label">Editing Software</label>
+                                <input type="text" class="form-control" id="editing_software" name="editing_software" 
+                                       placeholder="e.g., Adobe Premiere Pro, Final Cut Pro, DaVinci Resolve, After Effects"
+                                       value="{{ project.video_editing_software | from_json | join(', ') if project.video_editing_software else '' }}">
+                                <div class="form-text">Video editing software used (comma-separated)</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="video_length" class="form-label">Video Length</label>
+                                <input type="text" class="form-control" id="video_length" name="video_length" 
+                                       placeholder="e.g., 3:30, 15 minutes, 1 hour"
+                                       value="{{ project.web_dev_stack | from_json | attr('video_length', '') if project.web_dev_stack else '' }}">
+                                <div class="form-text">Duration of the final video</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="resolution" class="form-label">Video Resolution</label>
+                                <select class="form-control" id="resolution" name="resolution">
+                                    <option value="">Select resolution...</option>
+                                    <option value="720p" {% if project.web_dev_stack | from_json | attr('resolution') == '720p' %}selected{% endif %}>720p (HD)</option>
+                                    <option value="1080p" {% if project.web_dev_stack | from_json | attr('resolution') == '1080p' %}selected{% endif %}>1080p (Full HD)</option>
+                                    <option value="4k" {% if project.web_dev_stack | from_json | attr('resolution') == '4k' %}selected{% endif %}>4K (Ultra HD)</option>
+                                </select>
+                                <div class="form-text">Output resolution of the video</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- Project Image Section -->
+                <!-- Project Media Section -->
                 <div class="form-section">
                     <div class="form-section-title">
-                        <i class="fas fa-image"></i>
-                        Project Image
+                        <i class="fas fa-photo-video"></i>
+                        Project Media
                     </div>
                     
-                    {% if project.image %}
-                    <div class="mb-3">
-                        <img src="{{ url_for('static', filename='uploads/' + project.image) }}" 
-                             alt="{{ project.title }}" 
-                             style="max-width: 200px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                        <div class="form-text mt-2">Current project image</div>
+                    <!-- Current Media Display -->
+                    <div class="mb-4">
+                        <h6 class="mb-3">Current Media</h6>
+                        
+                        <!-- Primary Image -->
+                        {% if project.image %}
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Primary Image</label>
+                            <div class="current-media-item">
+                                <img src="{{ url_for('static', filename='uploads/' + project.image) }}" 
+                                     alt="{{ project.title }}" 
+                                     style="max-width: 150px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                <span class="media-filename">{{ project.image }}</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Additional Images -->
+                        {% if project.images %}
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Additional Images</label>
+                            <div class="additional-media-grid" id="currentImages">
+                                {% set additional_images = project.images | from_json %}
+                                {% for img in additional_images %}
+                                <div class="current-media-item">
+                                    <img src="{{ url_for('static', filename='uploads/' + img) }}" 
+                                         alt="Additional image" 
+                                         style="max-width: 100px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                    <span class="media-filename-small">{{ img }}</span>
+                                    <button type="button" class="btn btn-sm btn-outline-danger remove-media-btn" onclick="removeExistingImage('{{ img }}')">×</button>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Primary Video -->
+                        {% if project.video %}
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Primary Video</label>
+                            <div class="current-media-item">
+                                <i class="fas fa-video media-icon"></i>
+                                <span class="media-filename">{{ project.video }}</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Additional Videos -->
+                        {% if project.videos %}
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Additional Videos</label>
+                            <div class="additional-media-grid" id="currentVideos">
+                                {% set additional_videos = project.videos | from_json %}
+                                {% for vid in additional_videos %}
+                                <div class="current-media-item">
+                                    <i class="fas fa-video media-icon-small"></i>
+                                    <span class="media-filename-small">{{ vid }}</span>
+                                    <button type="button" class="btn btn-sm btn-outline-danger remove-media-btn" onclick="removeExistingVideo('{{ vid }}')">×</button>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
                     
-                    <div class="image-upload-area" onclick="document.getElementById('image').click()">
-                        <input type="file" 
-                               id="image" 
-                               name="image" 
-                               accept="image/*" 
-                               style="display: none;"
-                               onchange="previewImage(this)">
+                    <!-- Upload New Media -->
+                    <div class="mb-4">
+                        <h6 class="mb-3">Upload New Media</h6>
                         
-                        <div id="uploadPlaceholder">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <h5 class="text-gray-700">Click to change project image</h5>
-                            <p class="text-gray-500 mb-0">or drag and drop</p>
-                            <small class="text-gray-400">PNG, JPG, GIF up to 10MB</small>
+                        <!-- Primary Image Upload -->
+                        <div class="mb-3">
+                            <label class="form-label">Primary Image (Featured)</label>
+                            <div class="image-upload-area" onclick="document.getElementById('image').click()">
+                                <input type="file" 
+                                       id="image" 
+                                       name="image" 
+                                       accept="image/*" 
+                                       style="display: none;"
+                                       onchange="previewPrimaryImage(this)">
+                                
+                                <div id="primaryImagePlaceholder">
+                                    <i class="fas fa-image"></i>
+                                    <span>Click to upload primary image</span>
+                                </div>
+                                
+                                <div id="primaryImagePreview" style="display: none;">
+                                    <img id="primaryImagePreviewImg" class="image-preview" alt="Primary image preview">
+                                    <p class="text-success mt-2 mb-0">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <span id="primaryImageName"></span>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div id="imagePreviewContainer" style="display: none;">
-                            <img id="imagePreview" class="image-preview" alt="Project preview">
-                            <p class="text-success mt-2 mb-0">
-                                <i class="fas fa-check-circle me-2"></i>
-                                <span id="imageName"></span>
-                            </p>
+                        <!-- Multiple Images Upload -->
+                        <div class="mb-3">
+                            <label class="form-label">Additional Images</label>
+                            <div class="multiple-upload-area">
+                                <input type="file" 
+                                       id="additionalImages" 
+                                       name="additional_images" 
+                                       accept="image/*" 
+                                       multiple
+                                       style="display: none;"
+                                       onchange="previewAdditionalImages(this)">
+                                <div class="upload-btn-area" onclick="document.getElementById('additionalImages').click()">
+                                    <i class="fas fa-images"></i>
+                                    <span>Click to add multiple images</span>
+                                </div>
+                                <div id="additionalImagesPreview" class="multiple-preview-grid"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Multiple Videos Upload -->
+                        <div class="mb-3">
+                            <label class="form-label">Videos</label>
+                            <div class="multiple-upload-area">
+                                <input type="file" 
+                                       id="additionalVideos" 
+                                       name="additional_videos" 
+                                       accept="video/*" 
+                                       multiple
+                                       style="display: none;"
+                                       onchange="previewAdditionalVideos(this)">
+                                <div class="upload-btn-area" onclick="document.getElementById('additionalVideos').click()">
+                                    <i class="fas fa-video"></i>
+                                    <span>Click to add multiple videos</span>
+                                </div>
+                                <div id="additionalVideosPreview" class="multiple-preview-grid"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-text mt-2">Upload a new screenshot or image of your project (optional)</div>
+                    
+                    <div class="form-text">Upload primary image/video and additional media files. Supported formats: Images (PNG, JPG, GIF), Videos (MP4, WebM, MOV)</div>
                 </div>
                 
                 <!-- Project Links Section -->
@@ -377,6 +860,410 @@
 
 {% block scripts %}
 <script>
+// Project type options based on category
+const projectTypeOptions = {
+    web_dev: [
+        { value: 'ecommerce', label: 'E-commerce Website' },
+        { value: 'portfolio', label: 'Portfolio Website' },
+        { value: 'blog', label: 'Blog/CMS' },
+        { value: 'social_media', label: 'Social Media Platform' },
+        { value: 'dashboard', label: 'Dashboard/Admin Panel' },
+        { value: 'api', label: 'API/Backend Service' },
+        { value: 'mobile_app', label: 'Mobile App' },
+        { value: 'saas', label: 'SaaS Platform' },
+        { value: 'landing', label: 'Landing Page' },
+        { value: 'other_web', label: 'Other Web Project' }
+    ],
+    graphic_design: [
+        { value: 'logo_design', label: 'Logo Design' },
+        { value: 'branding', label: 'Brand Identity' },
+        { value: 'poster', label: 'Poster/Flyer' },
+        { value: 'social_media_graphics', label: 'Social Media Graphics' },
+        { value: 'ui_design', label: 'UI Design' },
+        { value: 'print_design', label: 'Print Design' },
+        { value: 'illustration', label: 'Illustration' },
+        { value: 'motion_graphics', label: 'Motion Graphics' },
+        { value: 'other_design', label: 'Other Design Project' }
+    ],
+    video_editing: [
+        { value: 'music_video', label: 'Music Video' },
+        { value: 'commercial', label: 'Commercial/Ad' },
+        { value: 'documentary', label: 'Documentary' },
+        { value: 'tutorial', label: 'Tutorial/Educational' },
+        { value: 'vlog', label: 'Vlog/YouTube' },
+        { value: 'corporate', label: 'Corporate Video' },
+        { value: 'short_film', label: 'Short Film' },
+        { value: 'animation', label: 'Animation' },
+        { value: 'other_video', label: 'Other Video Project' }
+    ]
+};
+
+function updateProjectTypeOptions() {
+    const category = document.getElementById('category').value;
+    const projectTypeSelect = document.getElementById('project_type');
+    
+    // Clear existing options
+    projectTypeSelect.innerHTML = '<option value="">Select project type...</option>';
+    
+    if (category && projectTypeOptions[category]) {
+        projectTypeOptions[category].forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option.value;
+            optionElement.textContent = option.label;
+            projectTypeSelect.appendChild(optionElement);
+        });
+    }
+}
+
+// Software/Tools management
+let softwareList = [];
+
+function addSoftware() {
+    const input = document.getElementById('software_input');
+    const software = input.value.trim();
+    
+    if (software && !softwareList.includes(software)) {
+        softwareList.push(software);
+        updateSoftwareTags();
+        input.value = '';
+        input.focus();
+    }
+}
+
+function removeSoftware(software) {
+    softwareList = softwareList.filter(item => item !== software);
+    updateSoftwareTags();
+}
+
+function updateSoftwareTags() {
+    const container = document.getElementById('software_tags');
+    const hiddenInput = document.getElementById('software_used');
+    
+    container.innerHTML = '';
+    
+    softwareList.forEach(software => {
+        const tag = document.createElement('div');
+        tag.className = 'software-tag';
+        
+        // Create text node for software name
+        const textNode = document.createTextNode(software);
+        tag.appendChild(textNode);
+        
+        // Create remove button
+        const removeBtn = document.createElement('span');
+        removeBtn.className = 'remove-tag';
+        removeBtn.textContent = '×';
+        removeBtn.onclick = function() {
+            removeSoftware(software);
+        };
+        
+        tag.appendChild(removeBtn);
+        container.appendChild(tag);
+    });
+    
+    // Update hidden input value
+    hiddenInput.value = softwareList.join(',');
+}
+
+// Allow adding software with Enter key
+document.getElementById('software_input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        addSoftware();
+    }
+});
+
+// Technologies management
+let techList = [];
+
+function addTechnology() {
+    const input = document.getElementById('tech_input');
+    const tech = input.value.trim();
+    
+    if (tech && !techList.includes(tech)) {
+        techList.push(tech);
+        updateTechTags();
+        input.value = '';
+        input.focus();
+    }
+}
+
+function removeTechnology(tech) {
+    techList = techList.filter(item => item !== tech);
+    updateTechTags();
+}
+
+function updateTechTags() {
+    const container = document.getElementById('tech_tags');
+    const hiddenInput = document.getElementById('technologies');
+    
+    container.innerHTML = '';
+    
+    techList.forEach(tech => {
+        const tag = document.createElement('div');
+        tag.className = 'tech-tag';
+        
+        // Create text node for tech name
+        const textNode = document.createTextNode(tech);
+        tag.appendChild(textNode);
+        
+        // Create remove button
+        const removeBtn = document.createElement('span');
+        removeBtn.className = 'remove-tag';
+        removeBtn.textContent = '×';
+        removeBtn.onclick = function() {
+            removeTechnology(tech);
+        };
+        
+        tag.appendChild(removeBtn);
+        container.appendChild(tag);
+    });
+    
+    // Update hidden input value
+    hiddenInput.value = techList.join(',');
+}
+
+// Allow adding technology with Enter key
+document.getElementById('tech_input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        addTechnology();
+    }
+});
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Set initial project type options
+    updateProjectTypeOptions();
+    
+    // Show category-specific fields based on current category
+    updateCategorySpecificFields();
+    
+    // Set selected project type if exists
+    const projectTypeSelect = document.getElementById('project_type');
+    const currentProjectType = '{{ project.project_type or "" }}';
+    if (currentProjectType) {
+        projectTypeSelect.value = currentProjectType;
+    }
+    
+    // Load existing software tags
+    const existingSoftware = '{{ project.software_used or "" }}';
+    if (existingSoftware) {
+        softwareList = existingSoftware.split(',').map(s => s.trim()).filter(s => s);
+        updateSoftwareTags();
+    }
+    
+    // Load existing technology tags
+    const existingTechnologies = '{{ project.technologies or "" }}';
+    if (existingTechnologies) {
+        techList = existingTechnologies.split(',').map(s => s.trim()).filter(s => s);
+        updateTechTags();
+    }
+    
+    // Load existing additional media
+    loadExistingMedia();
+});
+
+// Update category-specific fields based on selected category
+function updateCategorySpecificFields() {
+    const category = document.getElementById('category').value;
+    const webDevFields = document.getElementById('webDevFields');
+    const graphicDesignFields = document.getElementById('graphicDesignFields');
+    const videoEditingFields = document.getElementById('videoEditingFields');
+    
+    // Hide all category-specific fields
+    if (webDevFields) webDevFields.style.display = 'none';
+    if (graphicDesignFields) graphicDesignFields.style.display = 'none';
+    if (videoEditingFields) videoEditingFields.style.display = 'none';
+    
+    // Show relevant category-specific fields
+    switch(category) {
+        case 'web_dev':
+            if (webDevFields) webDevFields.style.display = 'block';
+            break;
+        case 'graphic_design':
+            if (graphicDesignFields) graphicDesignFields.style.display = 'block';
+            break;
+        case 'video_editing':
+            if (videoEditingFields) videoEditingFields.style.display = 'block';
+            break;
+    }
+}
+
+// Multiple media management
+let additionalImagesList = [];
+let additionalVideosList = [];
+
+function previewPrimaryImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('primaryImagePreview');
+            const previewImg = document.getElementById('primaryImagePreviewImg');
+            const nameSpan = document.getElementById('primaryImageName');
+            
+            previewImg.src = e.target.result;
+            nameSpan.textContent = input.files[0].name;
+            preview.style.display = 'block';
+            document.getElementById('primaryImagePlaceholder').style.display = 'none';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function previewAdditionalImages(input) {
+    const preview = document.getElementById('additionalImagesPreview');
+    preview.innerHTML = '';
+    additionalImagesList = [];
+    
+    for (let i = 0; i < input.files.length; i++) {
+        const file = input.files[i];
+        additionalImagesList.push(file);
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const previewItem = document.createElement('div');
+            previewItem.className = 'multiple-preview-item';
+            
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            previewItem.appendChild(img);
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-preview';
+            removeBtn.textContent = '×';
+            removeBtn.onclick = function() {
+                removeAdditionalImage(i);
+            };
+            
+            previewItem.appendChild(removeBtn);
+            preview.appendChild(previewItem);
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function previewAdditionalVideos(input) {
+    const preview = document.getElementById('additionalVideosPreview');
+    preview.innerHTML = '';
+    additionalVideosList = [];
+    
+    for (let i = 0; i < input.files.length; i++) {
+        const file = input.files[i];
+        additionalVideosList.push(file);
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const previewItem = document.createElement('div');
+            previewItem.className = 'multiple-preview-item';
+            
+            const video = document.createElement('video');
+            video.src = e.target.result;
+            previewItem.appendChild(video);
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-preview';
+            removeBtn.textContent = '×';
+            removeBtn.onclick = function() {
+                removeAdditionalVideo(i);
+            };
+            
+            previewItem.appendChild(removeBtn);
+            preview.appendChild(previewItem);
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function removeAdditionalImage(index) {
+    additionalImagesList.splice(index, 1);
+    refreshAdditionalImagesPreview();
+}
+
+function removeAdditionalVideo(index) {
+    additionalVideosList.splice(index, 1);
+    refreshAdditionalVideosPreview();
+}
+
+function refreshAdditionalImagesPreview() {
+    const preview = document.getElementById('additionalImagesPreview');
+    preview.innerHTML = '';
+    
+    additionalImagesList.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const previewItem = document.createElement('div');
+            previewItem.className = 'multiple-preview-item';
+            
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            previewItem.appendChild(img);
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-preview';
+            removeBtn.textContent = '×';
+            removeBtn.onclick = function() {
+                removeAdditionalImage(index);
+            };
+            
+            previewItem.appendChild(removeBtn);
+            preview.appendChild(previewItem);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function refreshAdditionalVideosPreview() {
+    const preview = document.getElementById('additionalVideosPreview');
+    preview.innerHTML = '';
+    
+    additionalVideosList.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const previewItem = document.createElement('div');
+            previewItem.className = 'multiple-preview-item';
+            
+            const video = document.createElement('video');
+            video.src = e.target.result;
+            previewItem.appendChild(video);
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-preview';
+            removeBtn.textContent = '×';
+            removeBtn.onclick = function() {
+                removeAdditionalVideo(index);
+            };
+            
+            previewItem.appendChild(removeBtn);
+            preview.appendChild(previewItem);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function removeExistingImage(filename) {
+    // This will be handled on the backend
+    const imageElement = event.target.closest('.current-media-item');
+    if (imageElement) {
+        imageElement.style.opacity = '0.5';
+        imageElement.style.pointerEvents = 'none';
+    }
+}
+
+function removeExistingVideo(filename) {
+    // This will be handled on the backend
+    const videoElement = event.target.closest('.current-media-item');
+    if (videoElement) {
+        videoElement.style.opacity = '0.5';
+        videoElement.style.pointerEvents = 'none';
+    }
+}
+
+function loadExistingMedia() {
+    // This function can be used to load existing media for editing
+    // Media will be displayed via template rendering
+}
+
 function previewImage(input) {
     const file = input.files[0];
     const uploadPlaceholder = document.getElementById('uploadPlaceholder');

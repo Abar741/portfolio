@@ -2,13 +2,16 @@ from flask import Flask
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from .config import get_config
-from .extensions import db, login_manager, migrate
+from .extensions import db, login_manager, migrate, mail
 from . import models
 from app.models.user import User
+from app.models.visitor_stats import VisitorStats
+from app.models.visit_log import VisitLog
 from .routes.auth_routes import auth
 from .utils.logger import setup_logger, log_error
 from .utils.exceptions import PortfolioException
 import os
+import json
 from flask import render_template
 
 
@@ -24,6 +27,7 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
+    mail.init_app(app)
     
     # Initialize rate limiting
     limiter = Limiter(
@@ -88,6 +92,22 @@ def create_app():
     from .routes.admin_routes import admin
     app.register_blueprint(admin)
             
+    # Template filters
+    @app.template_filter('from_json')
+    def from_json(json_string):
+        if json_string:
+            try:
+                return json.loads(json_string)
+            except (ValueError, TypeError):
+                return {}
+        return {}
+    
+    @app.template_filter('attr')
+    def attr(obj, attribute, default=''):
+        if obj and attribute in obj:
+            return obj[attribute]
+        return default
+    
     # Create upload directory
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
     

@@ -1,5 +1,49 @@
+# Python
 venv/
 __pycache__/
-instance/
-.env
 *.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Environment Variables & Security
+.env
+.env.local
+.env.production
+.env.staging
+*.key
+*.pem
+*.p12
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+database.db
+
+# Logs
+logs/
+*.log
+
+# Instance
+instance/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Sensitive Configuration
+config.py
+secrets.py
+credentials.json

@@ -10,7 +10,12 @@
 
     <title>Portfolio - Creative Developer & Designer</title>
 
-    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/s_logo.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/s_logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/s_logo.png') }}">
 
     <!-- Bootstrap CSS -->
 
@@ -26,79 +31,42 @@
 
     <!-- Google Fonts -->
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- Swiper CSS -->
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
-    
+
 
     <!-- Custom CSS -->
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
-    
+
 
     <!-- Simple Theme Toggle Script -->
 
     <script src="{{ url_for('static', filename='js/simple-theme-toggle.js') }}"></script>
 
+    <!-- Skills Progress Animation -->
+
+    <script src="{{ url_for('static', filename='js/skills-progress.js') }}"></script>
+
 </head>
 
 <body>
 
+    <!-- Preloader Component -->
+    {% include 'portfolio/components/preloader.html' %}
+
+
+
+
     <!-- Navigation -->
-
-    <nav id="mainNav" class="navbar navbar-expand-lg fixed-top">
-
-        <div class="container">
-
-            <a class="navbar-brand" href="{{ navbar_data.brand.url }}">
-
-                <img src="{{ navbar_data.brand.logo }}" alt="{{ navbar_data.brand.alt }}" class="navbar-logo">
-
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-
-                <span class="navbar-toggler-icon"></span>
-
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-
-                <ul class="navbar-nav ms-auto">
-
-                    {% for link in navbar_data.links %}
-
-                    <li class="nav-item">
-
-                        <a class="nav-link{% if link.active %} active{% endif %}" href="{{ link.url }}">{{ link.text }}</a>
-
-                    </li>
-
-                    {% endfor %}
-
-                    <li class="nav-item">
-
-                        <button class="nav-link theme-toggle-navbar" onclick="toggleThemeDirect()" aria-label="Toggle theme" title="Toggle between light, dark, and auto themes">
-
-                            <i class="fas fa-sun sun-icon"></i>
-
-                            <i class="fas fa-moon moon-icon"></i>
-
-                        </button>
-
-                    </li>
-
-                </ul>
-
-            </div>
-
-        </div>
-
-    </nav>
+    {% include 'portfolio/components/navbar.html' %}
 
 
 
@@ -130,7 +98,7 @@
 
                         {% endif %}
 
-                        
+
 
                         <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
 
@@ -138,7 +106,7 @@
 
                         </h1>
 
-                        
+
 
                         {% if hero_data.roles %}
 
@@ -160,7 +128,7 @@
 
                         {% endif %}
 
-                        
+
 
                         {% if hero_data.subtitle %}
 
@@ -172,7 +140,7 @@
 
                         {% endif %}
 
-                        
+
 
                         {% if hero_data.buttons %}
 
@@ -192,7 +160,7 @@
 
                         {% endif %}
 
-                        
+
 
                         {% if hero_data.stats %}
 
@@ -218,7 +186,7 @@
 
                 </div>
 
-                
+
 
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
 
@@ -230,15 +198,15 @@
 
                             {% if hero_data.profile_image %}
 
-                            <img src="{{ url_for('static', filename='uploads/' + hero_data.profile_image) }}" 
-
-                                 alt="{{ hero_data.name or 'Muhammad Abrar' }} - Professional Developer & Designer" class="hero-image-img">
+                            <img src="{{ url_for('static', filename='uploads/' + hero_data.profile_image) }}"
+                                alt="{{ hero_data.name or 'Muhammad Abrar' }} - Professional Developer & Designer"
+                                class="hero-image-img">
 
                             {% else %}
 
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face&auto=format" 
-
-                                 alt="{{ hero_data.name or 'Muhammad Abrar' }} - Professional Developer & Designer" class="hero-image-img">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face&auto=format"
+                                alt="{{ hero_data.name or 'Muhammad Abrar' }} - Professional Developer & Designer"
+                                class="hero-image-img">
 
                             {% endif %}
 
@@ -266,7 +234,7 @@
 
         </div>
 
-        
+
 
         <!-- Scroll Indicator -->
 
@@ -392,7 +360,7 @@
 
             </p>
 
-            
+
 
             <div class="row align-items-center">
 
@@ -412,7 +380,7 @@
 
                         </div>
 
-                        
+
 
                         <div class="about-story mb-4">
 
@@ -422,7 +390,7 @@
 
                         </div>
 
-                        
+
 
                         {% if about_me_content.skills_enabled %}
 
@@ -434,17 +402,17 @@
 
                                 {% if about_me_content.skills %}
 
-                                    {% for skill in about_me_content.skills %}
+                                {% for skill in about_me_content.skills %}
 
-                                    <div class="skill-item">
+                                <div class="skill-item">
 
-                                        <i class="{{ skill.icon }}"></i>
+                                    <i class="{{ skill.icon }}"></i>
 
-                                        <span>{{ skill.name }}</span>
+                                    <span>{{ skill.name }}</span>
 
-                                    </div>
+                                </div>
 
-                                    {% endfor %}
+                                {% endfor %}
 
                                 {% endif %}
 
@@ -454,7 +422,7 @@
 
                         {% endif %}
 
-                        
+
 
                         {% if about_me_content.cta_enabled %}
 
@@ -462,7 +430,7 @@
 
                             <a href="{{ about_me_content.cta_link }}" class="btn-hero btn-hero-primary">
 
-                                <i class="{{ about_me_content.cta_icon }}"></i> 
+                                <i class="{{ about_me_content.cta_icon }}"></i>
 
                                 {{ about_me_content.cta_text }}
 
@@ -476,7 +444,7 @@
 
                 </div>
 
-                
+
 
                 <div class="col-lg-6" data-aos="fade-left">
 
@@ -488,33 +456,35 @@
 
                         {% if about_me_content.highlights %}
 
-                            {% for highlight in about_me_content.highlights %}
+                        {% for highlight in about_me_content.highlights %}
 
-                            <div class="highlight-card">
+                        <div class="highlight-card">
 
-                                <div class="highlight-icon">
+                            <div class="highlight-icon">
 
-                                    <i class="{{ highlight.icon }}"></i>
-
-                                </div>
-
-                                <div class="highlight-content">
-
-                                    {% if loop.index == 1 %}
-                                    <h4 id="projects-delivered-stat">{{ highlight.title }}</h4>
-                                    {% elif loop.index == 2 %}
-                                    <h4 id="happy-clients-stat">{{ highlight.title }}</h4>
-                                    {% else %}
-                                    <h4>{{ highlight.title }}</h4>
-                                    {% endif %}
-
-                                    <p>{{ highlight.description }}</p>
-
-                                </div>
+                                <i class="{{ highlight.icon }}"></i>
 
                             </div>
 
-                            {% endfor %}
+                            <div class="highlight-content">
+
+                                {% if loop.index == 1 %}
+                                <!-- Duplicate ID - commented out: <h4 id="projects-delivered-stat">{{ highlight.title }}</h4> -->
+                                <h4>{{ highlight.title }}</h4>
+                                {% elif loop.index == 2 %}
+                                <!-- Duplicate ID - commented out: <h4 id="happy-clients-stat">{{ highlight.title }}</h4> -->
+                                <h4>{{ highlight.title }}</h4>
+                                {% else %}
+                                <h4>{{ highlight.title }}</h4>
+                                {% endif %}
+
+                                <p>{{ highlight.description }}</p>
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
 
                         {% endif %}
 
@@ -522,7 +492,7 @@
 
                     {% endif %}
 
-                    
+
 
                     <!-- Dual Sliders Container -->
 
@@ -574,7 +544,7 @@
 
                         </div>
 
-                        
+
 
                         <!-- Pakistan News Slider -->
 
@@ -630,191 +600,131 @@
 
             {% else %}
 
-            <!-- Fallback content when no database content exists -->
+            <!-- Professional About Me Section -->
 
-            <h2 class="section-title" data-aos="fade-up">About Me</h2>
+            <div class="about-section-modern" data-aos="fade-up">
 
-            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-
-                Passionate about creating innovative digital solutions that make a difference
-
-            </p>
-
-            
-
-            <div class="row align-items-center">
-
-                <div class="col-lg-6" data-aos="fade-right">
-
-                    <div class="about-card">
-
-                        <div class="about-header">
-
-                            <h3 class="mb-4">Hi, I'm a Full-Stack Developer</h3>
-
-                            <p class="lead mb-4">
-
-                                I transform creative ideas into powerful digital experiences with clean code and stunning design.
-
-                            </p>
-
-                        </div>
-
-                        
-
-                        <div class="about-story mb-4">
-
-                            <p>
-
-                                With over 5 years of experience in web development and design, I specialize in building modern, scalable applications that solve real-world problems. My passion lies in creating intuitive user interfaces and robust backend systems that deliver exceptional results.
-
-                            </p>
-
-                            <p>
-
-                                I believe in the power of technology to transform businesses and improve lives. Whether it's a startup MVP or an enterprise solution, I bring dedication, creativity, and technical expertise to every project.
-
-                            </p>
-
-                        </div>
-
-                        
-
-                        <div class="about-skills">
-
-                            <h5 class="mb-3">Core Expertise</h5>
-
-                            <div class="skills-grid">
-
-                                <div class="skill-item">
-
-                                    <i class="fas fa-code"></i>
-
-                                    <span>Frontend Development</span>
-
-                                </div>
-
-                                <div class="skill-item">
-
-                                    <i class="fas fa-server"></i>
-
-                                    <span>Backend Architecture</span>
-
-                                </div>
-
-                                <div class="skill-item">
-
-                                    <i class="fas fa-paint-brush"></i>
-
-                                    <span>UI/UX Design</span>
-
-                                </div>
-
-                                <div class="skill-item">
-
-                                    <i class="fas fa-mobile-alt"></i>
-
-                                    <span>Mobile Development</span>
-
-                                </div>
-
-                                <div class="skill-item">
-
-                                    <i class="fas fa-cloud"></i>
-
-                                    <span>Cloud Services</span>
-
-                                </div>
-
-                                <div class="skill-item">
-
-                                    <i class="fas fa-database"></i>
-
-                                    <span>Database Design</span>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        
-
-                        <div class="about-cta">
-
-                            <a href="#feedback-contact-section" class="btn-hero btn-hero-primary" onclick="console.log('About feedback clicked!'); document.getElementById('feedback-contact-section').scrollIntoView({behavior: 'smooth'}); return false;">
-
-                                <i class="fas fa-envelope"></i> 
-
-                            </a>    Get In Touch
-
-                            </a>
-
-                        </div>
-
-                    </div>
-
+                <div class="about-header-modern">
+                    <h2 class="about-title">About Me</h2>
+                    <p class="about-subtitle">Transforming ideas into exceptional digital experiences</p>
                 </div>
 
-                
+                <div class="about-content-modern">
+                    <div class="about-left-modern">
+                        <div class="about-intro">
 
-                <div class="col-lg-6" data-aos="fade-left">
+                            <!-- Section Heading -->
+                            <h3 class="intro-heading">
+                                Hi, I'm a
+                                <span class="highlight">
+                                    Graphic Designer, Video Editor, Full-Stack Developer
+                                </span>
+                            </h3>
 
-                    <!-- About Highlights -->
+                            <!-- About Description -->
+                            <!-- Split into multiple paragraphs for better readability -->
 
-                    <div class="about-highlights">
+                            <p class="about-description">
+                                Passionate about creating innovative digital solutions that make a difference.
+                                I transform creative ideas into powerful digital experiences with clean code and
+                                stunning design.
+                            </p>
 
-                        <div class="highlight-card">
+                            <p class="about-description">
+                                With over 5 years of experience in web development and design, I specialize in building
+                                modern,
+                                scalable applications that solve real-world problems. My passion lies in creating
+                                intuitive user
+                                interfaces and robust backend systems that deliver exceptional results.
+                            </p>
 
-                            <div class="highlight-icon">
-
-                                <i class="fas fa-trophy"></i>
-
-                            </div>
-
-                            <div class="highlight-content">
-
-                                <h4 id="projects-delivered-stat">50+ Projects Delivered</h4>
-
-                                <p>Successfully completed projects for startups and enterprises worldwide</p>
-
-                            </div>
-
-                        </div>
-
-                        
-
-                        <div class="highlight-card">
-
-                            <div class="highlight-icon">
-
-                                <i class="fas fa-users"></i>
-
-                            </div>
-
-                            <div class="highlight-content">
-
-                                <h4 id="happy-clients-stat">30+ Happy Clients</h4>
-
-                                <p>Built long-term relationships with satisfied clients across various industries</p>
-
-                            </div>
+                            <p class="about-description">
+                                I believe in the power of technology to transform businesses and improve lives. Whether
+                                it's a
+                                startup MVP or an enterprise solution, I bring dedication, creativity, and technical
+                                expertise
+                                to every project.
+                            </p>
 
                         </div>
 
-                        
-
-                        <div class="highlight-card">
-
-                            <div class="highlight-icon">
-
-                                <i class="fas fa-clock"></i>
-
+                        <div class="about-expertise">
+                            <h4 class="expertise-heading">Core Expertise</h4>
+                            <div class="expertise-grid">
+                                <div class="expertise-item">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-laptop-code"></i>
+                                    </div>
+                                    <div class="expertise-content">
+                                        <h5>React JS</h5>
+                                    </div>
+                                </div>
+                                <div class="expertise-item">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-paint-brush"></i>
+                                    </div>
+                                    <div class="expertise-content">
+                                        <h5>Frontend Development</h5>
+                                    </div>
+                                </div>
+                                <div class="expertise-item">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-server"></i>
+                                    </div>
+                                    <div class="expertise-content">
+                                        <h5>Backend Architecture</h5>
+                                    </div>
+                                </div>
+                                <div class="expertise-item">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <div class="expertise-content">
+                                        <h5>UI/UX Design</h5>
+                                    </div>
+                                </div>
+                                <div class="expertise-item">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                    <div class="expertise-content">
+                                        <h5>Mobile Development</h5>
+                                    </div>
+                                </div>
+                                <div class="expertise-item">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-cloud"></i>
+                                    </div>
+                                    <div class="expertise-content">
+                                        <h5>Cloud Services</h5>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
 
-                            <div class="highlight-content">
+                        <div class="about-cta-modern">
+                            <a href="#feedback-contact-section" class="cta-button">
+                                <span>Let's Work Together</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
 
-                                <h4>5+ Years Experience</h4>
+                    <div class="about-right-modern">
+                        <div class="stats-grid-modern">
+                            <div class="stat-card-modern">
+                                <div class="stat-number" id="projects-delivered-stat">50+</div>
+                                <div class="stat-label">Projects Completed</div>
+                                <div class="stat-description">Delivered with excellence</div>
+                            </div>
+                            <div class="stat-card-modern">
+                                <div class="stat-number" id="happy-clients-stat">30+</div>
+                                <div class="stat-label">Happy Clients</div>
+                                <div class="stat-description">Long-term partnerships</div>
+                            </div>
+                            <div class="stat-card-modern">
+                                <div class="stat-number">5+</div>
+                                <div class="stat-label">Years Experience</div>
 
                                 <p>Proven track record in delivering high-quality digital solutions</p>
 
@@ -822,7 +732,7 @@
 
                         </div>
 
-                        
+
 
                         <div class="highlight-card">
 
@@ -844,7 +754,7 @@
 
                     </div>
 
-                    
+
 
                     <!-- Dual Sliders Container -->
 
@@ -896,7 +806,7 @@
 
                         </div>
 
-                        
+
 
                         <!-- Pakistan News Slider -->
 
@@ -976,7 +886,7 @@
 
             </div>
 
-            
+
 
             <!-- Services Grid -->
 
@@ -1006,7 +916,8 @@
 
                             <p class="service-description">
 
-                                Building modern, responsive, and high-performance web applications using cutting-edge technologies and best practices.
+                                Building modern, responsive, and high-performance web applications using cutting-edge
+                                technologies and best practices.
 
                             </p>
 
@@ -1084,7 +995,8 @@
 
                             <p class="service-description">
 
-                                Creating intuitive, user-centered designs that deliver exceptional user experiences and drive business results.
+                                Creating intuitive, user-centered designs that deliver exceptional user experiences and
+                                drive business results.
 
                             </p>
 
@@ -1162,7 +1074,8 @@
 
                             <p class="service-description">
 
-                                Developing native and cross-platform mobile applications that provide seamless experiences across all devices.
+                                Developing native and cross-platform mobile applications that provide seamless
+                                experiences across all devices.
 
                             </p>
 
@@ -1240,7 +1153,8 @@
 
                             <p class="service-description">
 
-                                Building robust, scalable, and secure server-side applications with optimized databases and APIs.
+                                Building robust, scalable, and secure server-side applications with optimized databases
+                                and APIs.
 
                             </p>
 
@@ -1318,7 +1232,8 @@
 
                             <p class="service-description">
 
-                                Setting up efficient CI/CD pipelines, cloud infrastructure, and automated deployment strategies.
+                                Setting up efficient CI/CD pipelines, cloud infrastructure, and automated deployment
+                                strategies.
 
                             </p>
 
@@ -1396,7 +1311,8 @@
 
                             <p class="service-description">
 
-                                Providing expert technical guidance and strategic planning to help businesses make informed technology decisions.
+                                Providing expert technical guidance and strategic planning to help businesses make
+                                informed technology decisions.
 
                             </p>
 
@@ -1476,7 +1392,8 @@
 
                             <p class="cta-subtitle">
 
-                                Let's collaborate to create exceptional digital experiences that drive results and exceed expectations. Your vision, my expertise.
+                                Let's collaborate to create exceptional digital experiences that drive results and
+                                exceed expectations. Your vision, my expertise.
 
                             </p>
 
@@ -1564,13 +1481,13 @@
 
                 </div>
 
-                        </button>
-
-                    </div>
-
-                </div>
+                </button>
 
             </div>
+
+        </div>
+
+        </div>
 
         </div>
 
@@ -1596,7 +1513,7 @@
 
             </div>
 
-            
+
 
             <!-- Project Category Tabs -->
 
@@ -1628,7 +1545,7 @@
 
             </div>
 
-            
+
 
             <!-- Projects Grid -->
 
@@ -1638,251 +1555,178 @@
 
                     {% if projects %}
 
-                        {% for project in projects %}
+                    {% for project in projects %}
 
-                        <div class="project-card" data-category="{{ project.category or 'web_dev' }}">
+                    <div class="project-card" data-category="{{ project.category or 'web_dev' }}">
 
-                            <div class="project-media">
+                        <div class="project-media">
 
-                                {% if project.video %}
+                            {% if project.video %}
 
-                                <div class="project-video">
+                            <div class="project-video">
 
-                                    {% if project.image and project.image.startswith('http') %}
+                                {% if project.image and project.image.startswith('http') %}
 
-                                        <video class="project-video-player" controls poster="{{ project.image }}">
+                                <video class="project-video-player" controls poster="{{ project.image }}">
 
                                     {% elif project.image %}
 
-                                        <video class="project-video-player" controls poster="{{ url_for('static', filename='uploads/' + project.image) }}">
-
-                                    {% else %}
-
-                                        <video class="project-video-player" controls poster="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format">
-
-                                    {% endif %}
-
-                                        <source src="{{ url_for('static', filename='uploads/' + project.video) }}" type="video/mp4">
-
-                                        Your browser does not support the video tag.
-
-                                    </video>
-
-                                    <div class="project-overlay"></div>
-
-                                    <div class="project-category-badge" data-category="{{ project.category or 'web_dev' }}">
-
-                                        {% if project.category == 'web_dev' %}
-
-                                            <i class="fas fa-code"></i> Web Dev
-
-                                        {% elif project.category == 'graphic_design' %}
-
-                                            <i class="fas fa-palette"></i> Design
-
-                                        {% elif project.category == 'video_editing' %}
-
-                                            <i class="fas fa-video"></i> Video
+                                    <video class="project-video-player" controls
+                                        poster="{{ url_for('static', filename='uploads/' + project.image) }}">
 
                                         {% else %}
 
-                                            <i class="fas fa-code"></i> Web Dev
-
-                                        {% endif %}
-
-                                    </div>
-
-                                </div>
-
-                                {% elif project.image %}
-
-                                <div class="project-image">
-
-                                    {% if project.image.startswith('http') %}
-
-                                        <!-- External image URL -->
-
-                                        <img src="{{ project.image }}" alt="{{ project.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\'>📷 Image unavailable</div>'">
-
-                                    {% else %}
-
-                                        <!-- Local uploaded image -->
-
-                                        <img src="{{ url_for('static', filename='uploads/' + project.image) }}" alt="{{ project.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\'>📷 Image unavailable</div>'">
-
-                                    {% endif %}
-
-                                    <div class="project-overlay"></div>
-
-                                    <div class="project-category-badge" data-category="{{ project.category or 'web_dev' }}">
-
-                                        {% if project.category == 'web_dev' %}
-
-                                            <i class="fas fa-code"></i> Web Dev
-
-                                        {% elif project.category == 'graphic_design' %}
-
-                                            <i class="fas fa-palette"></i> Design
-
-                                        {% elif project.category == 'video_editing' %}
-
-                                            <i class="fas fa-video"></i> Video
-
-                                        {% else %}
-
-                                            <i class="fas fa-code"></i> Web Dev
-
-                                        {% endif %}
-
-                                    </div>
-
-                                </div>
-
-                                {% else %}
-
-                                <div class="project-image">
-
-                                    <img src="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format" alt="{{ project.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\'>📷 No image available</div>'">
-
-                                    <div class="project-overlay"></div>
-
-                                    <div class="project-category-badge" data-category="{{ project.category or 'web_dev' }}">
-
-                                        {% if project.category == 'web_dev' %}
-
-                                            <i class="fas fa-code"></i> Web Dev
-
-                                        {% elif project.category == 'graphic_design' %}
-
-                                            <i class="fas fa-palette"></i> Design
-
-                                        {% elif project.category == 'video_editing' %}
-
-                                            <i class="fas fa-video"></i> Video
-
-                                        {% else %}
-
-                                            <i class="fas fa-code"></i> Web Dev
-
-                                        {% endif %}
-
-                                    </div>
-
-                                </div>
-
-                                {% endif %}
-
-                            </div>
-
-                            <div class="project-content">
-
-                                <div class="project-header">
-
-                                    <h3 class="project-title">{{ project.title }}</h3>
-
-                                    <div class="project-meta">
-
-                                        {% if project.category %}
-
-                                        <span class="project-type">
-
-                                            {% if project.category == 'web_dev' %}
-
-                                                <i class="fas fa-laptop-code"></i> Web Development
-
-                                            {% elif project.category == 'graphic_design' %}
-
-                                                <i class="fas fa-paint-brush"></i> Graphic Design
-
-                                            {% elif project.category == 'video_editing' %}
-
-                                                <i class="fas fa-video"></i> Video Editing
+                                        <video class="project-video-player" controls
+                                            poster="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format">
 
                                             {% endif %}
 
-                                        </span>
+                                            <source src="{{ url_for('static', filename='uploads/' + project.video) }}"
+                                                type="video/mp4">
 
-                                        {% endif %}
+                                            Your browser does not support the video tag.
 
-                                    </div>
+                                        </video>
 
-                                </div>
+                                        <div class="project-overlay"></div>
 
-                                
+                                        <div class="project-category-badge"
+                                            data-category="{{ project.category or 'web_dev' }}">
 
-                                <p class="project-description">
+                                            {% if project.category == 'web_dev' %}
 
-                                    {{ project.description[:150] + "..." if project.description and project.description|length > 150 else project.description or 'No description available.' }}
+                                            <i class="fas fa-code"></i> Web Dev
 
-                                </p>
+                                            {% elif project.category == 'graphic_design' %}
 
-                                
+                                            <i class="fas fa-palette"></i> Design
 
-                                {% if project.technologies %}
+                                            {% elif project.category == 'video_editing' %}
 
-                                <div class="project-tech">
+                                            <i class="fas fa-video"></i> Video
 
-                                    <div class="tech-label">
+                                            {% else %}
 
-                                        <i class="fas fa-tools"></i> Technologies Used
+                                            <i class="fas fa-code"></i> Web Dev
 
-                                    </div>
+                                            {% endif %}
 
-                                    <div class="tech-tags">
+                                        </div>
 
-                                        {% for tech in project.technologies.split(',')[:6] %}
+                            </div>
 
-                                        <span class="tech-tag">{{ tech.strip() }}</span>
+                            {% elif project.image %}
 
-                                        {% endfor %}
+                            <div class="project-image">
 
-                                    </div>
+                                {% if project.image.startswith('http') %}
 
-                                </div>
+                                <!-- External image URL -->
+
+                                <img src="{{ project.image }}" alt="{{ project.title }}"
+                                    onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\'>📷 Image unavailable</div>'">
+
+                                {% else %}
+
+                                <!-- Local uploaded image -->
+
+                                <img src="{{ url_for('static', filename='uploads/' + project.image) }}"
+                                    alt="{{ project.title }}"
+                                    onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\'>📷 Image unavailable</div>'">
 
                                 {% endif %}
 
-                                
+                                <div class="project-overlay"></div>
 
-                                <div class="project-links">
+                                <div class="project-category-badge" data-category="{{ project.category or 'web_dev' }}">
 
-                                    {% if project.github_link %}
+                                    {% if project.category == 'web_dev' %}
 
-                                    <a href="{{ project.github_link }}" class="project-link project-link-secondary" target="_blank">
+                                    <i class="fas fa-code"></i> Web Dev
 
-                                        <i class="fab fa-github"></i> 
+                                    {% elif project.category == 'graphic_design' %}
 
-                                        <span>Source Code</span>
+                                    <i class="fas fa-palette"></i> Design
 
-                                    </a>
+                                    {% elif project.category == 'video_editing' %}
+
+                                    <i class="fas fa-video"></i> Video
+
+                                    {% else %}
+
+                                    <i class="fas fa-code"></i> Web Dev
 
                                     {% endif %}
 
-                                    {% if project.live_link %}
+                                </div>
 
-                                    <a href="{{ project.live_link }}" class="project-link project-link-primary" target="_blank">
+                            </div>
 
-                                        {% if project.category == 'video_editing' %}
+                            {% else %}
 
-                                            <i class="fas fa-play-circle"></i> 
+                            <div class="project-image">
 
-                                            <span>Watch Video</span>
+                                <img src="https://images.unsplash.com/photo-1460925895917-4365d14bab8c?w=400&h=250&fit=crop&crop=entropy&auto=format"
+                                    alt="{{ project.title }}"
+                                    onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);\'>📷 No image available</div>'">
+
+                                <div class="project-overlay"></div>
+
+                                <div class="project-category-badge" data-category="{{ project.category or 'web_dev' }}">
+
+                                    {% if project.category == 'web_dev' %}
+
+                                    <i class="fas fa-code"></i> Web Dev
+
+                                    {% elif project.category == 'graphic_design' %}
+
+                                    <i class="fas fa-palette"></i> Design
+
+                                    {% elif project.category == 'video_editing' %}
+
+                                    <i class="fas fa-video"></i> Video
+
+                                    {% else %}
+
+                                    <i class="fas fa-code"></i> Web Dev
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <div class="project-header">
+
+                                <h3 class="project-title">{{ project.title }}</h3>
+
+                                <div class="project-meta">
+
+                                    {% if project.category %}
+
+                                    <span class="project-type">
+
+                                        {% if project.category == 'web_dev' %}
+
+                                        <i class="fas fa-laptop-code"></i> Web Development
 
                                         {% elif project.category == 'graphic_design' %}
 
-                                            <i class="fas fa-eye"></i> 
+                                        <i class="fas fa-paint-brush"></i> Graphic Design
 
-                                            <span>View Project</span>
+                                        {% elif project.category == 'video_editing' %}
 
-                                        {% else %}
-
-                                            <i class="fas fa-external-link-alt"></i> 
-
-                                            <span>Live Demo</span>
+                                        <i class="fas fa-video"></i> Video Editing
 
                                         {% endif %}
 
-                                    </a>
+                                    </span>
 
                                     {% endif %}
 
@@ -1890,55 +1734,223 @@
 
                             </div>
 
+
+
+                            <p class="project-description">
+
+                                {{ project.description[:150] + "..." if project.description and
+                                project.description|length > 150 else project.description or 'No description available.'
+                                }}
+
+                            </p>
+
+
+
+                            {% if project.technologies %}
+
+                            <div class="project-tech">
+
+                                <div class="tech-label">
+
+                                    <i class="fas fa-tools"></i> Technologies Used
+
+                                </div>
+
+                                <div class="tech-tags">
+
+                                    {% for tech in project.technologies.split(',')[:6] %}
+
+                                    <span class="tech-tag">{{ tech.strip() }}</span>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                            {% endif %}
+
+                            <!-- Project Type Badge -->
+                            {% if project.project_type %}
+                            <div class="project-type-badge">
+                                <div class="type-label">
+                                    <i class="fas fa-tag"></i> Project Type
+                                </div>
+                                <div class="type-tag">
+                                    {% if project.project_type == 'ecommerce' %}
+                                    <i class="fas fa-shopping-cart"></i> E-commerce
+                                    {% elif project.project_type == 'portfolio' %}
+                                    <i class="fas fa-briefcase"></i> Portfolio
+                                    {% elif project.project_type == 'blog' %}
+                                    <i class="fas fa-blog"></i> Blog
+                                    {% elif project.project_type == 'social_media' %}
+                                    <i class="fas fa-users"></i> Social Media
+                                    {% elif project.project_type == 'dashboard' %}
+                                    <i class="fas fa-chart-line"></i> Dashboard
+                                    {% elif project.project_type == 'api' %}
+                                    <i class="fas fa-code"></i> API
+                                    {% elif project.project_type == 'mobile_app' %}
+                                    <i class="fas fa-mobile-alt"></i> Mobile App
+                                    {% elif project.project_type == 'saas' %}
+                                    <i class="fas fa-cloud"></i> SaaS
+                                    {% elif project.project_type == 'landing' %}
+                                    <i class="fas fa-rocket"></i> Landing Page
+                                    {% elif project.project_type == 'logo_design' %}
+                                    <i class="fas fa-paint-brush"></i> Logo Design
+                                    {% elif project.project_type == 'branding' %}
+                                    <i class="fas fa-trademark"></i> Branding
+                                    {% elif project.project_type == 'poster' %}
+                                    <i class="fas fa-image"></i> Poster
+                                    {% elif project.project_type == 'social_media_graphics' %}
+                                    <i class="fas fa-share-alt"></i> Social Graphics
+                                    {% elif project.project_type == 'ui_design' %}
+                                    <i class="fas fa-palette"></i> UI Design
+                                    {% elif project.project_type == 'print_design' %}
+                                    <i class="fas fa-print"></i> Print Design
+                                    {% elif project.project_type == 'illustration' %}
+                                    <i class="fas fa-pencil-alt"></i> Illustration
+                                    {% elif project.project_type == 'motion_graphics' %}
+                                    <i class="fas fa-film"></i> Motion Graphics
+                                    {% elif project.project_type == 'music_video' %}
+                                    <i class="fas fa-music"></i> Music Video
+                                    {% elif project.project_type == 'commercial' %}
+                                    <i class="fas fa-ad"></i> Commercial
+                                    {% elif project.project_type == 'documentary' %}
+                                    <i class="fas fa-video"></i> Documentary
+                                    {% elif project.project_type == 'tutorial' %}
+                                    <i class="fas fa-graduation-cap"></i> Tutorial
+                                    {% elif project.project_type == 'vlog' %}
+                                    <i class="fas fa-video"></i> Vlog
+                                    {% elif project.project_type == 'corporate' %}
+                                    <i class="fas fa-building"></i> Corporate
+                                    {% elif project.project_type == 'short_film' %}
+                                    <i class="fas fa-film"></i> Short Film
+                                    {% elif project.project_type == 'animation' %}
+                                    <i class="fas fa-magic"></i> Animation
+                                    {% else %}
+                                    <i class="fas fa-folder"></i> {{ project.project_type.replace('_', ' ').title() }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <!-- Software/Tools Badges -->
+                            {% if project.software_used %}
+                            <div class="project-software">
+                                <div class="software-label">
+                                    <i class="fas fa-tools"></i> Software/Tools Used
+                                </div>
+                                <div class="software-tags">
+                                    {% for software in project.software_used.split(',')[:6] %}
+                                    <span class="software-badge">{{ software.strip() }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <div class="project-links">
+
+                                {% if project.github_link %}
+
+                                <a href="{{ project.github_link }}" class="project-link project-link-secondary"
+                                    target="_blank">
+
+                                    <i class="fab fa-github"></i>
+
+                                    <span>Source Code</span>
+
+                                </a>
+
+                                {% endif %}
+
+                                {% if project.live_link %}
+
+                                <a href="{{ project.live_link }}" class="project-link project-link-primary"
+                                    target="_blank">
+
+                                    {% if project.category == 'video_editing' %}
+
+                                    <i class="fas fa-play-circle"></i>
+
+                                    <span>Watch Video</span>
+
+                                    {% elif project.category == 'graphic_design' %}
+
+                                    <i class="fas fa-eye"></i>
+
+                                    <span>View Project</span>
+
+                                    {% else %}
+
+                                    <i class="fas fa-external-link-alt"></i>
+
+                                    <span>Live Demo</span>
+
+                                    {% endif %}
+
+                                </a>
+
+                                {% endif %}
+
+                                <!-- Always show View Details button -->
+                                <button class="project-link project-link-secondary" onclick="showProjectDetails('{{ project.id }}')">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Details</span>
+                                </button>
+
+                            </div>
+
                         </div>
 
-                        {% endfor %}
+                    </div>
+
+                    {% endfor %}
 
                     {% else %}
 
-                        <!-- No Projects State -->
+                    <!-- No Projects State -->
 
-                        <div class="no-projects-state">
+                    <div class="no-projects-state">
 
-                            <div class="no-projects-icon">
+                        <div class="no-projects-icon">
 
-                                <i class="fas fa-folder-open"></i>
+                            <i class="fas fa-folder-open"></i>
+
+                        </div>
+
+                        <h3>No Projects Yet</h3>
+
+                        <p>Projects will appear here once you add them from the admin panel.</p>
+
+                        <div class="no-projects-categories">
+
+                            <div class="category-preview">
+
+                                <i class="fas fa-code"></i>
+
+                                <span>Web Development</span>
 
                             </div>
 
-                            <h3>No Projects Yet</h3>
+                            <div class="category-preview">
 
-                            <p>Projects will appear here once you add them from the admin panel.</p>
+                                <i class="fas fa-palette"></i>
 
-                            <div class="no-projects-categories">
+                                <span>Graphic Design</span>
 
-                                <div class="category-preview">
+                            </div>
 
-                                    <i class="fas fa-code"></i>
+                            <div class="category-preview">
 
-                                    <span>Web Development</span>
+                                <i class="fas fa-video"></i>
 
-                                </div>
-
-                                <div class="category-preview">
-
-                                    <i class="fas fa-palette"></i>
-
-                                    <span>Graphic Design</span>
-
-                                </div>
-
-                                <div class="category-preview">
-
-                                    <i class="fas fa-video"></i>
-
-                                    <span>Video Editing</span>
-
-                                </div>
+                                <span>Video Editing</span>
 
                             </div>
 
                         </div>
+
+                    </div>
 
                     {% endif %}
 
@@ -1946,7 +1958,7 @@
 
             </div>
 
-            
+
 
             <!-- View All Projects Button -->
 
@@ -1984,7 +1996,7 @@
 
             </div>
 
-            
+
 
             <!-- Skills Slider Container -->
 
@@ -2008,7 +2020,7 @@
 
                 </div>
 
-                
+
 
                 <!-- Skills Grid with Slider -->
 
@@ -2022,7 +2034,8 @@
 
                             {% for skill in skills %}
 
-                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up" data-aos-delay="{{ loop.index * 50 }}" data-aos-anchor-placement="top-center">
+                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up"
+                                data-aos-delay="{{ loop.index * 50 }}" data-aos-anchor-placement="top-center">
 
                                 <div class="skill-card">
 
@@ -2052,15 +2065,22 @@
 
                                     </div>
 
-                                    
 
-                                    <div class="skill-progress">
 
-                                        <div class="skill-progress-bar" style="width: 0%" data-width="{{ skill.percentage }}%"></div>
+                                    <div class="skill-progress-wrapper" data-percentage="{{ skill.percentage }}">
+
+                                        <div class="skill-progress">
+
+                                            <div class="skill-progress-bar" style="width: 0%"
+                                                data-width="{{ skill.percentage }}%"></div>
+
+                                            <div class="skill-progress-label">{{ skill.percentage }}</div>
+
+                                        </div>
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-description">
 
@@ -2122,7 +2142,8 @@
 
                             <!-- Sample Skills for Demonstration -->
 
-                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up" data-aos-delay="100" data-aos-anchor-placement="top-center">
+                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up"
+                                data-aos-delay="100" data-aos-anchor-placement="top-center">
 
                                 <div class="skill-card">
 
@@ -2144,7 +2165,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-progress">
 
@@ -2152,7 +2173,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-description">
 
@@ -2164,9 +2185,10 @@
 
                             </div>
 
-                            
 
-                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up" data-aos-delay="150" data-aos-anchor-placement="top-center">
+
+                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up"
+                                data-aos-delay="150" data-aos-anchor-placement="top-center">
 
                                 <div class="skill-card">
 
@@ -2188,7 +2210,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-progress">
 
@@ -2196,7 +2218,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-description">
 
@@ -2208,9 +2230,10 @@
 
                             </div>
 
-                            
 
-                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up" data-aos-delay="200" data-aos-anchor-placement="top-center">
+
+                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up"
+                                data-aos-delay="200" data-aos-anchor-placement="top-center">
 
                                 <div class="skill-card">
 
@@ -2232,7 +2255,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-progress">
 
@@ -2240,7 +2263,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-description">
 
@@ -2252,9 +2275,10 @@
 
                             </div>
 
-                            
 
-                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up" data-aos-delay="250" data-aos-anchor-placement="top-center">
+
+                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up"
+                                data-aos-delay="250" data-aos-anchor-placement="top-center">
 
                                 <div class="skill-card">
 
@@ -2276,7 +2300,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-progress">
 
@@ -2284,7 +2308,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-description">
 
@@ -2296,9 +2320,10 @@
 
                             </div>
 
-                            
 
-                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up" data-aos-delay="300" data-aos-anchor-placement="top-center">
+
+                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up"
+                                data-aos-delay="300" data-aos-anchor-placement="top-center">
 
                                 <div class="skill-card">
 
@@ -2320,7 +2345,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-progress">
 
@@ -2328,7 +2353,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-description">
 
@@ -2340,9 +2365,10 @@
 
                             </div>
 
-                            
 
-                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up" data-aos-delay="350" data-aos-anchor-placement="top-center">
+
+                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up"
+                                data-aos-delay="350" data-aos-anchor-placement="top-center">
 
                                 <div class="skill-card">
 
@@ -2364,7 +2390,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-progress">
 
@@ -2372,7 +2398,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-description">
 
@@ -2384,9 +2410,10 @@
 
                             </div>
 
-                            
 
-                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up" data-aos-delay="400" data-aos-anchor-placement="top-center">
+
+                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up"
+                                data-aos-delay="400" data-aos-anchor-placement="top-center">
 
                                 <div class="skill-card">
 
@@ -2408,7 +2435,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-progress">
 
@@ -2416,7 +2443,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-description">
 
@@ -2428,9 +2455,10 @@
 
                             </div>
 
-                            
 
-                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up" data-aos-delay="450" data-aos-anchor-placement="top-center">
+
+                            <div class="col-lg-3 col-md-4 col-sm-6 skill-slide-item" data-aos="fade-up"
+                                data-aos-delay="450" data-aos-anchor-placement="top-center">
 
                                 <div class="skill-card">
 
@@ -2452,7 +2480,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-progress">
 
@@ -2460,7 +2488,7 @@
 
                                     </div>
 
-                                    
+
 
                                     <div class="skill-description">
 
@@ -2480,7 +2508,7 @@
 
                 </div>
 
-                
+
 
                 <!-- Slider Progress Indicators -->
 
@@ -2516,7 +2544,7 @@
 
             </div>
 
-            
+
 
             <!-- Testimonials Slider -->
 
@@ -2528,107 +2556,107 @@
 
                         {% if testimonials %}
 
-                            {% for testimonial in testimonials %}
+                        {% for testimonial in testimonials %}
 
-                            <div class="swiper-slide">
+                        <div class="swiper-slide">
 
-                                <div class="testimonial-card">
+                            <div class="testimonial-card">
 
-                                    <div class="testimonial-header">
+                                <div class="testimonial-header">
 
-                                        <div class="quote-icon">
+                                    <div class="quote-icon">
 
-                                            <i class="fas fa-quote-left"></i>
+                                        <i class="fas fa-quote-left"></i>
 
-                                        </div>
+                                    </div>
 
-                                        <div class="testimonial-rating">
+                                    <div class="testimonial-rating">
 
-                                            {% for i in range(testimonial.rating or 5) %}
+                                        {% for i in range(testimonial.rating or 5) %}
 
-                                            <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
 
-                                            {% endfor %}
+                                        {% endfor %}
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="testimonial-content">
+
+                                    <p class="testimonial-quote">
+
+                                        "{{ testimonial.quote }}"
+
+                                    </p>
+
+                                </div>
+
+
+
+                                <div class="testimonial-author">
+
+                                    <div class="author-avatar">
+
+                                        {% if testimonial.client_avatar %}
+
+                                        <img src="{{ url_for('static', filename='uploads/' + testimonial.client_avatar) }}"
+                                            alt="{{ testimonial.client_name }}" class="avatar-img">
+
+                                        {% else %}
+
+                                        <img src="https://picsum.photos/seed/{{ testimonial.client_name|lower|replace(' ', '') }}/80/80.jpg"
+                                            alt="{{ testimonial.client_name }}" class="avatar-img">
+
+                                        {% endif %}
+
+                                        <div class="avatar-badge">
+
+                                            <i class="fas fa-check"></i>
 
                                         </div>
 
                                     </div>
 
-                                    
+                                    <div class="author-info">
 
-                                    <div class="testimonial-content">
+                                        <h4 class="author-name">{{ testimonial.client_name }}</h4>
 
-                                        <p class="testimonial-quote">
+                                        <p class="author-position">{{ testimonial.client_position or '' }}</p>
 
-                                            "{{ testimonial.quote }}"
-
-                                        </p>
+                                        <p class="author-company">{{ testimonial.client_company or '' }}</p>
 
                                     </div>
 
-                                    
+                                </div>
 
-                                    <div class="testimonial-author">
 
-                                        <div class="author-avatar">
 
-                                            {% if testimonial.client_avatar %}
+                                <div class="testimonial-meta">
 
-                                            <img src="{{ url_for('static', filename='uploads/' + testimonial.client_avatar) }}" alt="{{ testimonial.client_name }}" class="avatar-img">
+                                    <div class="project-type">
 
-                                            {% else %}
+                                        <i class="fas {{ testimonial.project_type_icon or 'fa-laptop-code' }}"></i>
 
-                                            <img src="https://picsum.photos/seed/{{ testimonial.client_name|lower|replace(' ', '') }}/80/80.jpg" alt="{{ testimonial.client_name }}" class="avatar-img">
-
-                                            {% endif %}
-
-                                            <div class="avatar-badge">
-
-                                                <i class="fas fa-check"></i>
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="author-info">
-
-                                            <h4 class="author-name">{{ testimonial.client_name }}</h4>
-
-                                            <p class="author-position">{{ testimonial.client_position or '' }}</p>
-
-                                            <p class="author-company">{{ testimonial.client_company or '' }}</p>
-
-                                        </div>
+                                        {{ testimonial.project_type or 'Project' }}
 
                                     </div>
 
-                                    
+                                    <div class="testimonial-date">
 
-                                    <div class="testimonial-meta">
+                                        <i class="fas fa-clock"></i>
 
-                                        <div class="project-type">
+                                        {% if testimonial.created_at %}
 
-                                            <i class="fas {{ testimonial.project_type_icon or 'fa-laptop-code' }}"></i>
+                                        {{ testimonial.created_at.strftime('%b %d, %Y') }}
 
-                                            {{ testimonial.project_type or 'Project' }}
+                                        {% else %}
 
-                                        </div>
+                                        Recently
 
-                                        <div class="testimonial-date">
-
-                                            <i class="fas fa-clock"></i>
-
-                                            {% if testimonial.created_at %}
-
-                                                {{ testimonial.created_at.strftime('%b %d, %Y') }}
-
-                                            {% else %}
-
-                                                Recently
-
-                                            {% endif %}
-
-                                        </div>
+                                        {% endif %}
 
                                     </div>
 
@@ -2636,99 +2664,100 @@
 
                             </div>
 
-                            {% endfor %}
+                        </div>
+
+                        {% endfor %}
 
                         {% else %}
 
-                            <!-- Fallback testimonials if no data in database -->
+                        <!-- No testimonials available -->
 
-                            <div class="swiper-slide">
+                        <div class="swiper-slide">
 
-                                <div class="testimonial-card">
+                            <div class="testimonial-card">
 
-                                    <div class="testimonial-header">
+                                <div class="testimonial-header">
 
-                                        <div class="quote-icon">
+                                    <div class="quote-icon">
 
-                                            <i class="fas fa-quote-left"></i>
+                                        <i class="fas fa-quote-left"></i>
 
-                                        </div>
+                                    </div>
 
-                                        <div class="testimonial-rating">
+                                    <div class="testimonial-rating">
 
-                                            <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
 
-                                            <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
 
-                                            <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
 
-                                            <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
 
-                                            <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="testimonial-content">
+
+                                    <p class="testimonial-quote">
+
+                                        "No testimonials available yet. Be the first to share your experience!"
+
+                                    </p>
+
+                                </div>
+
+
+
+                                <div class="testimonial-author">
+
+                                    <div class="author-avatar">
+
+                                        <img src="https://picsum.photos/seed/default/80/80.jpg" alt="Default"
+                                            class="avatar-img">
+
+                                        <div class="avatar-badge">
+
+                                            <i class="fas fa-plus"></i>
 
                                         </div>
 
                                     </div>
 
-                                    
+                                    <div class="author-info">
 
-                                    <div class="testimonial-content">
+                                        <h4 class="author-name">Your Name Here</h4>
 
-                                        <p class="testimonial-quote">
+                                        <p class="author-position">Your Position</p>
 
-                                            "Exceptional work! Delivered beyond expectations and attention to detail was remarkable. The communication throughout the project was outstanding, and the final product exceeded our wildest dreams. Highly recommend for any web development project."
-
-                                        </p>
+                                        <p class="author-company">Your Company</p>
 
                                     </div>
 
-                                    
+                                </div>
 
-                                    <div class="testimonial-author">
 
-                                        <div class="author-avatar">
 
-                                            <img src="https://picsum.photos/seed/johndoe/80/80.jpg" alt="John Doe" class="avatar-img">
+                                <div class="testimonial-meta">
 
-                                            <div class="avatar-badge">
+                                    <div class="project-type">
 
-                                                <i class="fas fa-check"></i>
+                                        <i class="fas fa-laptop-code"></i>
 
-                                            </div>
-
-                                        </div>
-
-                                        <div class="author-info">
-
-                                            <h4 class="author-name">John Doe</h4>
-
-                                            <p class="author-position">CEO & Founder</p>
-
-                                            <p class="author-company">TechCorp Industries</p>
-
-                                        </div>
+                                        Your Project
 
                                     </div>
 
-                                    
+                                    <div class="testimonial-date">
 
-                                    <div class="testimonial-meta">
+                                        <i class="fas fa-clock"></i>
 
-                                        <div class="project-type">
-
-                                            <i class="fas fa-laptop-code"></i>
-
-                                            Web Development
-
-                                        </div>
-
-                                        <div class="testimonial-date">
-
-                                            <i class="fas fa-clock"></i>
-
-                                            2 weeks ago
-
-                                        </div>
+                                        Pending
 
                                     </div>
 
@@ -2736,115 +2765,118 @@
 
                             </div>
 
-                            
+                        </div>
 
-                            <div class="swiper-slide">
 
-                                <div class="testimonial-card">
 
-                                    <div class="testimonial-header">
+                        <div class="swiper-slide">
 
-                                        <div class="quote-icon">
+                            <div class="testimonial-card">
 
-                                            <i class="fas fa-quote-left"></i>
+                                <div class="testimonial-header">
 
-                                        </div>
+                                    <div class="quote-icon">
 
-                                        <div class="testimonial-rating">
+                                        <i class="fas fa-quote-left"></i>
 
-                                            <i class="fas fa-star"></i>
+                                    </div>
 
-                                            <i class="fas fa-star"></i>
+                                    <div class="testimonial-rating">
 
-                                            <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
 
-                                            <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
 
-                                            <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+
+                                        <i class="fas fa-star"></i>
+
+                                        <i class="fas fa-star"></i>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="testimonial-content">
+
+                                    <p class="testimonial-quote">
+
+                                        "Professional, creative, and always meets deadlines. A true pleasure to work
+                                        with on complex projects. The quality of work is outstanding, and the ability to
+                                        understand our requirements was impressive. Would definitely work with again!"
+
+                                    </p>
+
+                                </div>
+
+
+
+                                <div class="testimonial-author">
+
+                                    <div class="author-avatar">
+
+                                        <img src="https://picsum.photos/seed/janesmith/80/80.jpg" alt="Jane Smith"
+                                            class="avatar-img">
+
+                                        <div class="avatar-badge">
+
+                                            <i class="fas fa-check"></i>
 
                                         </div>
 
                                     </div>
 
-                                    
+                                    <div class="author-info">
 
-                                    <div class="testimonial-content">
+                                        <h4 class="author-name">Jane Smith</h4>
 
-                                        <p class="testimonial-quote">
+                                        <p class="author-position">Product Manager</p>
 
-                                            "Professional, creative, and always meets deadlines. A true pleasure to work with on complex projects. The quality of work is outstanding, and the ability to understand our requirements was impressive. Would definitely work with again!"
-
-                                        </p>
+                                        <p class="author-company">StartupX Solutions</p>
 
                                     </div>
 
-                                    
+                                </div>
 
-                                    <div class="testimonial-author">
 
-                                        <div class="author-avatar">
 
-                                            <img src="https://picsum.photos/seed/janesmith/80/80.jpg" alt="Jane Smith" class="avatar-img">
+                                <div class="testimonial-meta">
 
-                                            <div class="avatar-badge">
+                                    <div class="project-type">
 
-                                                <i class="fas fa-check"></i>
+                                        <i class="fas fa-mobile-alt"></i>
 
-                                            </div>
-
-                                        </div>
-
-                                        <div class="author-info">
-
-                                            <h4 class="author-name">Jane Smith</h4>
-
-                                            <p class="author-position">Product Manager</p>
-
-                                            <p class="author-company">StartupX Solutions</p>
-
-                                        </div>
+                                        Mobile App
 
                                     </div>
 
-                                    
+                                    <div class="testimonial-date">
 
-                                    <div class="testimonial-meta">
+                                        <i class="fas fa-clock"></i>
 
-                                        <div class="project-type">
-
-                                            <i class="fas fa-mobile-alt"></i>
-
-                                            Mobile App
-
-                                        </div>
-
-                                        <div class="testimonial-date">
-
-                                            <i class="fas fa-clock"></i>
-
-                                            1 month ago
-
-                                        </div>
+                                        1 month ago
 
                                     </div>
 
                                 </div>
 
                             </div>
+
+                        </div>
 
                         {% endif %}
 
                     </div>
 
-                    
+
 
                     <!-- Navigation Buttons -->
+                    <div class="swiper-button-next" aria-label="Next slide" role="button"></div>
+                    <div class="swiper-button-prev" aria-label="Previous slide" role="button"></div>
 
-                    <div class="swiper-button-next"></div>
 
-                    <div class="swiper-button-prev"></div>
-
-                    
 
                     <!-- Pagination -->
 
@@ -2854,7 +2886,7 @@
 
             </div>
 
-            
+
 
             <!-- Testimonials Stats -->
 
@@ -2868,15 +2900,18 @@
 
                             <div class="stat-icon">
 
-                                <i class="{{ testimonials_stats.happy_clients_icon if testimonials_stats else 'fas fa-users' }}"></i>
+                                <i
+                                    class="{{ testimonials_stats.happy_clients_icon if testimonials_stats else 'fas fa-users' }}"></i>
 
                             </div>
 
                             <div class="stat-content">
 
-                                <h3 class="stat-number">{{ testimonials_stats.happy_clients if testimonials_stats else '50+' }}</h3>
+                                <h3 class="stat-number">{{ testimonials_stats.happy_clients if testimonials_stats else
+                                    '50+' }}</h3>
 
-                                <p class="stat-label">{{ testimonials_stats.happy_clients_label if testimonials_stats else 'Happy Clients' }}</p>
+                                <p class="stat-label">{{ testimonials_stats.happy_clients_label if testimonials_stats
+                                    else 'Happy Clients' }}</p>
 
                             </div>
 
@@ -2890,15 +2925,18 @@
 
                             <div class="stat-icon">
 
-                                <i class="{{ testimonials_stats.projects_completed_icon if testimonials_stats else 'fas fa-briefcase' }}"></i>
+                                <i
+                                    class="{{ testimonials_stats.projects_completed_icon if testimonials_stats else 'fas fa-briefcase' }}"></i>
 
                             </div>
 
                             <div class="stat-content">
 
-                                <h3 class="stat-number">{{ testimonials_stats.projects_completed if testimonials_stats else '100+' }}</h3>
+                                <h3 class="stat-number">{{ testimonials_stats.projects_completed if testimonials_stats
+                                    else '100+' }}</h3>
 
-                                <p class="stat-label">{{ testimonials_stats.projects_completed_label if testimonials_stats else 'Projects Completed' }}</p>
+                                <p class="stat-label">{{ testimonials_stats.projects_completed_label if
+                                    testimonials_stats else 'Projects Completed' }}</p>
 
                             </div>
 
@@ -2912,15 +2950,18 @@
 
                             <div class="stat-icon">
 
-                                <i class="{{ testimonials_stats.average_rating_icon if testimonials_stats else 'fas fa-star' }}"></i>
+                                <i
+                                    class="{{ testimonials_stats.average_rating_icon if testimonials_stats else 'fas fa-star' }}"></i>
 
                             </div>
 
                             <div class="stat-content">
 
-                                <h3 class="stat-number">{{ testimonials_stats.average_rating if testimonials_stats else '5.0' }}</h3>
+                                <h3 class="stat-number">{{ testimonials_stats.average_rating if testimonials_stats else
+                                    '5.0' }}</h3>
 
-                                <p class="stat-label">{{ testimonials_stats.average_rating_label if testimonials_stats else 'Average Rating' }}</p>
+                                <p class="stat-label">{{ testimonials_stats.average_rating_label if testimonials_stats
+                                    else 'Average Rating' }}</p>
 
                             </div>
 
@@ -2934,15 +2975,18 @@
 
                             <div class="stat-icon">
 
-                                <i class="{{ testimonials_stats.awards_won_icon if testimonials_stats else 'fas fa-award' }}"></i>
+                                <i
+                                    class="{{ testimonials_stats.awards_won_icon if testimonials_stats else 'fas fa-award' }}"></i>
 
                             </div>
 
                             <div class="stat-content">
 
-                                <h3 class="stat-number">{{ testimonials_stats.awards_won if testimonials_stats else '15+' }}</h3>
+                                <h3 class="stat-number">{{ testimonials_stats.awards_won if testimonials_stats else
+                                    '15+' }}</h3>
 
-                                <p class="stat-label">{{ testimonials_stats.awards_won_label if testimonials_stats else 'Awards Won' }}</p>
+                                <p class="stat-label">{{ testimonials_stats.awards_won_label if testimonials_stats else
+                                    'Awards Won' }}</p>
 
                             </div>
 
@@ -2977,20 +3021,21 @@
 
             <!-- Messages -->
             {% with messages = get_flashed_messages(with_categories=true) %}
-              {% if messages %}
-                {% for category, message in messages %}
-                  <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert" data-aos="fade-up">
-                    <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }} me-2"></i>
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                  </div>
-                {% endfor %}
-              {% endif %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show"
+                role="alert" data-aos="fade-up">
+                <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }} me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
             {% endwith %}
 
             <!-- Compact Professional Contact Hub -->
             <div class="compact-contact-grid">
-                
+
                 <!-- Feedback Section -->
                 <div class="feedback-card" data-aos="fade-right" data-aos-delay="200">
                     <div class="card-header">
@@ -3002,30 +3047,100 @@
                             <p class="card-subtitle">Help others with your experience</p>
                         </div>
                     </div>
-                    
-                    <form method="POST" action="/feedback" class="compact-form" id="feedbackForm" enctype="multipart/form-data">
+
+                    <style>
+                        .compact-form .form-row {
+                            display: flex;
+                            gap: 1rem;
+                            margin-bottom: 1rem;
+                            align-items: flex-end;
+                        }
+
+                        .compact-form .form-group {
+                            flex: 1;
+                            min-width: 0;
+                        }
+
+                        .compact-form .form-label {
+                            display: block;
+                            margin-bottom: 0.5rem;
+                            font-weight: 500;
+                            color: #333;
+                        }
+
+                        .compact-form .form-control {
+                            width: 100%;
+                            padding: 0.75rem;
+                            border: 1px solid #ddd;
+                            border-radius: 0.5rem;
+                            font-size: 0.95rem;
+                            transition: border-color 0.3s ease;
+                        }
+
+                        .compact-form .form-control:focus {
+                            outline: none;
+                            border-color: #4f46e5;
+                            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+                        }
+
+                        .compact-form .form-control:invalid {
+                            border-color: #ef4444;
+                        }
+
+                        @media (max-width: 768px) {
+                            .compact-form .form-row {
+                                flex-direction: column;
+                                gap: 0.75rem;
+                            }
+
+                            .compact-form .form-group {
+                                width: 100%;
+                            }
+                        }
+                    </style>
+
+                    <form method="POST" action="/feedback" class="compact-form" id="feedbackForm"
+                        enctype="multipart/form-data">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="feedback_name" class="form-label">Name *</label>
-                                <input type="text" class="form-control" id="feedback_name" name="client_name" placeholder="John Doe" required>
+                                <input type="text" class="form-control" id="feedback_name" name="client_name"
+                                    placeholder="John Doe" required>
                             </div>
                             <div class="form-group">
                                 <label for="feedback_email" class="form-label">Email *</label>
-                                <input type="email" class="form-control" id="feedback_email" name="email" placeholder="john@example.com" required>
+                                <input type="email" class="form-control" id="feedback_email" name="email"
+                                    placeholder="john@example.com" required
+                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                    title="Please enter a valid email address">
                             </div>
                         </div>
-                        
+
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="feedback_position" class="form-label">Position</label>
-                                <input type="text" class="form-control" id="feedback_position" name="client_position" placeholder="CEO & Founder">
+                                <label for="feedback_mobile" class="form-label">Mobile Number (Optional)</label>
+                                <input type="tel" class="form-control" id="feedback_mobile" name="mobile"
+                                    placeholder="+1234567890" pattern="[+]?[0-9]{10,15}"
+                                    title="Please enter a valid mobile number (10-15 digits)">
                             </div>
                             <div class="form-group">
-                                <label for="feedback_company" class="form-label">Company</label>
-                                <input type="text" class="form-control" id="feedback_company" name="client_company" placeholder="TechCorp Industries">
+                                <label for="feedback_position" class="form-label">Position</label>
+                                <input type="text" class="form-control" id="feedback_position" name="client_position"
+                                    placeholder="CEO & Founder">
                             </div>
                         </div>
-                        
+
+                        <div class="form-row">
+                            <div class="form-group" style="flex: 2;">
+                                <label for="feedback_company" class="form-label">Company</label>
+                                <input type="text" class="form-control" id="feedback_company" name="client_company"
+                                    placeholder="TechCorp Industries">
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <!-- Empty div to maintain layout balance -->
+                            </div>
+                        </div>
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="feedback_project_type" class="form-label">Project Type</label>
@@ -3050,27 +3165,31 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="feedback_message" class="form-label">Your Feedback *</label>
-                            <textarea class="form-control" id="feedback_message" name="quote" rows="3" placeholder="Share your experience..." required></textarea>
+                            <textarea class="form-control" id="feedback_message" name="quote" rows="3"
+                                placeholder="Share your experience..." required></textarea>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="feedback_avatar" class="form-label">Profile Photo (Optional)</label>
                             <div class="upload-area">
-                                <input type="file" class="form-control" id="feedback_avatar" name="avatar" accept="image/*" style="display: none;">
-                                <div class="upload-preview" onclick="document.getElementById('feedback_avatar').click()">
+                                <input type="file" class="form-control" id="feedback_avatar" name="avatar"
+                                    accept="image/*" style="display: none;">
+                                <div class="upload-preview"
+                                    onclick="document.getElementById('feedback_avatar').click()">
                                     <i class="fas fa-cloud-upload-alt"></i>
                                     <p>Click to upload or drag and drop</p>
                                     <small>PNG, JPG up to 5MB</small>
                                 </div>
                                 <div id="avatar-preview" style="display: none; margin-top: 1rem;">
-                                    <img id="avatar-img" style="max-width: 100%; height: auto; border-radius: 8px;" alt="Preview">
+                                    <img id="avatar-img" style="max-width: 100%; height: auto; border-radius: 8px;"
+                                        alt="Preview">
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-options">
                             <label class="checkbox-label">
                                 <input type="checkbox" id="feedback_permission" name="permission" checked>
@@ -3083,14 +3202,14 @@
                                 Send updates
                             </label>
                         </div>
-                        
+
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-paper-plane"></i>
                             Submit Feedback
                         </button>
                     </form>
                 </div>
-                
+
                 <!-- Contact Section -->
                 <div class="contact-card" data-aos="fade-left" data-aos-delay="300">
                     <div class="card-header">
@@ -3102,7 +3221,7 @@
                             <p class="card-subtitle">Let's discuss your project</p>
                         </div>
                     </div>
-                    
+
                     <div class="quick-contact">
                         <div class="contact-row">
                             <div class="contact-item">
@@ -3121,23 +3240,26 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <form method="POST" action="/contact" class="compact-form" id="contactForm">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="name" class="form-label">Name *</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="John Doe" required>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="John Doe"
+                                    required>
                             </div>
                             <div class="form-group">
                                 <label for="email" class="form-label">Email *</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="john@example.com" required>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="john@example.com" required>
                             </div>
                         </div>
-                        
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="phone" class="form-label">Phone Number</label>
-                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="+92 333 9064741">
+                                <input type="tel" class="form-control" id="phone" name="phone"
+                                    placeholder="+92 333 9064741">
                             </div>
                             <div class="form-group">
                                 <label for="subject" class="form-label">Project Type *</label>
@@ -3153,7 +3275,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="budget" class="form-label">Budget</label>
@@ -3170,12 +3292,13 @@
                                 <!-- Empty for balance -->
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="message" class="form-label">Project Details *</label>
-                            <textarea class="form-control" id="message" name="message" rows="3" placeholder="Tell me about your project..." required></textarea>
+                            <textarea class="form-control" id="message" name="message" rows="3"
+                                placeholder="Tell me about your project..." required></textarea>
                         </div>
-                        
+
                         <div class="form-options">
                             <label class="checkbox-label">
                                 <input type="checkbox" id="nda" name="nda">
@@ -3188,13 +3311,13 @@
                                 Urgent project
                             </label>
                         </div>
-                        
+
                         <button type="submit" class="btn btn-success">
                             <i class="fas fa-paper-plane"></i>
                             Send Message
                         </button>
                     </form>
-                    
+
                     <div class="social-links">
                         <a href="https://linkedin.com" target="_blank" class="social-link" title="LinkedIn">
                             <i class="fab fa-linkedin"></i>
@@ -3217,11 +3340,11 @@
     <!-- Image Upload JavaScript -->
     <script>
         // Avatar upload preview
-        document.getElementById('feedback_avatar').addEventListener('change', function(e) {
+        document.getElementById('feedback_avatar').addEventListener('change', function (e) {
             const file = e.target.files[0];
             const preview = document.getElementById('avatar-preview');
             const img = document.getElementById('avatar-img');
-            
+
             if (file) {
                 // Check file size (5MB limit)
                 if (file.size > 5 * 1024 * 1024) {
@@ -3229,16 +3352,16 @@
                     e.target.value = '';
                     return;
                 }
-                
+
                 // Check file type
                 if (!file.type.match('image.*')) {
                     alert('Please select an image file');
                     e.target.value = '';
                     return;
                 }
-                
+
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     img.src = e.target.result;
                     preview.style.display = 'block';
                     document.querySelector('.upload-preview').style.display = 'none';
@@ -3246,28 +3369,28 @@
                 reader.readAsDataURL(file);
             }
         });
-        
+
         // Drag and drop functionality
         const uploadArea = document.querySelector('.upload-preview');
         const fileInput = document.getElementById('feedback_avatar');
-        
-        uploadArea.addEventListener('dragover', function(e) {
+
+        uploadArea.addEventListener('dragover', function (e) {
             e.preventDefault();
             this.style.backgroundColor = '#f0f9ff';
             this.style.borderColor = '#667eea';
         });
-        
-        uploadArea.addEventListener('dragleave', function(e) {
+
+        uploadArea.addEventListener('dragleave', function (e) {
             e.preventDefault();
             this.style.backgroundColor = '#f9fafb';
             this.style.borderColor = '#d1d5db';
         });
-        
-        uploadArea.addEventListener('drop', function(e) {
+
+        uploadArea.addEventListener('drop', function (e) {
             e.preventDefault();
             this.style.backgroundColor = '#f9fafb';
             this.style.borderColor = '#d1d5db';
-            
+
             const files = e.dataTransfer.files;
             if (files.length > 0) {
                 fileInput.files = files;
@@ -3277,312 +3400,8 @@
         });
     </script>
 
-    <!-- Enhanced Footer -->
-    <footer class="footer">
-
-        <div class="footer-shape">
-
-            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V120Z" fill="currentColor"/>
-
-            </svg>
-
-        </div>
-
-        
-
-        <div class="container">
-
-            <!-- Footer Main Content -->
-
-            <div class="footer-main">
-
-                <div class="row g-4">
-
-                    <!-- About Section -->
-
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-
-                        <div class="footer-about">
-
-                            <div class="footer-logo">
-
-                                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Graphic Nest" class="footer-logo-img">
-
-                                <p class="footer-tagline">Crafting Digital Experiences</p>
-
-                            </div>
-
-                            <p class="footer-description">
-
-                                Passionate full-stack developer creating innovative web solutions with modern technologies. 
-
-                                Transforming ideas into powerful digital experiences that inspire and engage.
-
-                            </p>
-
-                            <div class="footer-contact-info">
-
-                                <div class="contact-item">
-
-                                    <i class="fas fa-envelope"></i>
-
-                                    <span>reactdeveloper492@gmail.com</span>
-
-                                </div>
-
-                                <div class="contact-item">
-
-                                    <i class="fas fa-phone"></i>
-
-                                    <span>+92 333 9064741</span>
-
-                                </div>
-
-                                <div class="contact-item">
-
-                                    <i class="fas fa-map-marker-alt"></i>
-
-                                    <span>San Francisco, CA</span>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    
-
-                    <!-- Quick Links -->
-
-                    <div class="col-lg-2 col-md-6" data-aos="fade-up" data-aos-delay="200">
-
-                        <div class="footer-links">
-
-                            <h4 class="footer-title">Quick Links</h4>
-
-                            <ul class="footer-nav">
-
-                                <li><a href="#hero" class="footer-link"><i class="fas fa-chevron-right"></i> Home</a></li>
-
-                                <li><a href="#about" class="footer-link"><i class="fas fa-chevron-right"></i> About</a></li>
-
-                                <li><a href="#services" class="footer-link"><i class="fas fa-chevron-right"></i> Services</a></li>
-
-                                <li><a href="#projects" class="footer-link"><i class="fas fa-chevron-right"></i> Projects</a></li>
-
-                                <li><a href="#skills" class="footer-link"><i class="fas fa-chevron-right"></i> Skills</a></li>
-
-                                <li><a href="#feedback-contact-section" class="footer-link"><i class="fas fa-chevron-right"></i> Contact</a></li>
-
-                            </ul>
-
-                        </div>
-
-                    </div>
-
-                    
-
-                    <!-- Services -->
-
-                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
-
-                        <div class="footer-services">
-
-                            <h4 class="footer-title">Services</h4>
-
-                            <ul class="footer-nav">
-
-                                <li><a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Web Development</a></li>
-
-                                <li><a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Mobile Apps</a></li>
-
-                                <li><a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> UI/UX Design</a></li>
-
-                                <li><a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Backend Development</a></li>
-
-                                <li><a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> API Development</a></li>
-
-                                <li><a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Consulting</a></li>
-
-                            </ul>
-
-                        </div>
-
-                    </div>
-
-                    
-
-                    <!-- Newsletter & Social -->
-
-                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
-
-                        <div class="footer-newsletter">
-
-                            <h4 class="footer-title">Stay Connected</h4>
-
-                            <p class="footer-subtitle">Subscribe to my newsletter for updates and insights</p>
-
-                            
-
-                            <!-- Newsletter Form -->
-
-                            <form class="newsletter-form" id="newsletterForm">
-
-                                <div class="form-group">
-
-                                    <input type="email" class="form-control newsletter-input" placeholder="Your email address" required>
-
-                                    <button type="submit" class="newsletter-btn">
-
-                                        <i class="fas fa-paper-plane"></i>
-
-                                    </button>
-
-                                </div>
-
-                                <div class="newsletter-success" id="newsletterSuccess" style="display: none;">
-
-                                    <i class="fas fa-check-circle"></i>
-
-                                    <span>Thank you for subscribing!</span>
-
-                                </div>
-
-                            </form>
-
-                            
-
-                            <!-- Social Links -->
-
-                            <div class="footer-social">
-
-                                <h5 class="social-title">Follow Me</h5>
-
-                                <div class="social-links">
-
-                                    <a href="https://github.com" target="_blank" class="social-link social-github" title="GitHub">
-
-                                        <i class="fab fa-github"></i>
-
-                                    </a>
-
-                                    <a href="https://linkedin.com" target="_blank" class="social-link social-linkedin" title="LinkedIn">
-
-                                        <i class="fab fa-linkedin"></i>
-
-                                    </a>
-
-                                    <a href="https://twitter.com" target="_blank" class="social-link social-twitter" title="Twitter">
-
-                                        <i class="fab fa-twitter"></i>
-
-                                    </a>
-
-                                    <a href="https://instagram.com" target="_blank" class="social-link social-instagram" title="Instagram">
-
-                                        <i class="fab fa-instagram"></i>
-
-                                    </a>
-
-                                    <a href="https://dribbble.com" target="_blank" class="social-link social-dribbble" title="Dribbble">
-
-                                        <i class="fab fa-dribbble"></i>
-
-                                    </a>
-
-                                    <a href="https://codepen.io" target="_blank" class="social-link social-codepen" title="CodePen">
-
-                                        <i class="fab fa-codepen"></i>
-
-                                    </a>
-
-                                </div>
-
-                            </div>
-
-                            
-
-                            <!-- Download CV -->
-
-                            <!-- <div class="footer-cv">
-
-                                <a href="#" class="cv-download-btn" download>
-
-                                    <i class="fas fa-download"></i>
-
-                                    <span>Download CV</span>
-
-                                </a>
-
-                            </div> -->
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            
-
-            <!-- Footer Bottom -->
-
-            <div class="footer-bottom">
-
-                <div class="row align-items-center">
-
-                    <div class="col-md-6">
-
-                        <div class="footer-copyright">
-
-                            <p class="copyright-text">
-
-                                2024 Portfolio. All rights reserved. Designed with <i class="fas fa-heart text-danger"></i> by me
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">
-
-                        <div class="footer-bottom-links">
-
-                            <a href="{{ url_for('main.privacy_policy') }}" class="bottom-link">Privacy Policy</a>
-
-                            <a href="{{ url_for('main.terms_of_service') }}" class="bottom-link">Terms of Service</a>
-
-                            <a href="{{ url_for('main.cookie_policy') }}" class="bottom-link">Cookie Policy</a>
-
-                            <a href="{{ url_for('main.sitemap') }}" class="bottom-link">Sitemap</a>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        
-
-        <!-- Back to Top Button -->
-
-        <button class="back-to-top" id="backToTop" title="Back to top">
-
-            <i class="fas fa-chevron-up"></i>
-
-        </button>
-
-    </footer>
+    <!-- Footer -->
+    {% include 'portfolio/components/footer.html' %}
 
 
 
@@ -3602,269 +3421,269 @@
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
-    
+
 
     <!-- Professional Pakistan News Slider Script -->
 
     <script>
 
-    document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
 
-        let pakistanNewsData = [];
+            let pakistanNewsData = [];
 
-        let scrollInterval;
+            let scrollInterval;
 
-        let isPaused = false;
-
-
-
-        // Format time ago
-
-        function formatTimeAgo(publishedAt) {
-
-            const published = new Date(publishedAt);
-
-            const now = new Date();
-
-            const diff = now - published;
-
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-
-            
-
-            if (hours < 1) return "Just now";
-
-            if (hours < 24) return `${hours} hours ago`;
-
-            const days = Math.floor(hours / 24);
-
-            return `${days} days ago`;
-
-        }
+            let isPaused = false;
 
 
 
-        // Load Pakistan News from API
+            // Format time ago
 
-        async function loadPakistanNews() {
+            function formatTimeAgo(publishedAt) {
 
-            const pakistanNewsTrack = document.getElementById('pakistanNewsTrack');
+                const published = new Date(publishedAt);
 
-            if (!pakistanNewsTrack) return;
+                const now = new Date();
+
+                const diff = now - published;
+
+                const hours = Math.floor(diff / (1000 * 60 * 60));
 
 
 
-            try {
+                if (hours < 1) return "Just now";
 
-                const response = await fetch('/api/pakistan-news');
+                if (hours < 24) return `${hours} hours ago`;
 
-                const result = await response.json();
+                const days = Math.floor(hours / 24);
 
-                
+                return `${days} days ago`;
 
-                if (result.status === 'success' && result.data) {
+            }
 
-                    pakistanNewsData = result.data;
 
-                    renderNewsItems();
 
-                } else {
+            // Load Pakistan News from API
 
-                    // Fallback to sample data if API fails
+            async function loadPakistanNews() {
+
+                const pakistanNewsTrack = document.getElementById('pakistanNewsTrack');
+
+                if (!pakistanNewsTrack) return;
+
+
+
+                try {
+
+                    const response = await fetch('/api/pakistan-news');
+
+                    const result = await response.json();
+
+
+
+                    if (result.status === 'success' && result.data) {
+
+                        pakistanNewsData = result.data;
+
+                        renderNewsItems();
+
+                    } else {
+
+                        // Fallback to sample data if API fails
+
+                        loadSampleNews();
+
+                    }
+
+                } catch (error) {
+
+                    console.error('Error loading Pakistan news:', error);
 
                     loadSampleNews();
 
                 }
 
-            } catch (error) {
+            }
 
-                console.error('Error loading Pakistan news:', error);
 
-                loadSampleNews();
+
+            // Load sample news as fallback
+
+            function loadSampleNews() {
+
+                pakistanNewsData = [
+
+                    {
+
+                        id: 1,
+
+                        title: "Pakistan's Economic Growth Exceeds Expectations",
+
+                        description: "GDP growth reaches 3.8% in Q2, surpassing forecasts as key sectors show strong performance",
+
+                        source: "Dawn News",
+
+                        published_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+
+                        category: "economy",
+
+                        image_url: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=200&fit=crop&crop=entropy&auto=format",
+
+                        url: "#",
+
+                        read_time: "3 min read"
+
+                    },
+
+                    {
+
+                        id: 2,
+
+                        title: "Tech Industry Sees Record Investment Surge",
+
+                        description: "IT exports jump 28% as foreign investors show confidence in Pakistan's digital sector",
+
+                        source: "TechCrunch Pakistan",
+
+                        published_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+
+                        category: "technology",
+
+                        image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=200&fit=crop&crop=entropy&auto=format",
+
+                        url: "#",
+
+                        read_time: "4 min read"
+
+                    },
+
+                    {
+
+                        id: 3,
+
+                        title: "CPEC Phase II Projects Accelerated",
+
+                        description: "China-Pakistan Economic Corridor enters new phase with $7 billion infrastructure investments",
+
+                        source: "Pakistan Today",
+
+                        published_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+
+                        category: "infrastructure",
+
+                        image_url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop&crop=entropy&auto=format",
+
+                        url: "#",
+
+                        read_time: "5 min read"
+
+                    },
+
+                    {
+
+                        id: 4,
+
+                        title: "Education Reform Initiative Launched",
+
+                        description: "Government introduces digital learning platform for 10 million students across Pakistan",
+
+                        source: "The Express Tribune",
+
+                        published_at: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
+
+                        category: "education",
+
+                        image_url: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=200&fit=crop&crop=entropy&auto=format",
+
+                        url: "#",
+
+                        read_time: "3 min read"
+
+                    },
+
+                    {
+
+                        id: 5,
+
+                        title: "Renewable Energy Capacity Doubles",
+
+                        description: "Solar and wind power projects add 2,000MW to national grid as Pakistan pursues green goals",
+
+                        source: "Energy Update",
+
+                        published_at: new Date(Date.now() - 10 * 60 * 60 * 1000).toISOString(),
+
+                        category: "energy",
+
+                        image_url: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&h=200&fit=crop&crop=entropy&auto=format",
+
+                        url: "#",
+
+                        read_time: "4 min read"
+
+                    },
+
+                    {
+
+                        id: 6,
+
+                        title: "Stock Market Hits All-Time High",
+
+                        description: "PSX surges past 50,000 points as investor confidence soars on economic reforms",
+
+                        source: "Business Recorder",
+
+                        published_at: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
+
+                        category: "finance",
+
+                        image_url: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=200&fit=crop&crop=entropy&auto=format",
+
+                        url: "#",
+
+                        read_time: "3 min read"
+
+                    }
+
+                ];
+
+                renderNewsItems();
 
             }
 
-        }
 
 
+            // Render news items
 
-        // Load sample news as fallback
+            function renderNewsItems() {
 
-        function loadSampleNews() {
+                const pakistanNewsTrack = document.getElementById('pakistanNewsTrack');
 
-            pakistanNewsData = [
+                if (!pakistanNewsTrack) return;
 
-                {
 
-                    id: 1,
 
-                    title: "Pakistan's Economic Growth Exceeds Expectations",
+                pakistanNewsTrack.innerHTML = '';
 
-                    description: "GDP growth reaches 3.8% in Q2, surpassing forecasts as key sectors show strong performance",
 
-                    source: "Dawn News",
 
-                    published_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                // Create multiple copies for endless scrolling
 
-                    category: "economy",
+                // Create 4 copies to ensure continuous scrolling
 
-                    image_url: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=200&fit=crop&crop=entropy&auto=format",
+                const newsItems = [...pakistanNewsData, ...pakistanNewsData, ...pakistanNewsData, ...pakistanNewsData];
 
-                    url: "#",
 
-                    read_time: "3 min read"
 
-                },
+                newsItems.forEach((news, index) => {
 
-                {
+                    const newsItem = document.createElement('div');
 
-                    id: 2,
+                    newsItem.className = 'news-item';
 
-                    title: "Tech Industry Sees Record Investment Surge",
+                    newsItem.setAttribute('data-category', news.category);
 
-                    description: "IT exports jump 28% as foreign investors show confidence in Pakistan's digital sector",
-
-                    source: "TechCrunch Pakistan",
-
-                    published_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-
-                    category: "technology",
-
-                    image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=200&fit=crop&crop=entropy&auto=format",
-
-                    url: "#",
-
-                    read_time: "4 min read"
-
-                },
-
-                {
-
-                    id: 3,
-
-                    title: "CPEC Phase II Projects Accelerated",
-
-                    description: "China-Pakistan Economic Corridor enters new phase with $7 billion infrastructure investments",
-
-                    source: "Pakistan Today",
-
-                    published_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
-
-                    category: "infrastructure",
-
-                    image_url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop&crop=entropy&auto=format",
-
-                    url: "#",
-
-                    read_time: "5 min read"
-
-                },
-
-                {
-
-                    id: 4,
-
-                    title: "Education Reform Initiative Launched",
-
-                    description: "Government introduces digital learning platform for 10 million students across Pakistan",
-
-                    source: "The Express Tribune",
-
-                    published_at: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
-
-                    category: "education",
-
-                    image_url: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=200&fit=crop&crop=entropy&auto=format",
-
-                    url: "#",
-
-                    read_time: "3 min read"
-
-                },
-
-                {
-
-                    id: 5,
-
-                    title: "Renewable Energy Capacity Doubles",
-
-                    description: "Solar and wind power projects add 2,000MW to national grid as Pakistan pursues green goals",
-
-                    source: "Energy Update",
-
-                    published_at: new Date(Date.now() - 10 * 60 * 60 * 1000).toISOString(),
-
-                    category: "energy",
-
-                    image_url: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&h=200&fit=crop&crop=entropy&auto=format",
-
-                    url: "#",
-
-                    read_time: "4 min read"
-
-                },
-
-                {
-
-                    id: 6,
-
-                    title: "Stock Market Hits All-Time High",
-
-                    description: "PSX surges past 50,000 points as investor confidence soars on economic reforms",
-
-                    source: "Business Recorder",
-
-                    published_at: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
-
-                    category: "finance",
-
-                    image_url: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=200&fit=crop&crop=entropy&auto=format",
-
-                    url: "#",
-
-                    read_time: "3 min read"
-
-                }
-
-            ];
-
-            renderNewsItems();
-
-        }
-
-
-
-        // Render news items
-
-        function renderNewsItems() {
-
-            const pakistanNewsTrack = document.getElementById('pakistanNewsTrack');
-
-            if (!pakistanNewsTrack) return;
-
-
-
-            pakistanNewsTrack.innerHTML = '';
-
-            
-
-            // Create multiple copies for endless scrolling
-
-            // Create 4 copies to ensure continuous scrolling
-
-            const newsItems = [...pakistanNewsData, ...pakistanNewsData, ...pakistanNewsData, ...pakistanNewsData];
-
-            
-
-            newsItems.forEach((news, index) => {
-
-                const newsItem = document.createElement('div');
-
-                newsItem.className = 'news-item';
-
-                newsItem.setAttribute('data-category', news.category);
-
-                newsItem.innerHTML = `
+                    newsItem.innerHTML = `
 
                     <div class="news-item-image">
 
@@ -3898,218 +3717,445 @@
 
                 `;
 
-                
 
-                // Add click handler
 
-                newsItem.addEventListener('click', () => {
+                    // Add click handler
 
-                    if (news.url && news.url !== '#') {
+                    newsItem.addEventListener('click', () => {
 
-                        window.open(news.url, '_blank');
+                        if (news.url && news.url !== '#') {
 
-                    }
+                            window.open(news.url, '_blank');
+
+                        }
+
+                    });
+
+
+
+                    pakistanNewsTrack.appendChild(newsItem);
 
                 });
 
-                
-
-                pakistanNewsTrack.appendChild(newsItem);
-
-            });
-
-        }
+            }
 
 
 
-        // Auto-scroll functionality
+            // Auto-scroll functionality
 
-        function startAutoScroll() {
+            function startAutoScroll() {
 
-            const pakistanNewsContainer = document.querySelector('.pakistan-news-slider .news-slider-wrapper');
+                const pakistanNewsContainer = document.querySelector('.pakistan-news-slider .news-slider-wrapper');
 
-            const pakistanNewsTrack = document.getElementById('pakistanNewsTrack');
-
-            
-
-            if (!pakistanNewsContainer || !pakistanNewsTrack) return;
+                const pakistanNewsTrack = document.getElementById('pakistanNewsTrack');
 
 
 
-            let scrollPosition = 0;
-
-            const scrollSpeed = 0.1; // pixels per frame (much slower for easy reading)
-
-            const scrollDelay = 60; // milliseconds between frames (much slower)
+                if (!pakistanNewsContainer || !pakistanNewsTrack) return;
 
 
 
-            function autoScrollPakistanNews() {
+                let scrollPosition = 0;
 
-                if (!isPaused) {
+                const scrollSpeed = 0.1; // pixels per frame (much slower for easy reading)
 
-                    scrollPosition += scrollSpeed;
+                const scrollDelay = 60; // milliseconds between frames (much slower)
 
-                    
 
-                    // Calculate the scroll limit (75% of total height to ensure seamless loop)
 
-                    const scrollLimit = pakistanNewsTrack.scrollHeight * 0.75;
+                function autoScrollPakistanNews() {
 
-                    
+                    if (!isPaused) {
 
-                    // Reset to top when reaching limit for seamless scrolling
+                        scrollPosition += scrollSpeed;
 
-                    if (scrollPosition >= scrollLimit) {
 
-                        scrollPosition = 0;
+
+                        // Calculate the scroll limit (75% of total height to ensure seamless loop)
+
+                        const scrollLimit = pakistanNewsTrack.scrollHeight * 0.75;
+
+
+
+                        // Reset to top when reaching limit for seamless scrolling
+
+                        if (scrollPosition >= scrollLimit) {
+
+                            scrollPosition = 0;
+
+                        }
+
+
+
+                        pakistanNewsContainer.scrollTop = scrollPosition;
 
                     }
 
-                    
+                }
 
-                    pakistanNewsContainer.scrollTop = scrollPosition;
+
+
+                // Clear existing interval
+
+                if (scrollInterval) {
+
+                    clearInterval(scrollInterval);
 
                 }
 
+
+
+                // Start auto-scroll
+
+                scrollInterval = setInterval(autoScrollPakistanNews, scrollDelay);
+
+
+
+                // Pause on hover
+
+                pakistanNewsContainer.addEventListener('mouseenter', () => {
+
+                    isPaused = true;
+
+                });
+
+
+
+                pakistanNewsContainer.addEventListener('mouseleave', () => {
+
+                    isPaused = false;
+
+                });
+
             }
 
 
 
-            // Clear existing interval
+            // Latest Projects Data
+            let latestProjectsData = [];
 
-            if (scrollInterval) {
+            // Load Latest Projects
+            async function loadLatestProjects() {
+                const newsSliderTrack = document.getElementById('newsSliderTrack');
+                if (!newsSliderTrack) return;
 
-                clearInterval(scrollInterval);
+                try {
+                    console.log('=== DEBUG: Fetching from /recent-projects API ===');
+                    // Fetch latest projects from database API
+                    const response = await fetch('/recent-projects');
+                    console.log('API Response status:', response.status);
 
+                    const result = await response.json();
+                    console.log('API Response data:', result);
+
+                    if (result.success && result.projects && result.projects.length > 0) {
+                        console.log(`=== SUCCESS: Found ${result.projects.length} projects from database ===`);
+                        latestProjectsData = result.projects.map(project => ({
+                            id: project.id,
+                            title: project.title,
+                            description: project.description,
+                            category: project.category || 'web_dev',
+                            image_url: getProjectImageUrl(project.image),
+                            url: project.live_link || '#',
+                            read_time: "5 min read",
+                            published_at: project.created_at ? new Date(project.created_at).toISOString() : new Date().toISOString()
+                        }));
+                        console.log('=== PROCESSED DATABASE PROJECTS ===');
+                        console.log('First project:', latestProjectsData[0]);
+                        renderLatestProjects();
+                    } else {
+                        console.log('=== FALLBACK: API returned no projects, using sample data ===');
+                        console.log('API result:', result);
+                        // Fallback to sample data if API returns no projects
+                        loadSampleProjects();
+                        renderLatestProjects();
+                    }
+                } catch (error) {
+                    console.log('=== ERROR: API call failed, using sample data ===');
+                    console.error('API Error:', error);
+                    // Fallback to sample data if API fails
+                    loadSampleProjects();
+                    renderLatestProjects();
+                }
             }
 
+            // Load sample projects as fallback
+            function loadSampleProjects() {
+                latestProjectsData = [
+                    {
+                        id: 1,
+                        title: "E-Commerce Platform Redesign",
+                        description: "Complete overhaul of online shopping experience with modern UI/UX and improved performance",
+                        category: "web_dev",
+                        image_url: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=200&fit=crop&crop=entropy&auto=format",
+                        url: "#",
+                        read_time: "5 min read",
+                        published_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        id: 2,
+                        title: "Mobile Banking App",
+                        description: "Secure and intuitive mobile banking solution with biometric authentication",
+                        category: "mobile_dev",
+                        image_url: "https://images.unsplash.com/photo-1512941937609-1baa9321f0ac?w=400&h=200&fit=crop&crop=entropy&auto=format",
+                        url: "#",
+                        read_time: "4 min read",
+                        published_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        id: 3,
+                        title: "Healthcare Dashboard",
+                        description: "Real-time patient monitoring system with advanced analytics and reporting",
+                        category: "web_dev",
+                        image_url: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=200&fit=crop&crop=entropy&auto=format",
+                        url: "#",
+                        read_time: "6 min read",
+                        published_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        id: 4,
+                        title: "Social Media Campaign",
+                        description: "Brand identity and digital marketing campaign for tech startup",
+                        category: "graphic_design",
+                        image_url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop&crop=entropy&auto=format",
+                        url: "#",
+                        read_time: "3 min read",
+                        published_at: new Date(Date.now() - 7 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        id: 5,
+                        title: "Video Production Suite",
+                        description: "Professional video editing and production services for corporate clients",
+                        category: "video_editing",
+                        image_url: "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=400&h=200&fit=crop&crop=entropy&auto=format",
+                        url: "#",
+                        read_time: "4 min read",
+                        published_at: new Date(Date.now() - 9 * 60 * 60 * 1000).toISOString()
+                    }
+                ];
+            }
 
+            // Render Latest Projects
+            function renderLatestProjects() {
+                const newsSliderTrack = document.getElementById('newsSliderTrack');
+                if (!newsSliderTrack) return;
 
-            // Start auto-scroll
+                newsSliderTrack.innerHTML = '';
 
-            scrollInterval = setInterval(autoScrollPakistanNews, scrollDelay);
+                if (latestProjectsData.length === 0) return;
 
+                latestProjectsData.forEach(project => {
+                    const projectItem = document.createElement('div');
+                    projectItem.className = 'news-item swiper-slide';
+                    projectItem.setAttribute('data-category', project.category);
 
+                    projectItem.innerHTML = `
+                    <div class="news-item-image">
+                        <img src="${project.image_url}" alt="${project.title}" loading="lazy">
+                    </div>
+                    <div class="news-item-content">
+                        <div class="news-item-header">
+                            <span class="news-item-category">${getCategoryName(project.category)}</span>
+                            <span class="news-item-time">${formatTimeAgo(project.published_at)}</span>
+                        </div>
+                        <h6 class="news-item-title">${project.title}</h6>
+                        <p class="news-item-description">${project.description}</p>
+                        <div class="news-item-meta">
+                            <span class="news-item-source">Portfolio Project</span>
+                            <span class="news-item-read-time">${project.read_time}</span>
+                        </div>
+                    </div>
+                `;
 
-            // Pause on hover
+                    // Add click handler
+                    projectItem.addEventListener('click', () => {
+                        if (project.url && project.url !== '#') {
+                            window.open(project.url, '_blank');
+                        }
+                    });
 
-            pakistanNewsContainer.addEventListener('mouseenter', () => {
+                    newsSliderTrack.appendChild(projectItem);
+                });
+            }
 
-                isPaused = true;
+            // Get project image URL with fallback handling
+            function getProjectImageUrl(imagePath) {
+                if (!imagePath) {
+                    // Fallback to category-specific placeholder images
+                    return 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=200&fit=crop&crop=entropy&auto=format';
+                }
 
+                // If it's already a full URL (starts with http), return as is
+                if (imagePath.startsWith('http')) {
+                    return imagePath;
+                }
+
+                // If it's a local filename, try to construct the URL
+                // Assuming images are uploaded to /static/uploads/
+                if (imagePath.includes('.') && !imagePath.includes('/')) {
+                    return `/static/uploads/${imagePath}`;
+                }
+
+                // Default fallback
+                return 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=200&fit=crop&crop=entropy&auto=format';
+            }
+
+            // Get category display name
+            function getCategoryName(category) {
+                const categoryNames = {
+                    'web_dev': 'Web Development',
+                    'mobile_dev': 'Mobile Development',
+                    'graphic_design': 'Graphic Design',
+                    'video_editing': 'Video Editing',
+                    'web': 'Web Development',
+                    'mobile': 'Mobile Development',
+                    'design': 'Graphic Design',
+                    'video': 'Video Editing',
+                    'fullstack': 'Full Stack',
+                    'frontend': 'Frontend',
+                    'backend': 'Backend',
+                    'ui_ux': 'UI/UX Design',
+                    'react': 'React',
+                    'vue': 'Vue.js',
+                    'python': 'Python',
+                    'javascript': 'JavaScript'
+                };
+                return categoryNames[category] || category.charAt(0).toUpperCase() + category.slice(1).replace('_', ' ');
+            }
+
+            // Initialize Pakistan News
+            loadPakistanNews().then(() => {
+                startAutoScroll();
+            });
+
+            // Initialize Latest Projects
+            loadLatestProjects().then(() => {
+                // Initialize Swiper for Latest Projects after content is loaded
+                const projectsSwiper = new Swiper('.projects-slider .swiper', {
+                    direction: 'vertical',
+                    slidesPerView: 4,
+                    spaceBetween: 10,
+                    loop: true,
+                    autoplay: {
+                        delay: 2000,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: true
+                    },
+                    speed: 500,
+                    allowTouchMove: true,
+                    mousewheel: true,
+                    grabCursor: true,
+                    // Remove pagination dots
+                    pagination: false,
+                    // Add navigation arrows
+                    navigation: {
+                        nextEl: '.projects-slider .swiper-button-next',
+                        prevEl: '.projects-slider .swiper-button-prev'
+                    }
+                });
             });
 
 
 
-            pakistanNewsContainer.addEventListener('mouseleave', () => {
+            // Refresh news every 5 minutes
+            setInterval(loadPakistanNews, 5 * 60 * 1000);
 
-                isPaused = false;
-
+            // Load About Me Statistics
+            // Wait for DOM to be fully loaded before trying to update stats
+            document.addEventListener('DOMContentLoaded', function () {
+                console.log('DOM loaded, initializing About Me stats...');
+                setTimeout(loadAboutMeStats, 500); // Small delay to ensure all elements are rendered
             });
 
-        }
+            // Also try when window is fully loaded
+            window.addEventListener('load', function () {
+                console.log('Window fully loaded, loading About Me stats...');
+                loadAboutMeStats();
+            });
 
-
-
-        // Initialize Pakistan News
-
-        loadPakistanNews().then(() => {
-
-            startAutoScroll();
-
+            // Refresh stats every 10 minutes
+            setInterval(loadAboutMeStats, 10 * 60 * 1000);
         });
 
+        // Function to load About Me statistics from database
+        async function loadAboutMeStats() {
+            try {
+                console.log('Loading About Me stats...');
+                const response = await fetch('/api/about-me-stats');
+                const data = await response.json();
 
+                console.log('API Response:', data);
 
-        // Refresh news every 5 minutes
-        setInterval(loadPakistanNews, 5 * 60 * 1000);
+                if (data && (data.skills_count !== undefined || data.highlights_count !== undefined)) {
+                    const stats = data;
 
-        // Load About Me Statistics
-        // Wait for DOM to be fully loaded before trying to update stats
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, initializing About Me stats...');
-            setTimeout(loadAboutMeStats, 500); // Small delay to ensure all elements are rendered
-        });
-        
-        // Also try when window is fully loaded
-        window.addEventListener('load', function() {
-            console.log('Window fully loaded, loading About Me stats...');
-            loadAboutMeStats();
-        });
-        
-        // Refresh stats every 10 minutes
-        setInterval(loadAboutMeStats, 10 * 60 * 1000);
-    });
+                    // Update DOM elements with new stats
+                    console.log('Looking for elements...');
+                    const projectsElement = document.getElementById('projects-delivered-stat');
+                    const clientsElement = document.getElementById('happy-clients-stat');
 
-    // Function to load About Me statistics from database
-    async function loadAboutMeStats() {
-        try {
-            console.log('Loading About Me stats...');
-            const response = await fetch('/api/about-me-stats');
-            const data = await response.json();
-            
-            console.log('API Response:', data);
-            
-            if (data.success && data.stats) {
-                const stats = data.stats;
-                
-                // Update DOM elements with new stats
-                console.log('Looking for elements...');
-                const projectsElement = document.getElementById('projects-delivered-stat');
-                const clientsElement = document.getElementById('happy-clients-stat');
-                
-                console.log('Projects element:', projectsElement);
-                console.log('Clients element:', clientsElement);
-                console.log('Stats:', stats);
-                
-                if (projectsElement && stats.projects_delivered) {
-                    projectsElement.textContent = stats.projects_delivered + ' Projects Delivered';
-                    console.log('Updated projects element to:', stats.projects_delivered + ' Projects Delivered');
+                    console.log('Projects element:', projectsElement);
+                    console.log('Clients element:', clientsElement);
+                    console.log('Stats:', stats);
+
+                    if (projectsElement && stats.highlights_count !== undefined) {
+                        projectsElement.textContent = stats.highlights_count + ' Projects Delivered';
+                        console.log('Updated projects element to:', stats.highlights_count + ' Projects Delivered');
+                    } else {
+                        console.error('Projects element not found or no highlights_count stat!');
+                    }
+
+                    if (clientsElement && stats.skills_count !== undefined) {
+                        clientsElement.textContent = stats.skills_count + ' Happy Clients';
+                        console.log('Updated clients element to:', stats.skills_count + ' Happy Clients');
+                    } else {
+                        console.error('Clients element not found or no skills_count stat!');
+                    }
+
+                    console.log('About Me stats updated successfully:', stats);
                 } else {
-                    console.error('Projects element not found or no projects_delivered stat!');
+                    console.warn('Failed to load About Me stats, using fallback values');
                 }
-                
-                if (clientsElement && stats.happy_clients) {
-                    clientsElement.textContent = stats.happy_clients + ' Happy Clients';
-                    console.log('Updated clients element to:', stats.happy_clients + ' Happy Clients');
-                } else {
-                    console.error('Clients element not found or no happy_clients stat!');
-                }
-                
-                console.log('About Me stats updated successfully:', stats);
-            } else {
-                console.warn('Failed to load About Me stats, using fallback values');
+            } catch (error) {
+                console.error('Error loading About Me stats:', error);
             }
-        } catch (error) {
-            console.error('Error loading About Me stats:', error);
         }
-    }
 
-    // Add manual trigger for testing (you can remove this later)
-    window.addEventListener('keydown', function(e) {
-        // Press 'S' key to manually refresh stats
-        if (e.key === 's' || e.key === 'S') {
-            console.log('Manual stats refresh triggered!');
+        // Show Project Details Function
+        function showProjectDetails(projectId) {
+            // Create a modal or navigate to project details
+            console.log('Showing details for project:', projectId);
+            
+            // For now, show a simple alert (can be enhanced with a modal)
+            alert('Project details feature coming soon! Project ID: ' + projectId);
+            
+            // Future enhancement: Create a modal with full project details
+            // createProjectDetailsModal(projectId);
+        }
+
+        // Add manual trigger for testing (you can remove this later)
+        window.addEventListener('keydown', function (e) {
+            // Press 'S' key to manually refresh stats
+            if (e.key === 's' || e.key === 'S') {
+                console.log('Manual stats refresh triggered!');
+                loadAboutMeStats();
+            }
+        });
+
+        // Also try to load stats when DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('DOM fully loaded, loading stats...');
+            setTimeout(loadAboutMeStats, 500);
+        });
+
+        // And also try when window is fully loaded
+        window.addEventListener('load', function () {
+            console.log('Window fully loaded, loading stats...');
             loadAboutMeStats();
-        }
-    });
-
-    // Also try to load stats when DOM is fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM fully loaded, loading stats...');
-        setTimeout(loadAboutMeStats, 500);
-    });
-
-    // And also try when window is fully loaded
-    window.addEventListener('load', function() {
-        console.log('Window fully loaded, loading stats...');
-        loadAboutMeStats();
-    });
+        });
 
     </script>
 
 </body>
 
 </html>
-

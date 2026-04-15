@@ -1046,6 +1046,10 @@
     }
     
     @media (max-width: 576px) {
+        .skills-header {
+            padding: 0.75rem;
+        }
+        
         .skills-header h1 {
             font-size: 1.3rem;
         }
@@ -1420,7 +1424,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" id="editSkillForm">
+                <form method="POST" id="editSkillForm" action="">
                     <input type="hidden" id="editSkillId" name="id">
                     <div class="mb-3">
                         <label for="editSkillName" class="form-label">Skill Name</label>
@@ -1524,6 +1528,9 @@ function editSkill(id, name, percentage, icon) {
     document.getElementById('editSkillName').value = name;
     document.getElementById('editSkillPercentage').value = percentage;
     document.getElementById('editSkillIcon').value = icon || '';
+    
+    // Set the form action to the correct edit route
+    document.getElementById('editSkillForm').action = `/admin/skills/edit/${id}`;
     
     const modal = new bootstrap.Modal(document.getElementById('editSkillModal'));
     modal.show();

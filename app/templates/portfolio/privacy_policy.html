@@ -5,44 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy - Portfolio</title>
     
+        <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/s_logo.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/s_logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/s_logo.png') }}">
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    
+    <!-- Simple Theme Toggle Script -->
+    <script src="{{ url_for('static', filename='js/simple-theme-toggle.js') }}"></script>
 </head>
 <body>
     <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.home') }}">
-                <i class="fas fa-code"></i>
-                Portfolio
-            </a>
-            <div class="navbar-nav">
-                <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
-            </div>
-        </div>
-    </nav>
+{% include 'portfolio/components/navbar.html' %}
 
     <!-- Privacy Policy Section -->
     <section class="section section-light" style="padding-top: 120px; min-height: 100vh;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="content-card" style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                        <h1 class="mb-4" style="font-weight: 700; color: #1f2937;">
+                    <div class="content-card">
+                        <h1 class="mb-4 section-title">
                             <i class="fas fa-shield-alt me-3 text-primary"></i>Privacy Policy
                         </h1>
                         
                         <p class="text-muted mb-4">Last updated: April 1, 2026</p>
                         
-                        <div class="content-body" style="line-height: 1.8; color: #4b5563;">
-                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">1. Introduction</h5>
+                        <div class="content-body">
+                            <h5 class="mt-4 mb-3 content-subtitle">1. Introduction</h5>
                             <p>Welcome to my portfolio website. I respect your privacy and am committed to protecting your personal data. This Privacy Policy explains how I collect, use, and safeguard your information when you visit this website.</p>
                             
-                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">2. Information I Collect</h5>
+                            <h5 class="mt-4 mb-3 content-subtitle">2. Information I Collect</h5>
                             <p>I may collect the following types of information:</p>
                             <ul>
                                 <li><strong>Contact Information:</strong> Name, email address, and message content when you use the contact form</li>
@@ -50,7 +50,7 @@
                                 <li><strong>Cookies:</strong> Small data files stored on your device to improve your browsing experience</li>
                             </ul>
                             
-                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">3. How I Use Your Information</h5>
+                            <h5 class="mt-4 mb-3 content-subtitle">3. How I Use Your Information</h5>
                             <p>I use the collected information to:</p>
                             <ul>
                                 <li>Respond to your inquiries and messages</li>
@@ -59,10 +59,10 @@
                                 <li>Prevent fraud and ensure website security</li>
                             </ul>
                             
-                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">4. Data Security</h5>
+                            <h5 class="mt-4 mb-3 content-subtitle">4. Data Security</h5>
                             <p>I implement appropriate security measures to protect your personal information from unauthorized access, alteration, disclosure, or destruction. However, no internet transmission is completely secure, and I cannot guarantee absolute security.</p>
                             
-                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">5. Third-Party Services</h5>
+                            <h5 class="mt-4 mb-3 content-subtitle">5. Third-Party Services</h5>
                             <p>This website may use third-party services such as:</p>
                             <ul>
                                 <li>Analytics tools (e.g., Google Analytics)</li>
@@ -71,7 +71,7 @@
                             </ul>
                             <p>These services have their own privacy policies, and I encourage you to review them.</p>
                             
-                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">6. Your Rights</h5>
+                            <h5 class="mt-4 mb-3 content-subtitle">6. Your Rights</h5>
                             <p>You have the right to:</p>
                             <ul>
                                 <li>Access your personal data</li>
@@ -80,7 +80,7 @@
                                 <li>Opt-out of data collection</li>
                             </ul>
                             
-                            <h5 class="mt-4 mb-3" style="font-weight: 600; color: #1f2937;">7. Contact Information</h5>
+                            <h5 class="mt-4 mb-3 content-subtitle">7. Contact Information</h5>
                             <p>If you have any questions about this Privacy Policy or my data practices, please contact me through the contact form on this website.</p>
                         </div>
                     </div>
@@ -90,21 +90,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer" style="background: #1f2937; color: white; padding: 40px 0;">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <p>&copy; 2026 Muhammad Abrar. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <a href="{{ url_for('main.privacy_policy') }}" class="text-light me-3">Privacy Policy</a>
-                    <a href="{{ url_for('main.terms_of_service') }}" class="text-light me-3">Terms of Service</a>
-                    <a href="{{ url_for('main.cookie_policy') }}" class="text-light me-3">Cookie Policy</a>
-                    <a href="{{ url_for('main.sitemap') }}" class="text-light">Sitemap</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+{% include 'portfolio/components/footer.html' %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

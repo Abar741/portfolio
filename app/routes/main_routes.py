@@ -14,35 +14,115 @@ import json
 import time
 import re
 
+# Favicon route
+@main.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(current_app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+def track_visitor():
+    """Track visitor statistics"""
+    try:
+        from app.models.visitor_stats import VisitorStats
+        from app.models.visit_log import VisitLog
+        from flask_limiter.util import get_remote_address
+        
+        ip_address = get_remote_address()
+        user_agent = request.headers.get('User-Agent', '')
+        
+        # Track visit
+        VisitorStats.increment_visit(ip_address, user_agent)
+        
+    except Exception as e:
+        current_app.logger.error(f"Error tracking visitor: {str(e)}")
+
 def get_navbar_data():
-    """Get navbar data from JSON file or return default data"""
+    """Get navbar data from JSON file or return default data with active states"""
+    from flask import request
+    
     navbar_data_file = os.path.join(current_app.root_path, 'static', 'data', 'navbar_data.json')
     
-    if os.path.exists(navbar_data_file):
-        try:
-            with open(navbar_data_file, 'r') as f:
-                return json.load(f)
-        except Exception as e:
-            current_app.logger.error(f"Error loading navbar data: {str(e)}")
-    
-    # Return default data if file doesn't exist or error occurred
-    return {
+    # Base navbar data
+    base_data = {
         "brand": {
             "logo": "/static/images/logo.png",
             "alt": "Graphic Nest",
-            "url": "#hero"
+            "url": "/#hero"
         },
         "links": [
-            {"text": "Home", "url": "#hero", "active": True},
-            {"text": "About", "url": "#about", "active": False},
-            {"text": "Services", "url": "#services", "active": False},
-            {"text": "Projects", "url": "#projects", "active": False},
-            {"text": "Skills", "url": "#skills", "active": False},
-            {"text": "Testimonials", "url": "#testimonials", "active": False},
-            {"text": "Feedback", "url": "#feedback-contact-section", "active": False},
-            {"text": "Contact", "url": "#feedback-contact-section", "active": False}
+            {"text": "Home", "url": "/#hero", "active": False},
+            {"text": "About", "url": "/#about", "active": False},
+            {"text": "Services", "url": "/#services", "active": False},
+            {"text": "Projects", "url": "/#projects", "active": False},
+            {"text": "Skills", "url": "/#skills", "active": False},
+            {"text": "Testimonials", "url": "/#testimonials", "active": False},
+            {"text": "Contact", "url": "/#feedback-contact-section", "active": False}
         ]
     }
+    
+    # Load from JSON file if exists
+    if os.path.exists(navbar_data_file):
+        try:
+            with open(navbar_data_file, 'r') as f:
+                loaded_data = json.load(f)
+                # Update brand data from JSON
+                if 'brand' in loaded_data:
+                    base_data['brand'].update(loaded_data['brand'])
+                # Update links data from JSON but preserve active states
+                if 'links' in loaded_data:
+                    # Replace all links with JSON data
+                    base_data['links'] = []
+                    for loaded_link in loaded_data['links']:
+                        base_data['links'].append({
+                            'text': loaded_link.get('text', ''),
+                            'url': loaded_link.get('url', ''),
+                            'active': False  # Will be set dynamically
+                        })
+        except Exception as e:
+            current_app.logger.error(f"Error loading navbar data: {str(e)}")
+    
+    # Set active state based on current endpoint and URL hash
+    if request and hasattr(request, 'endpoint') and request.endpoint:
+        current_route = request.endpoint
+        current_url = request.url if hasattr(request, 'url') else ''
+        
+        # Extract hash fragment from URL
+        url_hash = ''
+        if '#' in current_url:
+            url_hash = current_url.split('#')[-1]
+            url_hash = '#' + url_hash
+        
+        # Default active section based on route
+        active_section = None
+        
+        # Map routes to navbar sections
+        if current_route == 'main.home':
+            # Check URL hash for home page sections
+            if url_hash in ['/#about', '#about']:
+                active_section = '/#about'
+            elif url_hash in ['/#services', '#services']:
+                active_section = '/#services'
+            elif url_hash in ['/#projects', '#projects']:
+                active_section = '/#projects'
+            elif url_hash in ['/#skills', '#skills']:
+                active_section = '/#skills'
+            elif url_hash in ['/#testimonials', '#testimonials']:
+                active_section = '/#testimonials'
+            elif url_hash in ['/#feedback-contact-section', '#feedback-contact-section']:
+                active_section = '/#feedback-contact-section'
+            else:
+                active_section = '/#hero'  # Default for home page
+        elif current_route == 'main.portfolio':
+            active_section = '/#projects'  # Portfolio page maps to projects section
+        # Legal pages have no navbar sections
+        
+        # Set active state for matching link
+        if active_section:
+            for link in base_data['links']:
+                if link['url'] == active_section:
+                    link['active'] = True
+                    break
+    
+    return base_data
 
 def get_hero_data():
     """Get hero data from JSON file or return default data with dynamic stats"""
@@ -78,8 +158,8 @@ def get_hero_data():
             {"value": "100%", "label": "Satisfaction"}
         ],
         "buttons": [
-            {"icon": "fas fa-briefcase", "text": "View Portfolio", "url": "#projects", "style": "primary"},
-            {"icon": "fas fa-envelope", "text": "Get In Touch", "url": "#feedback-contact-section", "style": "secondary"}
+            {"icon": "fas fa-briefcase", "text": "View Portfolio", "url": url_for('main.portfolio'), "style": "primary"},
+            {"icon": "fas fa-envelope", "text": "Get In Touch", "url": url_for('main.home') + "#feedback-contact-section", "style": "secondary"}
         ]
     }
 
@@ -116,8 +196,9 @@ def home():
         from app.models.about_me import AboutMe
         about_me_content = AboutMe.get_active_content()
         
-        # Log analytics
+        # Log analytics and track visitor
         AnalyticsService.track_page_view('home', get_remote_address())
+        track_visitor()
         
         return render_template("portfolio/index.html",
                              projects=projects,
@@ -251,25 +332,29 @@ def contact():
 @main.route("/privacy-policy")
 def privacy_policy():
     """Privacy Policy page"""
-    return render_template("portfolio/privacy_policy.html")
+    navbar_data = get_navbar_data()
+    return render_template("portfolio/privacy_policy.html", navbar_data=navbar_data)
 
 
 @main.route("/terms-of-service")
 def terms_of_service():
     """Terms of Service page"""
-    return render_template("portfolio/terms_of_service.html")
+    navbar_data = get_navbar_data()
+    return render_template("portfolio/terms_of_service.html", navbar_data=navbar_data)
 
 
 @main.route("/cookie-policy")
 def cookie_policy():
     """Cookie Policy page"""
-    return render_template("portfolio/cookie_policy.html")
+    navbar_data = get_navbar_data()
+    return render_template("portfolio/cookie_policy.html", navbar_data=navbar_data)
 
 
 @main.route("/sitemap")
 def sitemap():
     """Sitemap page"""
-    return render_template("portfolio/sitemap.html")
+    navbar_data = get_navbar_data()
+    return render_template("portfolio/sitemap.html", navbar_data=navbar_data)
 
 
 # ALL PROJECTS PAGE
@@ -284,6 +369,9 @@ def portfolio():
             .order_by(Project.created_at.desc())\
             .all()
         
+        # Track visitor
+        track_visitor()
+        
         return render_template("portfolio/projects.html",
                              projects=projects,
                              hero_data=get_hero_data(),
@@ -294,7 +382,6 @@ def portfolio():
                              projects=[],
                              hero_data=get_hero_data(),
                              navbar_data=get_navbar_data())
-
 
 # API: RECENT PROJECTS FOR NEWS SLIDER
 @main.route("/recent-projects")
@@ -408,6 +495,7 @@ def feedback():
         # Get form data
         client_name = request.form.get("client_name", "").strip()
         email = request.form.get("email", "").strip()
+        mobile = request.form.get("mobile", "").strip()
         client_position = request.form.get("client_position", "").strip()
         client_company = request.form.get("client_company", "").strip()
         project_type = request.form.get("project_type", "").strip()
@@ -429,10 +517,11 @@ def feedback():
                 if not os.path.exists(upload_folder):
                     os.makedirs(upload_folder)
                 
-                # Generate unique filename
+                # Generate unique filename with message ID for proper tracking
                 filename = secure_filename(file.filename)
                 name, ext = os.path.splitext(filename)
-                filename = f"feedback_{name}_{int(time.time())}{ext}"
+                timestamp = int(time.time())
+                filename = f"feedback_{name}_{timestamp}{ext}"
                 filepath = os.path.join(upload_folder, filename)
                 
                 # Save the file
@@ -486,16 +575,17 @@ def feedback():
                 subject=f"New Feedback Submission from {client_name}",
                 message=f"""Client: {client_name}
 Email: {email}
+Mobile: {mobile or 'Not provided'}
 Position: {client_position or 'Not provided'}
 Company: {client_company or 'Not provided'}
 Project Type: {project_type or 'Not provided'}
-Rating: {'⭐' * rating}
-Avatar: {'✅ Uploaded' if avatar_filename else '❌ Not uploaded'}
+Rating: {'\u2b50' * rating}
+Avatar: {avatar_filename if avatar_filename else '\u274c Not uploaded'}
 
 Feedback:
 "{quote}"
 
-Permission to display as testimonial: {'✅ Yes' if permission else '❌ No'}
+Permission to display as testimonial: {'\u2705 Yes' if permission else '\u274c No'}
 
 This feedback has been {'automatically converted to a testimonial and is pending admin approval.' if permission else 'received but not converted to testimonial due to permission settings.'}""".strip(),
                 status="unread"
@@ -514,17 +604,19 @@ This feedback has been {'automatically converted to a testimonial and is pending
                 subject=f"New Feedback Submission from {client_name}",
                 message=f"""Client: {client_name}
 Email: {email}
+Mobile: {mobile or 'Not provided'}
 Position: {client_position or 'Not provided'}
 Company: {client_company or 'Not provided'}
 Project Type: {project_type or 'Not provided'}
 Rating: {'⭐' * rating}
+Avatar: {avatar_filename if avatar_filename else '❌ Not uploaded'}
 
 Feedback:
 "{quote}"
 
 Permission to display as testimonial: {'✅ Yes' if permission else '❌ No'}
 
-This feedback has been received but not converted to testimonial due to permission settings.""".strip(),
+This feedback has been received but not converted to testimonial due to permission settings.""""".strip(),
                 status="unread"
             )
             
@@ -558,3 +650,54 @@ This feedback has been received but not converted to testimonial due to permissi
         # Regular form submission - redirect with flash message
         flash("An error occurred while submitting your feedback. Please try again.", "error")
         return redirect(url_for("main.home") + "#feedback")
+
+
+# API: PAKISTAN NEWS
+@main.route("/api/pakistan-news")
+def get_pakistan_news():
+    """API endpoint to get Pakistan news (mock data for now)"""
+    try:
+        # Mock news data - in production, this would fetch from a real news API
+        news_data = [
+            {
+                "id": 1,
+                "title": "Pakistan Tech Industry Sees Growth in IT Exports",
+                "description": "The IT sector in Pakistan shows remarkable growth with increased exports in the current fiscal year.",
+                "source": "Tech News Pakistan",
+                "published_at": "2024-01-15",
+                "url": "#",
+                "image": "/static/images/news/tech-growth.jpg"
+            },
+            {
+                "id": 2,
+                "title": "Local Startups Receive International Funding",
+                "description": "Several Pakistani startups have secured significant international investment rounds.",
+                "source": "Startup Daily",
+                "published_at": "2024-01-14",
+                "url": "#",
+                "image": "/static/images/news/startup-funding.jpg"
+            },
+            {
+                "id": 3,
+                "title": "Government Announces New Digital Initiatives",
+                "description": "New policies aimed at digital transformation and e-governance have been announced.",
+                "source": "Government Gazette",
+                "published_at": "2024-01-13",
+                "url": "#",
+                "image": "/static/images/news/digital-initiatives.jpg"
+            }
+        ]
+        
+        return jsonify({
+            'success': True,
+            'news': news_data,
+            'total': len(news_data)
+        })
+        
+    except Exception as e:
+        current_app.logger.error(f"Error fetching Pakistan news: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Failed to fetch news',
+            'news': []
+        }), 500

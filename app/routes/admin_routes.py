@@ -13,6 +13,11 @@ from app.models.testimonial import Testimonial
 
 admin = Blueprint("admin", __name__, url_prefix="/admin")
 
+# Import settings blueprint
+from app.routes.settings_routes import settings_bp
+
+# Register settings blueprint
+admin.register_blueprint(settings_bp, url_prefix="/settings")
 
 # Helper functions for counts
 def get_unread_messages_count():
@@ -151,7 +156,101 @@ def dashboard():
                          testimonials=testimonials,
                          feedback_messages=feedback_messages,
                          unread_count=unread_count,
-                         feedback_unread_count=get_unread_feedback_count())
+                         feedback_unread_count=get_unread_feedback_count(),
+                         now=datetime.utcnow())
+
+
+# DASHBOARD API
+@admin.route("/api/dashboard-data")
+@login_required
+def api_dashboard_data():
+    """API endpoint for dashboard statistics"""
+    try:
+        # Get counts for dashboard
+        projects_count = Project.query.count()
+        skills_count = Skill.query.count()
+        testimonials_count = Testimonial.query.filter_by(is_active=True).count()
+        
+        # Get messages counts
+        unread_messages = Message.query.filter_by(status='unread').filter(
+            ~Message.subject.like("%Feedback Submission%")
+        ).count()
+        
+        feedback_unread = Message.query.filter_by(status='unread').filter(
+            Message.subject.like("%Feedback Submission%")
+        ).count()
+        
+        # Get visitor statistics with fallback
+        try:
+            from app.models.visitor_stats import VisitorStats
+            # Create tables if they don't exist
+            VisitorStats.__table__.create(db.engine, checkfirst=True)
+            from app.models.visit_log import VisitLog
+            VisitLog.__table__.create(db.engine, checkfirst=True)
+            
+            visitor_stats = VisitorStats.get_total_stats()
+            today_stats = VisitorStats.get_today_stats()
+        except Exception as e:
+            current_app.logger.error(f"Error with visitor stats: {str(e)}")
+            # Fallback values
+            visitor_stats = {'total_visits': 0, 'unique_visitors': 0}
+            today_stats = type('TodayStats', (), {'total_visits': 0, 'unique_visitors': 0})()
+        
+        # Get recent activity data
+        recent_projects = Project.query.order_by(Project.id.desc()).limit(5).all()
+        recent_messages = Message.query.order_by(Message.id.desc()).limit(5).all()
+        recent_testimonials = Testimonial.query.filter_by(is_active=True).order_by(Testimonial.created_at.desc()).limit(5).all()
+        
+        # Format data for JSON response
+        dashboard_data = {
+            'success': True,
+            'data': {
+                'stats': {
+                    'projects': projects_count,
+                    'skills': skills_count,
+                    'testimonials': testimonials_count,
+                    'unread_messages': unread_messages,
+                    'feedback_unread': feedback_unread,
+                    'total_visits': visitor_stats['total_visits'],
+                    'unique_visitors': visitor_stats['unique_visitors'],
+                    'today_visits': today_stats.total_visits,
+                    'today_unique': today_stats.unique_visitors
+                },
+                'recent_projects': [
+                    {
+                        'id': p.id,
+                        'title': p.title,
+                        'category': p.category,
+                        'created_at': p.created_at.strftime('%Y-%m-%d') if p.created_at else None
+                    } for p in recent_projects
+                ],
+                'recent_messages': [
+                    {
+                        'id': m.id,
+                        'name': m.name,
+                        'subject': m.subject,
+                        'status': m.status,
+                        'created_at': m.created_at.strftime('%Y-%m-%d') if m.created_at else None
+                    } for m in recent_messages
+                ],
+                'recent_testimonials': [
+                    {
+                        'id': t.id,
+                        'client_name': t.client_name,
+                        'rating': t.rating,
+                        'created_at': t.created_at.strftime('%Y-%m-%d') if t.created_at else None
+                    } for t in recent_testimonials
+                ]
+            }
+        }
+        
+        return jsonify(dashboard_data)
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 
 
 # PROJECTS LIST
@@ -198,7 +297,10 @@ def add_project():
             live_link=request.form.get("live_link"),
             image=image_filename,
             video=video_filename,
-            category=request.form.get("category", "web_dev")
+            category=request.form.get("category", "web_dev"),
+            project_type=request.form.get("project_type"),
+            software_used=request.form.get("software_used"),
+            technologies=request.form.get("technologies")
         )
 
         db.session.add(project)
@@ -218,13 +320,39 @@ def edit_project(id):
     project = Project.query.get_or_404(id)
 
     if request.method == "POST":
+        import json
+        
         project.title = request.form.get("title")
         project.description = request.form.get("description")
         project.github_link = request.form.get("github_link")
         project.live_link = request.form.get("live_link")
         project.category = request.form.get("category", "web_dev")
+        project.project_type = request.form.get("project_type")
+        project.software_used = request.form.get("software_used")
+        project.technologies = request.form.get("technologies")
         
-        # Handle image update if new image is uploaded
+        # Handle category-specific fields
+        if project.category == "web_dev":
+            web_dev_stack = {
+                "frontend": request.form.get("frontend_stack"),
+                "backend": request.form.get("backend_stack"),
+                "database": request.form.get("database_stack"),
+                "deployment": request.form.get("deployment_stack"),
+                "color_scheme": request.form.get("color_scheme")
+            }
+            project.web_dev_stack = json.dumps(web_dev_stack)
+            
+        elif project.category == "graphic_design":
+            project.graphic_design_type = request.form.get("design_type")
+            design_tools = request.form.get("design_tools", "").split(",")
+            project.graphic_design_tools = json.dumps([tool.strip() for tool in design_tools if tool.strip()])
+            
+        elif project.category == "video_editing":
+            project.video_editing_type = request.form.get("video_type")
+            editing_software = request.form.get("editing_software", "").split(",")
+            project.video_editing_software = json.dumps([software.strip() for software in editing_software if software.strip()])
+        
+        # Handle primary image update
         image_file = request.files.get("image")
         if image_file and image_file.filename != "":
             filename = secure_filename(image_file.filename)
@@ -235,16 +363,56 @@ def edit_project(id):
             image_file.save(filepath)
             project.image = filename
             
-        # Handle video update if new video is uploaded
+        # Handle primary video update
         video_file = request.files.get("video")
         if video_file and video_file.filename != "":
-            video_filename = secure_filename(video_file.filename)
+            filename = secure_filename(video_file.filename)
             video_filepath = os.path.join(
                 current_app.config["UPLOAD_FOLDER"],
-                video_filename
+                filename
             )
             video_file.save(video_filepath)
-            project.video = video_filename
+            project.video = filename
+        
+        # Handle multiple images upload
+        additional_images_files = request.files.getlist("additional_images")
+        if additional_images_files:
+            additional_images = []
+            existing_images = json.loads(project.images) if project.images else []
+            
+            for img_file in additional_images_files:
+                if img_file and img_file.filename != "":
+                    filename = secure_filename(img_file.filename)
+                    filepath = os.path.join(
+                        current_app.config["UPLOAD_FOLDER"],
+                        filename
+                    )
+                    img_file.save(filepath)
+                    additional_images.append(filename)
+            
+            # Combine existing and new images
+            all_images = existing_images + additional_images
+            project.images = json.dumps(all_images)
+        
+        # Handle multiple videos upload
+        additional_videos_files = request.files.getlist("additional_videos")
+        if additional_videos_files:
+            additional_videos = []
+            existing_videos = json.loads(project.videos) if project.videos else []
+            
+            for vid_file in additional_videos_files:
+                if vid_file and vid_file.filename != "":
+                    filename = secure_filename(vid_file.filename)
+                    filepath = os.path.join(
+                        current_app.config["UPLOAD_FOLDER"],
+                        filename
+                    )
+                    vid_file.save(filepath)
+                    additional_videos.append(filename)
+            
+            # Combine existing and new videos
+            all_videos = existing_videos + additional_videos
+            project.videos = json.dumps(all_videos)
 
         db.session.commit()
 
@@ -276,6 +444,26 @@ def skills():
     unread_count = get_unread_messages_count()
     return render_template("admin/skills_pro.html", skills=skills, unread_count=unread_count, feedback_unread_count=get_unread_feedback_count())
 
+# EDIT SKILL
+@admin.route("/skills/edit/<int:id>", methods=["POST"])
+@login_required
+def edit_skill(id):
+    skill = Skill.query.get_or_404(id)
+    
+    try:
+        skill.name = request.form.get("name")
+        skill.percentage = request.form.get("percentage")
+        skill.icon = request.form.get("icon")
+        
+        db.session.commit()
+        flash("Skill Updated Successfully! ", "success")
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error updating skill: {str(e)}", "error")
+    
+    return redirect(url_for("admin.skills"))
+
 # DELETE SKILL
 @admin.route("/skills/delete/<int:id>", methods=["POST"])
 @login_required
@@ -294,27 +482,71 @@ def delete_skill(id):
     return redirect(url_for("admin.skills"))
 
 # DELETE PROJECT
-@admin.route("/projects/delete/<int:id>", methods=["GET", "POST"])
+@admin.route("/projects/<int:id>/delete", methods=["POST"])
 @login_required
 def delete_project(id):
-    project = Project.query.get_or_404(id)
-    
-    # Delete image file if it exists
-    if project.image:
-        try:
-            image_path = os.path.join(
-                current_app.config["UPLOAD_FOLDER"],
-                project.image
-            )
-            if os.path.exists(image_path):
-                os.remove(image_path)
-        except Exception as e:
-            flash(f"Error deleting image: {str(e)}", "warning")
+    try:
+        project = Project.query.get_or_404(id)
+        
+        # Delete image file if it exists
+        if project.image:
+            try:
+                image_path = os.path.join(
+                    current_app.config["UPLOAD_FOLDER"],
+                    project.image
+                )
+                if os.path.exists(image_path):
+                    os.remove(image_path)
+            except Exception as e:
+                print(f"Error deleting image: {str(e)}")
 
-    db.session.delete(project)
-    db.session.commit()
-    flash("Project Deleted Successfully ✅", "success")
-    return redirect(url_for("admin.dashboard"))
+        db.session.delete(project)
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Project deleted successfully'
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'success': False,
+            'message': f'Error deleting project: {str(e)}'
+        }), 500
+
+# TEST ROUTE - Simple debug route
+@admin.route("/test-toggle", methods=["GET"])
+@login_required
+def test_toggle():
+    """Test route to verify admin blueprint is working"""
+    return "Admin blueprint is working correctly!"
+
+# TOGGLE FEATURED PROJECT
+@admin.route("/projects/<int:id>/toggle-featured", methods=["POST"])
+@login_required
+def toggle_featured_project(id):
+    """Toggle project featured status"""
+    try:
+        project = Project.query.get_or_404(id)
+        
+        # Toggle featured status
+        project.featured = not project.featured
+        db.session.commit()
+        
+        status = "featured" if project.featured else "removed from featured"
+        return jsonify({
+            'success': True,
+            'message': f'Project {status} successfully',
+            'featured': project.featured
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'success': False,
+            'message': f'Error toggling featured status: {str(e)}'
+        }), 500
 
 # DELETE MESSAGE
 @admin.route("/messages/delete/<int:id>", methods=["POST"])
@@ -633,27 +865,97 @@ def feedback():
     """Manage all feedback submissions"""
     # Get all messages that are feedback submissions
     feedback_messages = Message.query.filter(
-        Message.subject.like("%Feedback Submission%")
+        db.or_(
+            Message.subject.like("%Feedback Submission%"),
+            Message.subject.like("%Feedback%"),
+            Message.subject.like("%feedback%"),
+            Message.subject.like("%Client Feedback%"),
+            Message.subject.like("%Testimonial%")
+        )
     ).order_by(Message.id.desc()).all()
     
     # Get associated testimonials for avatar images
     testimonials = {}
+    feedback_avatars = {}
     for message in feedback_messages:
-        # Try to find a testimonial that matches this feedback message by client name
+        # Extract client name from message content for testimonial matching
+        client_name = message.name
+        if message.message and 'Client:' in message.message:
+            lines = message.message.split('\n')
+            for line in lines:
+                if line.startswith('Client:'):
+                    potential_name = line.split(':', 1)[1].strip()
+                    # Validate client name - ensure it's not corrupted or empty
+                    if potential_name and len(potential_name.strip()) > 1 and not potential_name.startswith('System') and potential_name != 'dfdsfdsfd':
+                        client_name = potential_name
+                        break
+        
+        # Try to find a testimonial that matches this feedback message by extracted client name
         testimonial = Testimonial.query.filter_by(
-            client_name=message.name
+            client_name=client_name
         ).first()
         if testimonial:
             testimonials[message.id] = testimonial
+        
+        # Find feedback image for this message
+        feedback_avatar = find_feedback_image(message)
+        if feedback_avatar:
+            feedback_avatars[message.id] = feedback_avatar
+    
+    # Calculate statistics
+    total_feedback = len(feedback_messages)
+    approved_feedback = len([msg for msg in feedback_messages if msg.status == 'approved'])
+    unread_feedback = len([msg for msg in feedback_messages if msg.status == 'unread'])
+    rejected_feedback = len([msg for msg in feedback_messages if msg.status == 'rejected'])
     
     unread_count = get_unread_messages_count()
     feedback_unread_count = get_unread_feedback_count()
     
+    # Extract client names for template
+    extracted_client_names = {}
+    for message in feedback_messages:
+        client_name = message.name
+        if message.message and 'Client:' in message.message:
+            lines = message.message.split('\n')
+            for line in lines:
+                if line.startswith('Client:'):
+                    potential_name = line.split(':', 1)[1].strip()
+                    # Validate client name - ensure it's not corrupted or empty
+                    if potential_name and len(potential_name.strip()) > 1 and not potential_name.startswith('System'):
+                        client_name = potential_name
+                        break
+        extracted_client_names[message.id] = client_name
+    
     return render_template("admin/feedback_pro.html", 
-                         feedback_messages=feedback_messages, 
+                         feedbacks=feedback_messages, 
                          testimonials=testimonials,
+                         feedback_avatars=feedback_avatars,
+                         extracted_client_names=extracted_client_names,
+                         total_feedback=total_feedback,
+                         approved_feedback=approved_feedback,
+                         unread_feedback=unread_feedback,
+                         rejected_feedback=rejected_feedback,
                          unread_count=unread_count,
                          feedback_unread_count=feedback_unread_count)
+
+
+@admin.route("/feedback/details/<int:id>", methods=["GET"])
+@login_required
+def feedback_details(id):
+    """Get feedback details as JSON"""
+    message = Message.query.get_or_404(id)
+    
+    return jsonify({
+        'id': message.id,
+        'name': message.name,
+        'email': message.email,
+        'subject': message.subject,
+        'message': message.message,
+        'status': message.status,
+        'created_at': message.created_at.strftime('%Y-%m-%d %H:%M:%S') if message.created_at else None,
+        'ip_address': message.ip_address,
+        'user_agent': message.user_agent
+    })
 
 
 @admin.route("/feedback/edit/<int:id>", methods=["GET", "POST"])
@@ -688,16 +990,20 @@ def approve_feedback(id):
         # Parse the feedback message to extract details
         feedback_data = parse_feedback_message(message.message)
         
+        # Look for uploaded feedback image file
+        feedback_avatar = find_feedback_image(message)
+        
         # Create or update testimonial
         testimonial = Testimonial(
             client_name=feedback_data.get('client_name', 'Anonymous'),
             client_position=feedback_data.get('position', ''),
             client_company=feedback_data.get('company', ''),
+            client_avatar=feedback_avatar or feedback_data.get('avatar', None),
             quote=feedback_data.get('quote', ''),
             rating=feedback_data.get('rating', 5),
             project_type=feedback_data.get('project_type', ''),
             project_type_icon=feedback_data.get('project_type_icon', 'fa-laptop-code'),
-            is_active=True,  # Auto-approve
+            is_active=True,  # Auto-approve and activate
             display_order=0
         )
         
@@ -714,6 +1020,61 @@ def approve_feedback(id):
         flash(f"Error approving feedback: {str(e)}", "error")
     
     return redirect(url_for("admin.feedback"))
+
+
+@admin.route("/feedback/update/<int:id>", methods=["POST"])
+@login_required
+def update_feedback_status(id):
+    """Update feedback status via AJAX"""
+    message = Message.query.get_or_404(id)
+    
+    try:
+        data = request.get_json()
+        if not data or 'status' not in data:
+            return jsonify({'success': False, 'message': 'Invalid request data'})
+        
+        new_status = data['status']
+        
+        # Validate status
+        if new_status not in ['approved', 'rejected', 'unread']:
+            return jsonify({'success': False, 'message': 'Invalid status'})
+        
+        # If status is being approved, create testimonial
+        if new_status == 'approved':
+            # Parse the feedback message to extract details
+            feedback_data = parse_feedback_message(message.message)
+            
+            # Look for uploaded feedback image file
+            feedback_avatar = find_feedback_image(message)
+            
+            # Create testimonial
+            testimonial = Testimonial(
+                client_name=feedback_data.get('client_name', 'Anonymous'),
+                client_position=feedback_data.get('position', ''),
+                client_company=feedback_data.get('company', ''),
+                client_avatar=feedback_avatar or feedback_data.get('avatar', None),
+                quote=feedback_data.get('quote', ''),
+                rating=feedback_data.get('rating', 5),
+                project_type=feedback_data.get('project_type', ''),
+                project_type_icon=feedback_data.get('project_type_icon', 'fa-laptop-code'),
+                is_active=True,  # Auto-approve
+                display_order=0
+            )
+            
+            db.session.add(testimonial)
+        
+        # Update message status
+        message.status = new_status
+        db.session.commit()
+        
+        if new_status == 'approved':
+            return jsonify({'success': True, 'message': 'Feedback approved and converted to testimonial successfully'})
+        else:
+            return jsonify({'success': True, 'message': f'Feedback {new_status} successfully'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': str(e)})
 
 
 @admin.route("/feedback/reject/<int:id>", methods=["POST"])
@@ -735,11 +1096,32 @@ def delete_feedback(id):
     """Delete feedback message"""
     message = Message.query.get_or_404(id)
     
-    db.session.delete(message)
-    db.session.commit()
-
-    flash("Feedback Deleted Successfully!", "success")
-    return redirect(url_for("admin.feedback"))
+    try:
+        db.session.delete(message)
+        db.session.commit()
+        
+        # Check if this is an AJAX request
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.is_json:
+            return jsonify({
+                'success': True,
+                'message': 'Feedback deleted successfully'
+            })
+        else:
+            flash("Feedback Deleted Successfully!", "success")
+            return redirect(url_for("admin.feedback"))
+            
+    except Exception as e:
+        db.session.rollback()
+        
+        # Check if this is an AJAX request
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.is_json:
+            return jsonify({
+                'success': False,
+                'message': f'Error deleting feedback: {str(e)}'
+            })
+        else:
+            flash(f"Error deleting feedback: {str(e)}", "error")
+            return redirect(url_for("admin.feedback"))
 
 
 # NAVBAR MANAGEMENT
@@ -850,11 +1232,84 @@ def update_navbar():
         flash("Navbar updated successfully! Changes saved", "success")
         current_app.logger.info(f"Form-based navbar update successful at: {file_path}")
         
+        return redirect(url_for("admin.navbar"))
+        
     except Exception as e:
         flash(f"Update error: {str(e)}", "error")
-        current_app.logger.error(f"Form-based update error: {str(e)}")
+        return redirect(url_for("admin.navbar"))
+
+def find_feedback_image(message):
+    """Find uploaded feedback image file based on message details"""
+    try:
+        import os
+        import glob
+        from werkzeug.utils import secure_filename
+        
+        # Get upload folder
+        upload_folder = current_app.config.get("UPLOAD_FOLDER", os.path.join(current_app.root_path, 'static', 'uploads'))
+        
+        # Method 1: Try to extract avatar filename from message content first
+        if message.message and 'Avatar:' in message.message:
+            lines = message.message.split('\n')
+            for line in lines:
+                if line.startswith('Avatar:'):
+                    avatar_info = line.split(':', 1)[1].strip()
+                    # Check if it's a valid filename
+                    if avatar_info and (avatar_info.endswith('.jpg') or avatar_info.endswith('.png')):
+                        if os.path.exists(os.path.join(upload_folder, avatar_info)):
+                            return avatar_info
+        
+        # Method 2: Extract client name and search by client-based pattern
+        client_name = message.name
+        if message.message and 'Client:' in message.message:
+            lines = message.message.split('\n')
+            for line in lines:
+                if line.startswith('Client:'):
+                    potential_name = line.split(':', 1)[1].strip()
+                    if potential_name and len(potential_name.strip()) > 1:
+                        client_name = potential_name
+                        break
+        
+        # Method 3: Search by message ID (most reliable)
+        message_id = message.id
+        created_at = message.created_at
+        
+        if created_at:
+            # Extract timestamp from creation date
+            timestamp = int(created_at.timestamp())
+        else:
+            timestamp = int(time.time())
+        
+        # Search for files with pattern: feedback_<message_id>_<timestamp>.*
+        pattern = os.path.join(upload_folder, f"feedback_{message_id}_{timestamp}*")
+        matching_files = glob.glob(pattern)
+        
+        if matching_files:
+            # Sort by modification time to get the most recent
+            latest_file = max(matching_files, key=os.path.getmtime)
+            return os.path.basename(latest_file)
+        
+        # Method 4: Search by client name pattern
+        safe_client_name = secure_filename(client_name)
+        pattern_client = os.path.join(upload_folder, f"feedback_{safe_client_name}_*")
+        client_files = glob.glob(pattern_client)
+        
+        if client_files:
+            latest_file = max(client_files, key=os.path.getmtime)
+            return os.path.basename(latest_file)
+        
+        # Method 5: Search for any feedback files as last resort
+        pattern_fallback = os.path.join(upload_folder, f"feedback_{message_id}_*")
+        fallback_files = glob.glob(pattern_fallback)
+        
+        if fallback_files:
+            latest_file = max(fallback_files, key=os.path.getmtime)
+            return os.path.basename(latest_file)
+            
+    except Exception as e:
+        current_app.logger.error(f"Error finding feedback image for message {message.id}: {str(e)}")
     
-    return redirect(url_for("admin.navbar"))
+    return None
 
 
 def parse_feedback_message(message_text):
@@ -878,7 +1333,11 @@ def parse_feedback_message(message_text):
                 data['project_type'] = value
             elif key == 'Rating':
                 # Count stars
-                data['rating'] = value.count('⭐')
+                data['rating'] = value.count('⭐')  # Count star emojis
+            elif key == 'Avatar':
+                # Extract avatar filename if available
+                if value.startswith('feedback_') and (value.endswith('.jpg') or value.endswith('.png')):
+                    data['avatar'] = value
             elif key.startswith('Feedback:') and '"' in value:
                 # Extract quote
                 start = value.find('"') + 1

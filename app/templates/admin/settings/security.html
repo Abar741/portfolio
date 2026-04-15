@@ -1,0 +1,392 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Security Settings{% endblock %}
+
+{% block content %}
+<!-- Security Settings Header -->
+<div class="card-modern fade-in">
+    <div class="card-header-modern">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h1>
+                    <i class="fas fa-shield-alt me-2"></i>Security Settings
+                </h1>
+                <p>Configure your account security and authentication preferences</p>
+            </div>
+            <a href="{{ url_for('admin.settings.settings') }}" class="btn btn-outline-modern">
+                <i class="fas fa-arrow-left me-2"></i>Back to Settings
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Password Management -->
+    <div class="col-lg-8">
+        <div class="card-modern fade-in">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-key me-2"></i>Password Management
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <form method="POST" id="passwordForm">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                                <button class="btn btn-outline-modern" type="button" onclick="togglePassword('currentPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                                <button class="btn btn-outline-modern" type="button" onclick="togglePassword('newPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength mt-2">
+                                <div class="progress" style="height: 4px;">
+                                    <div class="progress-bar" id="passwordStrength" style="width: 0%;"></div>
+                                </div>
+                                <small class="text-muted" id="passwordStrengthText">Password strength: Weak</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                <button class="btn btn-outline-modern" type="button" onclick="togglePassword('confirmPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Two-Factor Authentication -->
+        <div class="card-modern fade-in mt-4">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-mobile-alt me-2"></i>Two-Factor Authentication
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="twoFactorEnabled">
+                            <label class="form-check-label" for="twoFactorEnabled">
+                                Enable Two-Factor Authentication
+                            </label>
+                        </div>
+                        <p class="text-muted mb-0">Add an extra layer of security to your account by requiring a verification code in addition to your password.</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button class="btn btn-primary-modern" onclick="setupTwoFactor()">
+                            <i class="fas fa-qrcode me-2"></i>Setup 2FA
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="twoFactorSetup" style="display: none;">
+                    <hr class="my-4">
+                    <div class="text-center mb-4">
+                        <div class="qr-code-placeholder mb-3">
+                            <i class="fas fa-qrcode fa-3x text-muted"></i>
+                        </div>
+                        <p class="text-muted">Scan this QR code with your authenticator app</p>
+                        <code class="d-block p-2 bg-light rounded">ABCD-EFGH-IJKL-MNOP</code>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="verificationCode" class="form-label">Verification Code</label>
+                            <input type="text" class="form-control" id="verificationCode" placeholder="Enter 6-digit code">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end">
+                            <button class="btn btn-success-modern w-100" onclick="verifyTwoFactor()">
+                                <i class="fas fa-check me-2"></i>Verify & Enable
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Activity -->
+        <div class="card-modern fade-in mt-4">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-history me-2"></i>Login Activity
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <div class="table-responsive">
+                    <table class="table table-modern">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>IP Address</th>
+                                <th>Device</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Today, 2:30 PM</td>
+                                <td>192.168.1.1</td>
+                                <td><i class="fas fa-laptop me-1"></i>Chrome on Windows</td>
+                                <td>New York, USA</td>
+                                <td><span class="badge-modern badge-success">Current</span></td>
+                                <td><button class="btn btn-sm btn-outline-modern">Details</button></td>
+                            </tr>
+                            <tr>
+                                <td>Yesterday, 4:15 PM</td>
+                                <td>192.168.1.1</td>
+                                <td><i class="fas fa-mobile-alt me-1"></i>Safari on iPhone</td>
+                                <td>New York, USA</td>
+                                <td><span class="badge-modern badge-info">Success</span></td>
+                                <td><button class="btn btn-sm btn-outline-modern">Details</button></td>
+                            </tr>
+                            <tr>
+                                <td>2 days ago, 10:20 AM</td>
+                                <td>10.0.0.1</td>
+                                <td><i class="fas fa-laptop me-1"></i>Firefox on Mac</td>
+                                <td>Los Angeles, USA</td>
+                                <td><span class="badge-modern badge-danger">Failed</span></td>
+                                <td><button class="btn btn-sm btn-outline-modern">Details</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Actions -->
+    <div class="col-lg-4">
+        <div class="card-modern fade-in">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-shield-virus me-2"></i>Security Actions
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-modern" onclick="logoutAllSessions()">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout All Sessions
+                    </button>
+                    <button class="btn btn-outline-modern" onclick="revokeAccess()">
+                        <i class="fas fa-ban me-2"></i>Revoke App Access
+                    </button>
+                    <button class="btn btn-outline-modern" onclick="generateBackupCodes()">
+                        <i class="fas fa-key me-2"></i>Backup Codes
+                    </button>
+                    <button class="btn btn-outline-modern" onclick="securityAudit()">
+                        <i class="fas fa-search me-2"></i>Security Audit
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Tips -->
+        <div class="card-modern fade-in mt-4">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-lightbulb me-2"></i>Security Tips
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Use a strong password:</strong> Combine uppercase, lowercase, numbers, and symbols.
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Enable 2FA:</strong> Add an extra layer of security to your account.
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Regular updates:</strong> Keep your browser and apps up to date.
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Monitor activity:</strong> Check your login activity regularly.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Save Button -->
+<div class="card-modern fade-in mt-4">
+    <div class="card-body-modern">
+        <div class="d-flex justify-content-end">
+            <button type="submit" form="passwordForm" class="btn btn-primary-modern">
+                <i class="fas fa-save me-2"></i>Update Security Settings
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.table-modern {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-modern th {
+    background: var(--gray-50);
+    font-weight: 600;
+    color: var(--gray-700);
+    border-bottom: 2px solid var(--gray-200);
+    padding: 12px 8px;
+    font-size: 0.875rem;
+}
+
+.table-modern td {
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: middle;
+    font-size: 0.875rem;
+}
+
+.table-modern tbody tr:hover {
+    background: var(--gray-50);
+}
+
+.qr-code-placeholder {
+    width: 200px;
+    height: 200px;
+    border: 2px dashed var(--gray-300);
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.password-strength {
+    margin-top: 8px;
+}
+
+.progress-bar {
+    transition: width 0.3s ease;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function togglePassword(fieldId) {
+    const field = document.getElementById(fieldId);
+    const button = field.nextElementSibling.querySelector('i');
+    
+    if (field.type === 'password') {
+        field.type = 'text';
+        button.classList.remove('fa-eye');
+        button.classList.add('fa-eye-slash');
+    } else {
+        field.type = 'password';
+        button.classList.remove('fa-eye-slash');
+        button.classList.add('fa-eye');
+    }
+}
+
+function checkPasswordStrength(password) {
+    let strength = 0;
+    const strengthBar = document.getElementById('passwordStrength');
+    const strengthText = document.getElementById('passwordStrengthText');
+    
+    if (password.length >= 8) strength++;
+    if (password.match(/[a-z]/)) strength++;
+    if (password.match(/[A-Z]/)) strength++;
+    if (password.match(/[0-9]/)) strength++;
+    if (password.match(/[^a-zA-Z0-9]/)) strength++;
+    
+    const strengthPercentage = (strength / 5) * 100;
+    strengthBar.style.width = strengthPercentage + '%';
+    
+    if (strength <= 2) {
+        strengthBar.className = 'progress-bar bg-danger';
+        strengthText.textContent = 'Password strength: Weak';
+    } else if (strength <= 3) {
+        strengthBar.className = 'progress-bar bg-warning';
+        strengthText.textContent = 'Password strength: Medium';
+    } else {
+        strengthBar.className = 'progress-bar bg-success';
+        strengthText.textContent = 'Password strength: Strong';
+    }
+}
+
+function setupTwoFactor() {
+    const setupDiv = document.getElementById('twoFactorSetup');
+    setupDiv.style.display = setupDiv.style.display === 'none' ? 'block' : 'none';
+    if (setupDiv.style.display === 'block') {
+        showNotificationToast('Two-factor authentication setup initiated', 'info');
+    }
+}
+
+function verifyTwoFactor() {
+    const code = document.getElementById('verificationCode').value;
+    if (code.length === 6) {
+        showNotificationToast('Two-factor authentication enabled successfully!', 'success');
+        document.getElementById('twoFactorEnabled').checked = true;
+        document.getElementById('twoFactorSetup').style.display = 'none';
+    } else {
+        showNotificationToast('Please enter a valid 6-digit code', 'error');
+    }
+}
+
+function logoutAllSessions() {
+    if (confirm('Are you sure you want to logout from all devices except this one?')) {
+        showNotificationToast('All other sessions terminated', 'success');
+    }
+}
+
+function revokeAccess() {
+    showNotificationToast('App access revoked successfully', 'success');
+}
+
+function generateBackupCodes() {
+    showNotificationToast('Backup codes generated', 'success');
+}
+
+function securityAudit() {
+    showNotificationToast('Security audit initiated', 'info');
+}
+
+// Password strength checker
+document.getElementById('newPassword').addEventListener('input', function(e) {
+    checkPasswordStrength(e.target.value);
+});
+
+// Form submission
+document.getElementById('passwordForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    if (newPassword !== confirmPassword) {
+        showNotificationToast('Passwords do not match', 'error');
+        return;
+    }
+    
+    showNotificationToast('Password updated successfully!', 'success');
+    // Add password update logic here
+});
+</script>
+{% endblock %}

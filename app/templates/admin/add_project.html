@@ -190,6 +190,94 @@
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     
+    .software-tags {
+        min-height: 40px;
+        padding: 8px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .software-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: white;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+        transition: all 0.2s ease;
+    }
+    
+    .software-tag:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(79, 70, 229, 0.3);
+    }
+    
+    .software-tag .remove-tag {
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        transition: background 0.2s ease;
+    }
+    
+    .software-tag .remove-tag:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .tech-tags {
+        min-height: 40px;
+        padding: 8px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .tech-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: linear-gradient(135deg, #059669, #047857);
+        color: white;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2);
+        transition: all 0.2s ease;
+    }
+    
+    .tech-tag:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(5, 150, 105, 0.3);
+    }
+    
+    .tech-tag .remove-tag {
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        transition: background 0.2s ease;
+    }
+    
+    .tech-tag .remove-tag:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
     .link-input-group {
         position: relative;
     }
@@ -299,13 +387,67 @@
                         <select class="form-control form-control-lg" 
                                 id="category" 
                                 name="category" 
+                                onchange="updateProjectTypeOptions()"
                                 required>
                             <option value="">Select a category...</option>
-                            <option value="web_dev">🌐 Web Development</option>
-                            <option value="graphic_design">🎨 Graphic Design</option>
-                            <option value="video_editing">🎬 Video Editing</option>
+                            <option value="web_dev">Web Development</option>
+                            <option value="graphic_design">Graphic Design</option>
+                            <option value="video_editing">Video Editing</option>
                         </select>
                         <div class="form-text">Choose the category that best describes your project</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="project_type" class="form-label">
+                            <i class="fas fa-tag me-2"></i>Project Type
+                        </label>
+                        <select class="form-control form-control-lg" 
+                                id="project_type" 
+                                name="project_type">
+                            <option value="">Select project type...</option>
+                            <!-- Options will be populated based on category -->
+                        </select>
+                        <div class="form-text">Specify the type of project (e.g., E-commerce, Portfolio, Logo Design)</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="software_used" class="form-label">
+                            <i class="fas fa-tools me-2"></i>Software/Tools Used
+                        </label>
+                        <div class="software-input-container">
+                            <div class="d-flex gap-2 mb-2">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="software_input" 
+                                       placeholder="Enter software or tool name...">
+                                <button type="button" class="btn btn-outline-primary" onclick="addSoftware()">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
+                            <div id="software_tags" class="software-tags d-flex flex-wrap gap-2"></div>
+                            <input type="hidden" id="software_used" name="software_used">
+                        </div>
+                        <div class="form-text">Add the software, tools, or platforms used in this project</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="technologies" class="form-label">
+                            <i class="fas fa-code me-2"></i>Technologies Used
+                        </label>
+                        <div class="technologies-input-container">
+                            <div class="d-flex gap-2 mb-2">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="tech_input" 
+                                       placeholder="Enter technology name...">
+                                <button type="button" class="btn btn-outline-primary" onclick="addTechnology()">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
+                            <div id="tech_tags" class="tech-tags d-flex flex-wrap gap-2"></div>
+                            <input type="hidden" id="technologies" name="technologies">
+                        </div>
+                        <div class="form-text">Add programming languages, frameworks, libraries, and technologies used</div>
                     </div>
                 </div>
                 
@@ -565,6 +707,177 @@ function toggleMediaFields() {
         videoSection.style.display = 'none';
     }
 }
+
+// Project type options based on category
+const projectTypeOptions = {
+    web_dev: [
+        { value: 'ecommerce', label: 'E-commerce Website' },
+        { value: 'portfolio', label: 'Portfolio Website' },
+        { value: 'blog', label: 'Blog/CMS' },
+        { value: 'social_media', label: 'Social Media Platform' },
+        { value: 'dashboard', label: 'Dashboard/Admin Panel' },
+        { value: 'api', label: 'API/Backend Service' },
+        { value: 'mobile_app', label: 'Mobile App' },
+        { value: 'saas', label: 'SaaS Platform' },
+        { value: 'landing', label: 'Landing Page' },
+        { value: 'other_web', label: 'Other Web Project' }
+    ],
+    graphic_design: [
+        { value: 'logo_design', label: 'Logo Design' },
+        { value: 'branding', label: 'Brand Identity' },
+        { value: 'poster', label: 'Poster/Flyer' },
+        { value: 'social_media_graphics', label: 'Social Media Graphics' },
+        { value: 'ui_design', label: 'UI Design' },
+        { value: 'print_design', label: 'Print Design' },
+        { value: 'illustration', label: 'Illustration' },
+        { value: 'motion_graphics', label: 'Motion Graphics' },
+        { value: 'other_design', label: 'Other Design Project' }
+    ],
+    video_editing: [
+        { value: 'music_video', label: 'Music Video' },
+        { value: 'commercial', label: 'Commercial/Ad' },
+        { value: 'documentary', label: 'Documentary' },
+        { value: 'tutorial', label: 'Tutorial/Educational' },
+        { value: 'vlog', label: 'Vlog/YouTube' },
+        { value: 'corporate', label: 'Corporate Video' },
+        { value: 'short_film', label: 'Short Film' },
+        { value: 'animation', label: 'Animation' },
+        { value: 'other_video', label: 'Other Video Project' }
+    ]
+};
+
+function updateProjectTypeOptions() {
+    const category = document.getElementById('category').value;
+    const projectTypeSelect = document.getElementById('project_type');
+    
+    // Clear existing options
+    projectTypeSelect.innerHTML = '<option value="">Select project type...</option>';
+    
+    if (category && projectTypeOptions[category]) {
+        projectTypeOptions[category].forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option.value;
+            optionElement.textContent = option.label;
+            projectTypeSelect.appendChild(optionElement);
+        });
+    }
+}
+
+// Software/Tools management
+let softwareList = [];
+
+function addSoftware() {
+    const input = document.getElementById('software_input');
+    const software = input.value.trim();
+    
+    if (software && !softwareList.includes(software)) {
+        softwareList.push(software);
+        updateSoftwareTags();
+        input.value = '';
+        input.focus();
+    }
+}
+
+function removeSoftware(software) {
+    softwareList = softwareList.filter(item => item !== software);
+    updateSoftwareTags();
+}
+
+function updateSoftwareTags() {
+    const container = document.getElementById('software_tags');
+    const hiddenInput = document.getElementById('software_used');
+    
+    container.innerHTML = '';
+    
+    softwareList.forEach(software => {
+        const tag = document.createElement('div');
+        tag.className = 'software-tag';
+        
+        // Create text node for software name
+        const textNode = document.createTextNode(software);
+        tag.appendChild(textNode);
+        
+        // Create remove button
+        const removeBtn = document.createElement('span');
+        removeBtn.className = 'remove-tag';
+        removeBtn.textContent = '×';
+        removeBtn.onclick = function() {
+            removeSoftware(software);
+        };
+        
+        tag.appendChild(removeBtn);
+        container.appendChild(tag);
+    });
+    
+    // Update hidden input value
+    hiddenInput.value = softwareList.join(',');
+}
+
+// Allow adding software with Enter key
+document.getElementById('software_input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        addSoftware();
+    }
+});
+
+// Technologies management
+let techList = [];
+
+function addTechnology() {
+    const input = document.getElementById('tech_input');
+    const tech = input.value.trim();
+    
+    if (tech && !techList.includes(tech)) {
+        techList.push(tech);
+        updateTechTags();
+        input.value = '';
+        input.focus();
+    }
+}
+
+function removeTechnology(tech) {
+    techList = techList.filter(item => item !== tech);
+    updateTechTags();
+}
+
+function updateTechTags() {
+    const container = document.getElementById('tech_tags');
+    const hiddenInput = document.getElementById('technologies');
+    
+    container.innerHTML = '';
+    
+    techList.forEach(tech => {
+        const tag = document.createElement('div');
+        tag.className = 'tech-tag';
+        
+        // Create text node for tech name
+        const textNode = document.createTextNode(tech);
+        tag.appendChild(textNode);
+        
+        // Create remove button
+        const removeBtn = document.createElement('span');
+        removeBtn.className = 'remove-tag';
+        removeBtn.textContent = '×';
+        removeBtn.onclick = function() {
+            removeTechnology(tech);
+        };
+        
+        tag.appendChild(removeBtn);
+        container.appendChild(tag);
+    });
+    
+    // Update hidden input value
+    hiddenInput.value = techList.join(',');
+}
+
+// Allow adding technology with Enter key
+document.getElementById('tech_input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        addTechnology();
+    }
+});
 
 // Form validation
 document.getElementById('projectForm').addEventListener('submit', function(e) {

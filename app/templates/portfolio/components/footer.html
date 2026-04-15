@@ -1,0 +1,192 @@
+<!-- Enhanced Footer -->
+ 
+<footer class="footer">
+    <div class="footer-shape">
+        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V120Z" fill="currentColor"/>
+        </svg>
+    </div>
+
+    <div class="container">
+        <!-- Footer Main Content -->
+        <div class="footer-main">
+            <div class="row g-4">
+                <!-- About Section -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="footer-about">
+                        <div class="footer-logo">
+                            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Graphic Nest" class="footer-logo-img">
+                            <!-- <p class="footer-tagline">Crafting Digital Experiences</p> -->
+                        </div>
+                        <p class="footer-description">
+                            Passionate full-stack developer creating innovative web solutions with modern technologies. 
+                            Transforming ideas into powerful digital experiences that inspire and engage.
+                        </p>
+                        <div class="footer-contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>reactdeveloper492@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>+92 333 9064741</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>San Francisco, CA</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="footer-links">
+                        <h4 class="footer-title">Quick Links</h4>
+                        <ul class="footer-nav">
+                            <li><a href="{{ url_for('main.home') }}#hero" class="footer-link"><i class="fas fa-chevron-right"></i> Home</a></li>
+                            <li><a href="{{ url_for('main.home') }}#about" class="footer-link"><i class="fas fa-chevron-right"></i> About</a></li>
+                            <li><a href="{{ url_for('main.home') }}#services" class="footer-link"><i class="fas fa-chevron-right"></i> Services</a></li>
+                            <li><a href="{{ url_for('main.portfolio') }}" class="footer-link"><i class="fas fa-chevron-right"></i> Projects</a></li>
+                            <li><a href="{{ url_for('main.home') }}#skills" class="footer-link"><i class="fas fa-chevron-right"></i> Skills</a></li>
+                            <li><a href="{{ url_for('main.home') }}#feedback-contact-section" class="footer-link"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Services -->
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="footer-services">
+                        <h4 class="footer-title">Services</h4>
+                        <ul class="footer-nav">
+                            <li><a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Web Development</a></li>
+                            <li><a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Mobile Apps</a></li>
+                            <li><a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> UI/UX Design</a></li>
+                            <li><a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Backend Development</a></li>
+                            <li><a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> API Development</a></li>
+                            <li><a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Consulting</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Newsletter & Social -->
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="footer-newsletter">
+                        <h4 class="footer-title">Stay Connected</h4>
+                        <p class="footer-subtitle">Subscribe to my newsletter for updates and insights</p>
+
+                        <!-- Newsletter Form -->
+                        <form class="newsletter-form" id="newsletterForm">
+                            <div class="form-group">
+                                <input type="email" class="form-control newsletter-input" placeholder="Your email address" required>
+                                <button type="submit" class="newsletter-btn">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div class="newsletter-success" id="newsletterSuccess" style="display: none;">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Thank you for subscribing!</span>
+                            </div>
+                        </form>
+
+                        <!-- Social Links -->
+                        <div class="footer-social">
+                            <h5 class="social-title">Follow Me</h5>
+                            <div class="social-links">
+                                <a href="https://github.com" target="_blank" class="social-link social-github" title="GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="https://linkedin.com" target="_blank" class="social-link social-linkedin" title="LinkedIn">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                                <a href="https://twitter.com" target="_blank" class="social-link social-twitter" title="Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="https://instagram.com" target="_blank" class="social-link social-instagram" title="Instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="https://dribbble.com" target="_blank" class="social-link social-dribbble" title="Dribbble">
+                                    <i class="fab fa-dribbble"></i>
+                                </a>
+                                <a href="https://codepen.io" target="_blank" class="social-link social-codepen" title="CodePen">
+                                    <i class="fab fa-codepen"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="footer-copyright">
+                        <p class="copyright-text">
+                            <span id="currentYear">2024</span> Portfolio. All rights reserved. Designed with <i class="fas fa-heart text-danger"></i> by me
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="footer-bottom-links">
+                        <a href="{{ url_for('main.privacy_policy') }}" class="bottom-link">Privacy Policy</a>
+                        <a href="{{ url_for('main.terms_of_service') }}" class="bottom-link">Terms of Service</a>
+                        <a href="{{ url_for('main.cookie_policy') }}" class="bottom-link">Cookie Policy</a>
+                        <a href="{{ url_for('main.sitemap') }}" class="bottom-link">Sitemap</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" title="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+</footer>
+
+<!-- Footer JavaScript -->
+<script>
+// Set current year dynamically
+document.addEventListener('DOMContentLoaded', function() {
+    const currentYearElement = document.getElementById('currentYear');
+    if (currentYearElement) {
+        currentYearElement.textContent = new Date().getFullYear();
+    }
+});
+
+// Newsletter form handling
+document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = this.querySelector('input[type="email"]').value;
+    const successDiv = document.getElementById('newsletterSuccess');
+    
+    // Simple success simulation
+    successDiv.style.display = 'block';
+    this.querySelector('input[type="email"]').value = '';
+    
+    // Hide success message after 3 seconds
+    setTimeout(() => {
+        successDiv.style.display = 'none';
+    }, 3000);
+});
+
+// Back to top button
+document.getElementById('backToTop').addEventListener('click', function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+// Show/hide back to top button based on scroll position
+window.addEventListener('scroll', function() {
+    const backToTopBtn = document.getElementById('backToTop');
+    if (window.pageYOffset > 300) {
+        backToTopBtn.style.display = 'block';
+    } else {
+        backToTopBtn.style.display = 'none';
+    }
+});
+</script>

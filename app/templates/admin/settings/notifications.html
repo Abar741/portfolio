@@ -1,0 +1,413 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Notification Settings{% endblock %}
+
+{% block content %}
+<!-- Notification Settings Header -->
+<div class="card-modern fade-in">
+    <div class="card-header-modern">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h1>
+                    <i class="fas fa-bell me-2"></i>Notification Settings
+                </h1>
+                <p>Control how you receive notifications and alerts</p>
+            </div>
+            <a href="{{ url_for('admin.settings.settings') }}" class="btn btn-outline-modern">
+                <i class="fas fa-arrow-left me-2"></i>Back to Settings
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Email Notifications -->
+    <div class="col-lg-6">
+        <div class="card-modern fade-in">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-envelope me-2"></i>Email Notifications
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <form method="POST" id="emailNotificationsForm">
+                    <div class="space-y-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="emailMessages" checked>
+                            <label class="form-check-label" for="emailMessages">
+                                <div>
+                                    <strong>New Messages</strong>
+                                    <p class="text-muted small mb-0">Receive email when someone sends you a message</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="emailFeedback" checked>
+                            <label class="form-check-label" for="emailFeedback">
+                                <div>
+                                    <strong>Feedback Submissions</strong>
+                                    <p class="text-muted small mb-0">Get notified when someone submits feedback</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="emailTestimonials" checked>
+                            <label class="form-check-label" for="emailTestimonials">
+                                <div>
+                                    <strong>New Testimonials</strong>
+                                    <p class="text-muted small mb-0">Email when new testimonials are submitted</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="emailProjects" checked>
+                            <label class="form-check-label" for="emailProjects">
+                                <div>
+                                    <strong>Project Inquiries</strong>
+                                    <p class="text-muted small mb-0">Notifications about new project inquiries</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="emailSecurity">
+                            <label class="form-check-label" for="emailSecurity">
+                                <div>
+                                    <strong>Security Alerts</strong>
+                                    <p class="text-muted small mb-0">Important security notifications</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="emailSystem" checked>
+                            <label class="form-check-label" for="emailSystem">
+                                <div>
+                                    <strong>System Updates</strong>
+                                    <p class="text-muted small mb-0">Updates about system maintenance and features</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="emailFrequency" class="form-label">Email Frequency</label>
+                            <select class="form-select" id="emailFrequency">
+                                <option value="immediate" selected>Immediate</option>
+                                <option value="hourly">Hourly Digest</option>
+                                <option value="daily">Daily Digest</option>
+                                <option value="weekly">Weekly Digest</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="emailTime" class="form-label">Quiet Hours</label>
+                            <input type="text" class="form-control" id="emailTime" placeholder="10 PM - 8 AM">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Push Notifications -->
+    <div class="col-lg-6">
+        <div class="card-modern fade-in">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-mobile-alt me-2"></i>Push Notifications
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <form method="POST" id="pushNotificationsForm">
+                    <div class="space-y-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="pushEnabled" checked>
+                            <label class="form-check-label" for="pushEnabled">
+                                <div>
+                                    <strong>Enable Push Notifications</strong>
+                                    <p class="text-muted small mb-0">Receive real-time notifications in your browser</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="pushMessages" checked>
+                            <label class="form-check-label" for="pushMessages">
+                                <div>
+                                    <strong>Message Alerts</strong>
+                                    <p class="text-muted small mb-0">Instant alerts for new messages</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="pushFeedback" checked>
+                            <label class="form-check-label" for="pushFeedback">
+                                <div>
+                                    <strong>Feedback Alerts</strong>
+                                    <p class="text-muted small mb-0">Real-time feedback notifications</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="pushSound" checked>
+                            <label class="form-check-label" for="pushSound">
+                                <div>
+                                    <strong>Sound Effects</strong>
+                                    <p class="text-muted small mb-0">Play sound for notifications</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="pushDesktop" checked>
+                            <label class="form-check-label" for="pushDesktop">
+                                <div>
+                                    <strong>Desktop Notifications</strong>
+                                    <p class="text-muted small mb-0">Show notifications on desktop</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Notification Preferences -->
+<div class="card-modern fade-in mt-4">
+    <div class="card-header-modern">
+        <h5>
+            <i class="fas fa-sliders-h me-2"></i>Notification Preferences
+        </h5>
+    </div>
+    <div class="card-body-modern">
+        <form method="POST" id="preferencesForm">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label for="notificationTone" class="form-label">Notification Tone</label>
+                    <select class="form-select" id="notificationTone">
+                        <option value="default" selected>Default</option>
+                        <option value="gentle">Gentle</option>
+                        <option value="urgent">Urgent</option>
+                        <option value="minimal">Minimal</option>
+                        <option value="none">None</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="notificationPosition" class="form-label">Notification Position</label>
+                    <select class="form-select" id="notificationPosition">
+                        <option value="top-right" selected>Top Right</option>
+                        <option value="top-left">Top Left</option>
+                        <option value="bottom-right">Bottom Right</option>
+                        <option value="bottom-left">Bottom Left</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="notificationDuration" class="form-label">Display Duration</label>
+                    <select class="form-select" id="notificationDuration">
+                        <option value="3" selected>3 seconds</option>
+                        <option value="5">5 seconds</option>
+                        <option value="10">10 seconds</option>
+                        <option value="30">30 seconds</option>
+                        <option value="0">Until dismissed</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Test Notifications -->
+<div class="card-modern fade-in mt-4">
+    <div class="card-header-modern">
+        <h5>
+            <i class="fas fa-vial me-2"></i>Test Notifications
+        </h5>
+    </div>
+    <div class="card-body-modern">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <button class="btn btn-outline-modern w-100" onclick="testNotification('message')">
+                    <i class="fas fa-envelope me-2"></i>Test Message
+                </button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-modern w-100" onclick="testNotification('feedback')">
+                    <i class="fas fa-comment-dots me-2"></i>Test Feedback
+                </button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-modern w-100" onclick="testNotification('security')">
+                    <i class="fas fa-shield-alt me-2"></i>Test Security
+                </button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-modern w-100" onclick="testNotification('system')">
+                    <i class="fas fa-cog me-2"></i>Test System
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Save Button -->
+<div class="card-modern fade-in mt-4">
+    <div class="card-body-modern">
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-outline-modern" onclick="resetNotificationSettings()">
+                <i class="fas fa-undo me-2"></i>Reset to Default
+            </button>
+            <div>
+                <button type="button" class="btn btn-outline-modern me-2" onclick="testAllNotifications()">
+                    <i class="fas fa-vial me-2"></i>Test All
+                </button>
+                <button type="submit" form="emailNotificationsForm" class="btn btn-primary-modern">
+                    <i class="fas fa-save me-2"></i>Save Settings
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.space-y-3 > * + * {
+    margin-top: 1rem;
+}
+
+.form-check-label {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+}
+
+.form-check-label strong {
+    color: var(--gray-800);
+    font-weight: 600;
+}
+
+.form-check-label p {
+    margin-left: 0;
+    margin-top: 0.25rem;
+}
+
+.form-switch .form-check-input {
+    width: 3rem;
+    height: 1.5rem;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: var(--primary-600);
+    border-color: var(--primary-600);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function testNotification(type) {
+    const messages = {
+        message: 'You have a new message from John Doe!',
+        feedback: 'New feedback submission received from Jane Smith',
+        security: 'Security alert: New login detected from unknown device',
+        system: 'System update available: Version 2.0.1'
+    };
+    
+    const icons = {
+        message: 'fa-envelope',
+        feedback: 'fa-comment-dots',
+        security: 'fa-shield-alt',
+        system: 'fa-cog'
+    };
+    
+    showNotificationToast(messages[type], 'info', icons[type]);
+}
+
+function testAllNotifications() {
+    const types = ['message', 'feedback', 'security', 'system'];
+    let delay = 0;
+    
+    types.forEach(type => {
+        setTimeout(() => testNotification(type), delay);
+        delay += 1000;
+    });
+}
+
+function resetNotificationSettings() {
+    if (confirm('Are you sure you want to reset all notification settings to default?')) {
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = checkbox.id.includes('Security') || checkbox.id.includes('System');
+        });
+        document.getElementById('emailFrequency').value = 'immediate';
+        document.getElementById('notificationTone').value = 'default';
+        document.getElementById('notificationPosition').value = 'top-right';
+        document.getElementById('notificationDuration').value = '3';
+        
+        showNotificationToast('Notification settings reset to default', 'success');
+    }
+}
+
+// Enhanced notification toast function with custom icon support
+function showNotificationToast(message, type = 'info', icon = null) {
+    const toast = document.createElement('div');
+    const iconClass = icon || (type === 'success' ? 'fa-check-circle' : 'fa-info-circle');
+    
+    toast.innerHTML = `
+        <i class="fas ${iconClass} me-2"></i>
+        ${message}
+    `;
+    
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 16px;
+        background: ${type === 'success' ? 'var(--success)' : 'var(--primary-600)'};
+        color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-lg);
+        z-index: 9999;
+        font-size: 0.875rem;
+        font-weight: 500;
+        animation: slideInRight 0.3s ease;
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Form submissions
+document.getElementById('emailNotificationsForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showNotificationToast('Email notification settings saved successfully!', 'success');
+});
+
+document.getElementById('pushNotificationsForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showNotificationToast('Push notification settings saved successfully!', 'success');
+});
+
+document.getElementById('preferencesForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showNotificationToast('Notification preferences saved successfully!', 'success');
+});
+</script>
+{% endblock %}

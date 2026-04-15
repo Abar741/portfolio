@@ -1,0 +1,468 @@
+<!-- Navigation -->
+<nav id="mainNav" class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+                
+        <a class="navbar-brand" href="{{ navbar_data.brand.url }}">
+            <img src="{{ navbar_data.brand.logo }}" alt="{{ navbar_data.brand.alt }}" class="navbar-logo">
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% for link in navbar_data.links %}
+                <li class="nav-item">
+                    <a class="nav-link{% if link.active %} active{% endif %}" href="{{ link.url }}">{{ link.text }}</a>
+                </li>
+                {% endfor %}
+                
+                <li class="nav-item">
+                    <button class="nav-link theme-toggle-navbar" onclick="toggleThemeDirect()" aria-label="Toggle theme" title="Toggle between light, dark, and auto themes">
+                        <i class="fas fa-sun sun-icon"></i>
+                        <i class="fas fa-moon moon-icon"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<style>
+/* Scroll behavior for smooth scrolling */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    
+    .navbar .navbar-nav .nav-link,
+    nav .navbar-nav .nav-link,
+    div .navbar-nav .nav-link {
+        transition: none !important;
+    }
+}
+
+/* Professional lightweight navbar transitions */
+.navbar .navbar-nav .nav-link,
+nav .navbar-nav .nav-link,
+div .navbar-nav .nav-link {
+    transition: background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    position: relative;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    margin: 0 1px !important;
+    padding: 6px 12px !important;
+    will-change: background-color, color, transform, box-shadow;
+    border: none !important;
+    border-style: none !important;
+    border-width: 0 !important;
+}
+
+/* ULTIMATE border override - overrides ALL external CSS */
+.navbar .navbar-nav .nav-link,
+nav .navbar-nav .nav-link,
+div .navbar-nav .nav-link,
+.navbar-nav .nav-link,
+.navbar-nav-item .nav-link,
+.navbar .nav-link,
+nav .nav-link,
+div .nav-link,
+a.nav-link,
+.nav-link {
+    border: none !important;
+    border-style: none !important;
+    border-width: 0 !important;
+    border-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.navbar .navbar-nav .nav-link:hover,
+nav .navbar-nav .nav-link:hover,
+div .navbar-nav .nav-link:hover {
+    transform: translateY(-1px) !important;
+    background: rgba(59, 130, 246, 0.08) !important;
+}
+
+.navbar .navbar-nav .nav-link.active,
+nav .navbar-nav .nav-link.active,
+div .navbar-nav .nav-link.active {
+    color: white !important;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    font-weight: 600 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.25) !important;
+    border-radius: 6px !important;
+    padding: 6px 12px !important;
+    margin: 0 1px !important;
+}
+
+/* Force active state to be visible with higher specificity */
+.navbar .navbar-nav .nav-link.active,
+nav .navbar-nav .nav-link.active,
+div .navbar-nav .nav-link.active,
+header .navbar .navbar-nav .nav-link.active,
+nav.navbar .navbar-nav .nav-link.active,
+.container .navbar .navbar-nav .nav-link.active {
+    color: white !important;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    font-weight: 600 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.25) !important;
+    border-radius: 6px !important;
+    padding: 6px 12px !important;
+    margin: 0 1px !important;
+}
+
+/* Simple professional underline effect */
+.navbar .navbar-nav .nav-link.active::after,
+nav .navbar-nav .nav-link.active::after,
+div .navbar-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background: white;
+    transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateX(-50%);
+    opacity: 0.8;
+}
+
+.navbar .navbar-nav .nav-link.active::after,
+nav .navbar-nav .nav-link.active::after,
+div .navbar-nav .nav-link.active::after {
+    width: 60%;
+}
+</style>
+
+<script>
+// Professional navbar active state with IntersectionObserver
+document.addEventListener('DOMContentLoaded', function() {
+    const navbarLinks = document.querySelectorAll('.navbar-nav .nav-link[href*="#"]');
+    const sections = document.querySelectorAll('section[id]');
+    
+    // Check if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    // IntersectionObserver for instant section detection
+    const observerOptions = {
+        root: null,
+        rootMargin: '-80px 0px -50% 0px',
+        threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    };
+    
+    let currentActiveSection = null;
+    
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+                const sectionId = '#' + entry.target.id;
+                if (sectionId !== currentActiveSection) {
+                    currentActiveSection = sectionId;
+                    // Force complete state update to prevent desync
+                    forceUpdateActiveState(sectionId);
+                }
+            }
+        });
+    }, observerOptions);
+    
+    // Observe all sections
+    sections.forEach(section => {
+        sectionObserver.observe(section);
+    });
+    
+    // CSS-only update active state function (aggressive border removal)
+    function forceUpdateActiveState(targetSection) {
+        // Clear all active states from ALL links first
+        navbarLinks.forEach(link => {
+            link.classList.remove('active');
+            
+            // Remove ALL inline styles completely
+            link.removeAttribute('style');
+            
+            // AGGRESSIVE: Force border removal
+            link.style.setProperty('border', 'none', 'important');
+            link.style.setProperty('border-style', 'none', 'important');
+            link.style.setProperty('border-width', '0', 'important');
+            link.style.border = 'none';
+            link.style.borderWidth = '0';
+            link.style.borderStyle = 'none';
+        });
+        
+        // Apply active state to correct link only using CSS class
+        navbarLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            const cleanHref = href.startsWith('/') ? href.substring(1) : href;
+            
+            if (cleanHref === targetSection) {
+                link.classList.add('active');
+                
+                // AGGRESSIVE: Ensure no border on active element
+                setTimeout(() => {
+                    link.style.setProperty('border', 'none', 'important');
+                    link.style.setProperty('border-style', 'none', 'important');
+                    link.style.setProperty('border-width', '0', 'important');
+                    link.style.border = 'none';
+                }, 10);
+            }
+        });
+    }
+    
+    // Update active state function (uses force update for consistency)
+    function updateActiveState(targetSection) {
+        forceUpdateActiveState(targetSection);
+    }
+    
+    // Handle navbar clicks with instant active state update (border removal focus)
+    navbarLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            const targetId = href.startsWith('/') ? href.substring(1) : href;
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                e.preventDefault();
+                
+                // IMMEDIATE: Remove border from clicked link first
+                this.style.setProperty('border', 'none', 'important');
+                this.style.setProperty('border-style', 'none', 'important');
+                this.style.setProperty('border-width', '0', 'important');
+                this.style.border = 'none';
+                this.style.borderWidth = '0';
+                this.style.borderStyle = 'none';
+                
+                // Update active state immediately using the same function
+                currentActiveSection = targetId;
+                updateActiveState(targetId);
+                
+                // Update URL hash without jumping
+                history.pushState(null, null, href);
+                
+                // Calculate target position with navbar offset
+                const navbarHeight = 80;
+                const targetPosition = targetElement.offsetTop - navbarHeight;
+                const startPosition = window.pageYOffset;
+                const distance = targetPosition - startPosition;
+                const duration = prefersReducedMotion ? 0 : 650; // Slightly faster duration
+                
+                if (prefersReducedMotion) {
+                    // Instant scroll for reduced motion
+                    window.scrollTo(0, targetPosition);
+                } else {
+                    // Smooth scroll animation with professional easing
+                    let startTime = null;
+                    
+                    function animation(currentTime) {
+                        if (startTime === null) startTime = currentTime;
+                        const timeElapsed = currentTime - startTime;
+                        const progress = Math.min(timeElapsed / duration, 1);
+                        
+                        // Professional easing for smooth feel
+                        const easeProgress = easeInOutCubic(progress);
+                        
+                        window.scrollTo(0, startPosition + (distance * easeProgress));
+                        
+                        if (timeElapsed < duration) {
+                            requestAnimationFrame(animation);
+                        }
+                    }
+                    
+                    requestAnimationFrame(animation);
+                }
+            }
+        });
+    });
+    
+    // Continuous border removal for all navbar links
+    setInterval(() => {
+        navbarLinks.forEach(link => {
+            link.style.setProperty('border', 'none', 'important');
+            link.style.setProperty('border-style', 'none', 'important');
+            link.style.setProperty('border-width', '0', 'important');
+            link.style.border = 'none';
+            link.style.borderWidth = '0';
+            link.style.borderStyle = 'none';
+        });
+    }, 50);
+    
+    // Simpler easing function for smoother animation
+    function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    
+    // Handle browser back/forward buttons
+    window.addEventListener('hashchange', function() {
+        const currentPath = window.location.pathname;
+        const hash = window.location.hash || '#hero';
+        
+        console.log('Hashchange - Path:', currentPath, 'Hash:', hash); // Debug log
+        
+        let targetSection = hash;
+        
+        // Handle portfolio page specifically
+        if (currentPath === '/portfolio' || currentPath === '/portfolio/') {
+            targetSection = '#projects'; // Keep Projects active on portfolio page
+        }
+        
+        updateActiveState(targetSection);
+        
+        const targetElement = document.querySelector(targetSection);
+        
+        if (targetElement) {
+            if (prefersReducedMotion) {
+                window.scrollTo(0, targetElement.offsetTop);
+            } else {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+    });
+    
+    // Initialize active state on page load
+    function initializeActiveState() {
+        // Check current page and hash
+        const currentPath = window.location.pathname;
+        const currentHash = window.location.hash || '#hero';
+        
+        console.log('Current path:', currentPath, 'Current hash:', currentHash); // Debug log
+        
+        let targetSection = currentHash;
+        
+        // Handle different pages
+        if (currentPath === '/portfolio' || currentPath === '/portfolio/') {
+            targetSection = '#projects'; // Force Projects to be active on portfolio page
+        } else if (currentHash) {
+            targetSection = currentHash;
+        } else {
+            targetSection = '#hero'; // Default to hero
+        }
+        
+        console.log('Setting initial active state to:', targetSection); // Debug log
+        updateActiveState(targetSection);
+        
+        // Fallback: ensure we have an active state
+        setTimeout(() => {
+            const hasActive = Array.from(navbarLinks).some(link => link.classList.contains('active'));
+            if (!hasActive) {
+                // Default based on current page
+                let defaultSection = '#hero';
+                if (currentPath === '/portfolio' || currentPath === '/portfolio/') {
+                    defaultSection = '#projects';
+                }
+                
+                const firstLink = navbarLinks[0];
+                if (firstLink) {
+                    const href = firstLink.getAttribute('href');
+                    const cleanHref = href.startsWith('/') ? href.substring(1) : href;
+                    updateActiveState(cleanHref);
+                } else {
+                    updateActiveState(defaultSection);
+                }
+            }
+        }, 100);
+    }
+    
+    // Set initial state
+    initializeActiveState();
+    
+    // Improved scroll-based checking (CSS-only approach)
+    let lastScrollTime = 0;
+    window.addEventListener('scroll', function() {
+        const now = Date.now();
+        if (now - lastScrollTime > 100) { // Throttled for performance
+            lastScrollTime = now;
+            
+            // Better section detection with center point
+            const scrollPosition = window.scrollY + 80;
+            const viewportHeight = window.innerHeight;
+            const scrollCenter = scrollPosition + (viewportHeight / 2);
+            
+            let bestSection = null;
+            let maxOverlap = 0;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                // Calculate overlap with viewport
+                const overlapTop = Math.max(sectionTop, scrollPosition);
+                const overlapBottom = Math.min(sectionBottom, scrollPosition + viewportHeight);
+                const overlap = Math.max(0, overlapBottom - overlapTop);
+                
+                // Find section with most visibility
+                if (overlap > maxOverlap && overlap > 100) { // At least 100px visible
+                    maxOverlap = overlap;
+                    bestSection = '#' + section.id;
+                }
+            });
+            
+            // Update immediately if different using CSS-only approach
+            if (bestSection && bestSection !== currentActiveSection) {
+                currentActiveSection = bestSection;
+                forceUpdateActiveState(bestSection);
+            }
+        }
+    }, { passive: true });
+    
+    // Re-observe sections on dynamic content changes
+    const reobserveSections = () => {
+        sections.forEach(section => {
+            sectionObserver.unobserve(section);
+            sectionObserver.observe(section);
+        });
+    };
+    
+    // Handle resize events (debounced)
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(reobserveSections, 250);
+    }, { passive: true });
+    
+    // Cubic bezier helper function
+    function cubicBezier(t, p1, p2, p3, p4) {
+        const cx = 3 * p1;
+        const bx = 3 * (p3 - p1) - cx;
+        const ax = 1 - cx - bx;
+        const cy = 3 * p2;
+        const by = 3 * (p4 - p2) - cy;
+        const ay = 1 - cy - by;
+        
+        function sampleCurveX(t) {
+            return ((ax * t + bx) * t + cx) * t;
+        }
+        
+        function sampleCurveY(t) {
+            return ((ay * t + by) * t + cy) * t;
+        }
+        
+        function solveCurveX(x) {
+            let t2 = x;
+            for (let i = 0; i < 8; i++) {
+                const x2 = sampleCurveX(t2) - x;
+                if (Math.abs(x2) < 0.001) return t2;
+                const d2 = (3 * ax * t2 + 2 * bx) * t2 + cx;
+                if (Math.abs(d2) < 0.000001) break;
+                t2 = t2 - x2 / d2;
+            }
+            return t2;
+        }
+        
+        return sampleCurveY(solveCurveX(t));
+    }
+});
+</script>

@@ -39,9 +39,26 @@ def index():
         print("Getting testimonials stats...")
         stats = TestimonialsStats.get_calculated_stats()
         print(f"Stats retrieved successfully: {stats}")
+        print(f"Stats type: {type(stats)}")
         
+        # Ensure stats is a dictionary for template
+        if hasattr(stats, 'to_dict'):
+            stats_dict = stats.to_dict()
+        elif isinstance(stats, dict):
+            stats_dict = stats
+        else:
+            print(f"ERROR: Stats is unexpected type: {type(stats)}")
+            # Create fallback dictionary
+            stats_dict = {
+                'happy_clients': 0,
+                'projects_completed': 0,
+                'average_rating': 5.0,
+                'awards_won': 0
+            }
+        
+        print(f"Final stats dict: {stats_dict}")
         return render_template('admin/testimonials_stats.html', 
-                             stats=stats,
+                             stats=stats_dict,
                              unread_count=unread_count,
                              feedback_unread_count=feedback_unread_count)
                              

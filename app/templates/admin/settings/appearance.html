@@ -1,0 +1,514 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Appearance Settings{% endblock %}
+
+{% block content %}
+<!-- Appearance Settings Header -->
+<div class="card-modern fade-in">
+    <div class="card-header-modern">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h1>
+                    <i class="fas fa-palette me-2"></i>Appearance Settings
+                </h1>
+                <p>Customize the look and feel of your dashboard</p>
+            </div>
+            <a href="{{ url_for('admin.settings.settings') }}" class="btn btn-outline-modern">
+                <i class="fas fa-arrow-left me-2"></i>Back to Settings
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Theme Settings -->
+    <div class="col-lg-6">
+        <div class="card-modern fade-in">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-paint-brush me-2"></i>Theme Settings
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <form method="POST" id="themeForm">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="form-label">Theme Mode</label>
+                            <div class="d-flex gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="themeMode" id="lightTheme" value="light" checked>
+                                    <label class="form-check-label" for="lightTheme">
+                                        <div class="theme-option">
+                                            <i class="fas fa-sun me-2"></i>
+                                            <span>Light</span>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="themeMode" id="darkTheme" value="dark">
+                                    <label class="form-check-label" for="darkTheme">
+                                        <div class="theme-option">
+                                            <i class="fas fa-moon me-2"></i>
+                                            <span>Dark</span>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="themeMode" id="autoTheme" value="auto">
+                                    <label class="form-check-label" for="autoTheme">
+                                        <div class="theme-option">
+                                            <i class="fas fa-adjust me-2"></i>
+                                            <span>Auto</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="colorScheme" class="form-label">Color Scheme</label>
+                            <select class="form-select" id="colorScheme">
+                                <option value="blue" selected>Blue (Default)</option>
+                                <option value="purple">Purple</option>
+                                <option value="green">Green</option>
+                                <option value="orange">Orange</option>
+                                <option value="red">Red</option>
+                                <option value="teal">Teal</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="accentColor" class="form-label">Accent Color</label>
+                            <div class="d-flex gap-2 align-items-center">
+                                <input type="color" class="form-control form-control-color" id="accentColor" value="#6366f1" style="width: 60px;">
+                                <input type="text" class="form-control" id="accentColorHex" value="#6366f1" placeholder="#6366f1">
+                                <button type="button" class="btn btn-outline-modern btn-sm" onclick="resetAccentColor()">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Font Settings -->
+        <div class="card-modern fade-in mt-4">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-font me-2"></i>Font Settings
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <form method="POST" id="fontForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="fontFamily" class="form-label">Font Family</label>
+                            <select class="form-select" id="fontFamily">
+                                <option value="inter" selected>Inter (Default)</option>
+                                <option value="roboto">Roboto</option>
+                                <option value="opensans">Open Sans</option>
+                                <option value="lato">Lato</option>
+                                <option value="montserrat">Montserrat</option>
+                                <option value="poppins">Poppins</option>
+                                <option value="system">System Default</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="fontSize" class="form-label">Font Size</label>
+                            <select class="form-select" id="fontSize">
+                                <option value="small">Small</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="large">Large</option>
+                                <option value="xlarge">Extra Large</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lineHeight" class="form-label">Line Height</label>
+                            <select class="form-select" id="lineHeight">
+                                <option value="tight">Tight</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="relaxed">Relaxed</option>
+                                <option value="loose">Loose</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="fontWeight" class="form-label">Font Weight</label>
+                            <select class="form-select" id="fontWeight">
+                                <option value="light">Light</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="medium">Medium</option>
+                                <option value="semibold">Semibold</option>
+                                <option value="bold">Bold</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Layout Settings -->
+    <div class="col-lg-6">
+        <div class="card-modern fade-in">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-th-large me-2"></i>Layout Settings
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <form method="POST" id="layoutForm">
+                    <div class="space-y-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="compactMode">
+                            <label class="form-check-label" for="compactMode">
+                                <div>
+                                    <strong>Compact Mode</strong>
+                                    <p class="text-muted small mb-0">Reduce spacing and padding throughout the interface</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="sidebarCollapsed" checked>
+                            <label class="form-check-label" for="sidebarCollapsed">
+                                <div>
+                                    <strong>Collapsed Sidebar</strong>
+                                    <p class="text-muted small mb-0">Start with sidebar collapsed by default</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div>
+                            <label for="sidebarPosition" class="form-label">Sidebar Position</label>
+                            <select class="form-select" id="sidebarPosition">
+                                <option value="left" selected>Left Side</option>
+                                <option value="right">Right Side</option>
+                                <option value="top">Top</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="cardLayout" class="form-label">Card Layout</label>
+                            <select class="form-select" id="cardLayout">
+                                <option value="default" selected>Default</option>
+                                <option value="compact">Compact</option>
+                                <option value="spacious">Spacious</option>
+                                <option value="minimal">Minimal</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showAnimations" checked>
+                            <label class="form-check-label" for="showAnimations">
+                                <div>
+                                    <strong>Animations</strong>
+                                    <p class="text-muted small mb-0">Enable smooth transitions and animations</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Preview Settings -->
+        <div class="card-modern fade-in mt-4">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-eye me-2"></i>Preview Settings
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <div class="preview-container">
+                    <div class="preview-header">
+                        <h6>Dashboard Preview</h6>
+                        <div class="preview-controls">
+                            <button class="btn btn-sm btn-outline-modern" onclick="applyPreview()">Apply Preview</button>
+                            <button class="btn btn-sm btn-outline-modern" onclick="resetPreview()">Reset</button>
+                        </div>
+                    </div>
+                    <div class="preview-content" id="previewContent">
+                        <div class="preview-sidebar">
+                            <div class="preview-nav-item active">Dashboard</div>
+                            <div class="preview-nav-item">Projects</div>
+                            <div class="preview-nav-item">Messages</div>
+                        </div>
+                        <div class="preview-main">
+                            <div class="preview-card">
+                                <h6>Sample Card</h6>
+                                <p>This is how your dashboard will look with the selected theme.</p>
+                                <button class="preview-btn">Sample Button</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Advanced Settings -->
+<div class="card-modern fade-in mt-4">
+    <div class="card-header-modern">
+        <h5>
+            <i class="fas fa-cogs me-2"></i>Advanced Settings
+        </h5>
+    </div>
+    <div class="card-body-modern">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="highContrast">
+                    <label class="form-check-label" for="highContrast">
+                        <strong>High Contrast</strong>
+                        <p class="text-muted small mb-0">Increase contrast for better visibility</p>
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="reduceMotion">
+                    <label class="form-check-label" for="reduceMotion">
+                        <strong>Reduce Motion</strong>
+                        <p class="text-muted small mb-0">Minimize animations and transitions</p>
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="customCSS">
+                    <label class="form-check-label" for="customCSS">
+                        <strong>Custom CSS</strong>
+                        <p class="text-muted small mb-0">Apply custom styles</p>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div id="customCSSEditor" style="display: none;">
+            <hr class="my-4">
+            <label for="customCSSCode" class="form-label">Custom CSS Code</label>
+            <textarea class="form-control" id="customCSSCode" rows="6" placeholder="/* Enter your custom CSS here */"></textarea>
+        </div>
+    </div>
+</div>
+
+<!-- Save Button -->
+<div class="card-modern fade-in mt-4">
+    <div class="card-body-modern">
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-outline-modern" onclick="exportTheme()">
+                <i class="fas fa-download me-2"></i>Export Theme
+            </button>
+            <div>
+                <button type="button" class="btn btn-outline-modern me-2" onclick="resetAllSettings()">
+                    <i class="fas fa-undo me-2"></i>Reset All
+                </button>
+                <button type="submit" form="themeForm" class="btn btn-primary-modern">
+                    <i class="fas fa-save me-2"></i>Save Appearance
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.space-y-4 > * + * {
+    margin-top: 1.5rem;
+}
+
+.theme-option {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.theme-option:hover {
+    border-color: var(--primary-600);
+    background: var(--primary-50);
+}
+
+.form-check-input:checked + .form-check-label .theme-option {
+    border-color: var(--primary-600);
+    background: var(--primary-100);
+    color: var(--primary-600);
+}
+
+.preview-container {
+    border: 1px solid var(--gray-200);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.preview-header {
+    background: var(--gray-50);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preview-content {
+    display: flex;
+    height: 200px;
+}
+
+.preview-sidebar {
+    width: 80px;
+    background: var(--gray-100);
+    padding: 8px;
+    border-right: 1px solid var(--gray-200);
+}
+
+.preview-nav-item {
+    padding: 8px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.preview-nav-item.active {
+    background: var(--primary-600);
+    color: white;
+}
+
+.preview-main {
+    flex: 1;
+    padding: 16px;
+    background: white;
+}
+
+.preview-card {
+    background: var(--gray-50);
+    padding: 12px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--gray-200);
+}
+
+.preview-btn {
+    background: var(--primary-600);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.form-control-color {
+    padding: 0.25rem;
+    height: 38px;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function resetAccentColor() {
+    document.getElementById('accentColor').value = '#6366f1';
+    document.getElementById('accentColorHex').value = '#6366f1';
+}
+
+function applyPreview() {
+    const themeMode = document.querySelector('input[name="themeMode"]:checked').value;
+    const colorScheme = document.getElementById('colorScheme').value;
+    const accentColor = document.getElementById('accentColor').value;
+    
+    // Apply preview styles
+    const preview = document.getElementById('previewContent');
+    
+    if (themeMode === 'dark') {
+        preview.style.background = '#1a1a1a';
+        preview.style.color = 'white';
+    } else {
+        preview.style.background = 'white';
+        preview.style.color = 'black';
+    }
+    
+    preview.querySelector('.preview-nav-item.active').style.background = accentColor;
+    preview.querySelector('.preview-btn').style.background = accentColor;
+    
+    showNotificationToast('Preview applied successfully', 'success');
+}
+
+function resetPreview() {
+    const preview = document.getElementById('previewContent');
+    preview.style.background = '';
+    preview.style.color = '';
+    preview.querySelector('.preview-nav-item.active').style.background = '';
+    preview.querySelector('.preview-btn').style.background = '';
+    
+    showNotificationToast('Preview reset', 'info');
+}
+
+function exportTheme() {
+    const themeData = {
+        themeMode: document.querySelector('input[name="themeMode"]:checked').value,
+        colorScheme: document.getElementById('colorScheme').value,
+        accentColor: document.getElementById('accentColor').value,
+        fontFamily: document.getElementById('fontFamily').value,
+        fontSize: document.getElementById('fontSize').value
+    };
+    
+    const blob = new Blob([JSON.stringify(themeData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'theme-settings.json';
+    a.click();
+    
+    showNotificationToast('Theme exported successfully', 'success');
+}
+
+function resetAllSettings() {
+    if (confirm('Are you sure you want to reset all appearance settings to default?')) {
+        document.getElementById('themeForm').reset();
+        document.getElementById('fontForm').reset();
+        document.getElementById('layoutForm').reset();
+        resetPreview();
+        
+        showNotificationToast('All appearance settings reset to default', 'success');
+    }
+}
+
+// Sync color picker with hex input
+document.getElementById('accentColor').addEventListener('input', function(e) {
+    document.getElementById('accentColorHex').value = e.target.value;
+});
+
+document.getElementById('accentColorHex').addEventListener('input', function(e) {
+    if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+        document.getElementById('accentColor').value = e.target.value;
+    }
+});
+
+// Toggle custom CSS editor
+document.getElementById('customCSS').addEventListener('change', function(e) {
+    document.getElementById('customCSSEditor').style.display = e.target.checked ? 'block' : 'none';
+});
+
+// Form submissions
+document.getElementById('themeForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showNotificationToast('Theme settings saved successfully!', 'success');
+});
+
+document.getElementById('fontForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showNotificationToast('Font settings saved successfully!', 'success');
+});
+
+document.getElementById('layoutForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showNotificationToast('Layout settings saved successfully!', 'success');
+});
+</script>
+{% endblock %}

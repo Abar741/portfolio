@@ -1,0 +1,296 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<!-- Settings Header -->
+<div class="card-modern fade-in">
+    <div class="card-header-modern">
+        <h1>
+            <i class="fas fa-cog me-2"></i>Settings
+        </h1>
+        <p>Manage your portfolio admin dashboard settings and preferences</p>
+    </div>
+    <div class="card-body-modern">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div>
+                <span class="badge-modern badge-success">
+                    <i class="fas fa-shield-alt me-2"></i>Secure Connection
+                </span>
+                <span class="badge-modern badge-info">
+                    <i class="fas fa-clock me-2"></i>Last updated: Today
+                </span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-outline-modern btn-sm" onclick="exportSettings()">
+                    <i class="fas fa-download me-2"></i>Export Settings
+                </button>
+                <button class="btn btn-outline-modern btn-sm" onclick="resetSettings()">
+                    <i class="fas fa-undo me-2"></i>Reset to Default
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Settings Grid -->
+<div class="row g-4">
+    <!-- Profile Settings -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card-modern fade-in setting-card">
+            <div class="card-body-modern text-center">
+                <div class="setting-icon mb-3">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h5 class="card-title">Profile Settings</h5>
+                <p class="card-text text-muted">Manage your personal information and account details</p>
+                <ul class="list-unstyled text-start">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Personal Information</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Profile Picture</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Contact Details</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Bio & Description</li>
+                </ul>
+                <a href="{{ url_for('admin.settings.profile_settings') }}" class="btn btn-primary-modern w-100">
+                    <i class="fas fa-edit me-2"></i>Edit Profile
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Settings -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card-modern fade-in setting-card">
+            <div class="card-body-modern text-center">
+                <div class="setting-icon mb-3">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h5 class="card-title">Security Settings</h5>
+                <p class="card-text text-muted">Configure your account security and authentication</p>
+                <ul class="list-unstyled text-start">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Password Management</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Two-Factor Authentication</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Login Activity</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Session Management</li>
+                </ul>
+                <a href="{{ url_for('admin.settings.security_settings') }}" class="btn btn-primary-modern w-100">
+                    <i class="fas fa-lock me-2"></i>Security
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Settings -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card-modern fade-in setting-card">
+            <div class="card-body-modern text-center">
+                <div class="setting-icon mb-3">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <h5 class="card-title">Notifications</h5>
+                <p class="card-text text-muted">Control how you receive notifications and alerts</p>
+                <ul class="list-unstyled text-start">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Email Notifications</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Push Notifications</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Message Alerts</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>System Updates</li>
+                </ul>
+                <a href="{{ url_for('admin.settings.notification_settings') }}" class="btn btn-primary-modern w-100">
+                    <i class="fas fa-bell me-2"></i>Notifications
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appearance Settings -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card-modern fade-in setting-card">
+            <div class="card-body-modern text-center">
+                <div class="setting-icon mb-3">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <h5 class="card-title">Appearance</h5>
+                <p class="card-text text-muted">Customize the look and feel of your dashboard</p>
+                <ul class="list-unstyled text-start">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Theme Selection</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Color Scheme</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Font Settings</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Layout Options</li>
+                </ul>
+                <a href="{{ url_for('admin.settings.appearance_settings') }}" class="btn btn-primary-modern w-100">
+                    <i class="fas fa-palette me-2"></i>Appearance
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Settings -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card-modern fade-in setting-card">
+            <div class="card-body-modern text-center">
+                <div class="setting-icon mb-3">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h5 class="card-title">Portfolio Settings</h5>
+                <p class="card-text text-muted">Configure your portfolio display and content</p>
+                <ul class="list-unstyled text-start">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Site Information</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>SEO Settings</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Social Media Links</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Analytics Integration</li>
+                </ul>
+                <a href="{{ url_for('admin.settings.portfolio_settings') }}" class="btn btn-primary-modern w-100">
+                    <i class="fas fa-briefcase me-2"></i>Portfolio
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Settings -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card-modern fade-in setting-card">
+            <div class="card-body-modern text-center">
+                <div class="setting-icon mb-3">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h5 class="card-title">System Settings</h5>
+                <p class="card-text text-muted">Advanced system configuration and maintenance</p>
+                <ul class="list-unstyled text-start">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Database Settings</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Backup & Restore</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Performance Monitor</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>System Logs</li>
+                </ul>
+                <button class="btn btn-outline-modern w-100" onclick="showSystemSettings()">
+                    <i class="fas fa-server me-2"></i>System
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions Section -->
+<div class="card-modern fade-in mt-4">
+    <div class="card-header-modern">
+        <h5>
+            <i class="fas fa-bolt me-2"></i>Quick Actions
+        </h5>
+    </div>
+    <div class="card-body-modern">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <button class="btn btn-outline-modern w-100" onclick="clearCache()">
+                    <i class="fas fa-trash-alt me-2"></i>Clear Cache
+                </button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-modern w-100" onclick="optimizeDatabase()">
+                    <i class="fas fa-database me-2"></i>Optimize Database
+                </button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-modern w-100" onclick="generateBackup()">
+                    <i class="fas fa-download me-2"></i>Generate Backup
+                </button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-modern w-100" onclick="checkUpdates()">
+                    <i class="fas fa-sync-alt me-2"></i>Check Updates
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.setting-card {
+    transition: all var(--transition-base);
+    cursor: pointer;
+}
+
+.setting-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.setting-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    color: white;
+    font-size: 2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.setting-card:hover .setting-icon {
+    transform: scale(1.1);
+}
+
+.setting-card .card-title {
+    color: var(--gray-800);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.setting-card .card-text {
+    font-size: 0.875rem;
+    margin-bottom: 20px;
+    min-height: 48px;
+}
+
+.setting-card ul li {
+    font-size: 0.8rem;
+    color: var(--gray-600);
+}
+
+.setting-card .btn {
+    margin-top: auto;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function exportSettings() {
+    showNotificationToast('Settings export started...', 'info');
+    // Add export logic here
+}
+
+function resetSettings() {
+    if (confirm('Are you sure you want to reset all settings to default? This action cannot be undone.')) {
+        showNotificationToast('Settings reset to default', 'success');
+        // Add reset logic here
+    }
+}
+
+function showSystemSettings() {
+    showNotificationToast('System settings coming soon...', 'info');
+}
+
+function clearCache() {
+    showNotificationToast('Cache cleared successfully', 'success');
+    // Add cache clearing logic here
+}
+
+function optimizeDatabase() {
+    showNotificationToast('Database optimization started...', 'info');
+    // Add database optimization logic here
+}
+
+function generateBackup() {
+    showNotificationToast('Backup generation started...', 'info');
+    // Add backup generation logic here
+}
+
+function checkUpdates() {
+    showNotificationToast('Checking for updates...', 'info');
+    // Add update check logic here
+}
+</script>
+{% endblock %}

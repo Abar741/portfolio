@@ -3,85 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found - Portfolio</title>
+    <title>404 - Page Not Found | Portfolio</title>
     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
+            overflow-x: hidden;
         }
         
         .error-container {
             text-align: center;
-            color: white;
             max-width: 600px;
             padding: 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .error-code {
             font-size: 8rem;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            background: linear-gradient(45deg, #ffffff, #e3f2fd, #bbdefb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
         }
         
         .error-title {
             font-size: 2.5rem;
+            font-weight: 700;
             margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ffffff, #e8f5e8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .error-description {
             font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            line-height: 1.6;
+            color: #e3f2fd;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .action-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
             margin-bottom: 2rem;
-            opacity: 0.9;
+            flex-wrap: wrap;
         }
         
         .btn-home {
             background: white;
-            color: #667eea;
-            padding: 12px 30px;
+            color: #1e3c72;
+            padding: 14px 28px;
             border-radius: 25px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
         .btn-home:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            color: #764ba2;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            color: #2a5298;
         }
         
         .search-box {
             margin: 2rem 0;
         }
         
-        .search-box input {
-            border-radius: 25px;
-            padding: 12px 20px;
-            border: none;
-            width: 300px;
-            max-width: 100%;
+        .search-form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         
-        .search-box button {
+        .search-input {
             border-radius: 25px;
             padding: 12px 20px;
-            margin-left: 10px;
+            border: none;
+            width: 280px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
             background: white;
-            color: #667eea;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .search-btn {
+            border-radius: 25px;
+            padding: 12px 24px;
+            background: white;
+            color: #1e3c72;
             border: none;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            color: #2a5298;
+        }
+        
+        .quick-links {
+            margin-top: 2rem;
+        }
+        
+        .quick-links-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            color: #e8f5e8;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .quick-links-list {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .quick-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .quick-link:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+            color: white;
+        }
+        
+        .quick-link i {
+            margin-right: 6px;
+        }
+        
+        .error-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 6rem;
+            }
+            
+            .error-title {
+                font-size: 2rem;
+            }
+            
+            .error-description {
+                font-size: 1.1rem;
+            }
+            
+            .action-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-home {
+                width: 250px;
+                justify-content: center;
+            }
+            
+            .search-form {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .search-input {
+                width: 100%;
+                max-width: 280px;
+            }
+            
+            .search-btn {
+                width: 100%;
+                max-width: 280px;
+            }
         }
     </style>
 </head>
@@ -89,43 +253,77 @@
 <body>
     <div class="error-container">
         <div class="error-code">404</div>
-        <h1 class="error-title">Page Not Found</h1>
+        <h1 class="error-title">Oops! Wrong Turn?</h1>
         <p class="error-description">
-            Oops! The page you're looking for seems to have vanished into the digital void.
+            Looks like you've discovered a secret corner of the internet! 
+            Let's get you back to the awesome portfolio content.
         </p>
         
+        <div class="action-links">
+            <a href="/" class="btn-home">
+                <i class="fas fa-home"></i>Back to Home
+            </a>
+            <a href="/portfolio" class="btn-home">
+                <i class="fas fa-folder-open"></i>View Projects
+            </a>
+        </div>
+        
         <div class="search-box">
-            <form action="/" method="GET">
-                <input type="text" name="search" placeholder="Search for projects...">
-                <button type="submit">Search</button>
+            <form action="/" method="GET" class="search-form">
+                <input type="text" name="search" class="search-input" placeholder="Search for projects...">
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i> Search
+                </button>
             </form>
         </div>
         
-        <div class="action-links">
-            <a href="/" class="btn-home me-3">
-                <i class="fas fa-home me-2"></i>Back to Home
-            </a>
-            <a href="/projects" class="btn-home">
-                <i class="fas fa-folder-open me-2"></i>View Projects
-            </a>
-        </div>
-        
-        <div class="mt-4">
-            <p class="small opacity-75">
-                Or try these popular pages:
-            </p>
-            <div class="d-flex justify-content-center flex-wrap">
-                <a href="/about" class="text-white text-decoration-none me-3 mb-2">
-                    <i class="fas fa-user me-1"></i>About
+        <div class="quick-links">
+            <p class="quick-links-title">Or try these popular pages:</p>
+            <div class="quick-links-list">
+                <a href="/" class="quick-link">
+                    <i class="fas fa-home"></i>Home
                 </a>
-                <a href="/projects" class="text-white text-decoration-none me-3 mb-2">
-                    <i class="fas fa-code me-1"></i>Projects
+                <a href="/#about" class="quick-link">
+                    <i class="fas fa-user"></i>About
                 </a>
-                <a href="/#contact" class="text-white text-decoration-none mb-2">
-                    <i class="fas fa-envelope me-1"></i>Contact
+                <a href="/#services" class="quick-link">
+                    <i class="fas fa-cogs"></i>Services
+                </a>
+                <a href="/#projects" class="quick-link">
+                    <i class="fas fa-code"></i>Projects
+                </a>
+                <a href="/#skills" class="quick-link">
+                    <i class="fas fa-tools"></i>Skills
+                </a>
+                <a href="/#feedback-contact-section" class="quick-link">
+                    <i class="fas fa-envelope"></i>Contact
                 </a>
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="error-footer">
+        <p class="mb-0 small">
+            <span id="currentYear">2024</span> Portfolio. All rights reserved. Designed with <i class="fas fa-heart text-danger"></i> by me
+        </p>
+    </footer>
+
+    <!-- Lightweight JavaScript -->
+    <script>
+        // Set current year dynamically
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Add simple hover effects
+        document.querySelectorAll('.btn-home').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
 </body>
 </html>

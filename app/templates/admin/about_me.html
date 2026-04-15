@@ -4,1401 +4,1063 @@
 
 {% block extra_css %}
 <style>
-/* Enhanced About Me Page Styles */
-.about-me-container {
-    margin-bottom: 2rem;
-}
-
-.about-me-content {
-    padding: 25px;
-}
-
-.stats-overview {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.stat-number {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 0.25rem;
-}
-
-.stat-label {
-    color: #718096;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 500;
-}
-
-.preview-section {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid #e2e8f0;
-}
-
-.preview-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.preview-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #2d3748;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.preview-badge {
-    background: #38a169;
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 15px;
-    font-size: 0.7rem;
-    font-weight: 500;
-}
-
-.preview-content {
-    background: white;
-    border-radius: 6px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.content-section {
-    background: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    border: 1px solid #e2e8f0;
-}
-
-.section-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.section-icon {
-    width: 35px;
-    height: 35px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #4a5568;
-    color: white;
-    font-size: 0.9rem;
-}
-
-.section-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #2d3748;
-    margin: 0;
-}
-
-.form-group {
-    margin-bottom: 1rem;
-}
-
-.form-label {
-    font-weight: 500;
-    color: #4a5568;
-    margin-bottom: 0.4rem;
-    display: block;
-    font-size: 0.85rem;
-}
-
-.form-control {
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.85rem;
-    transition: border-color 0.2s ease;
-}
-
-.form-control:focus {
-    border-color: #4a5568;
-    box-shadow: 0 0 2px rgba(74,85,104,0.1);
-    outline: none;
-}
-
-.form-control::placeholder {
-    color: #a0aec0;
-}
-
-.help-text {
-    font-size: 0.75rem;
-    color: #718096;
-    margin-top: 0.2rem;
-}
-
-.form-check {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.form-check-input {
-    width: 18px;
-    height: 18px;
-    accent-color: #4a5568;
-}
-
-.form-check-label {
-    font-size: 0.85rem;
-    color: #4a5568;
-    cursor: pointer;
-    user-select: none;
-}
-
-.btn-primary {
-    background: #4a5568;
-    border: none;
-    border-radius: 6px;
-    padding: 0.5rem 1.5rem;
-    font-weight: 500;
-    font-size: 0.85rem;
-    transition: background-color 0.2s ease;
-    color: white;
-}
-
-.btn-primary:hover {
-    background: #2d3748;
-}
-
-.btn-success {
-    background: #38a169;
-    border: none;
-    border-radius: 6px;
-    padding: 0.5rem 1.5rem;
-    font-weight: 500;
-    font-size: 0.85rem;
-    transition: background-color 0.2s ease;
-    color: white;
-}
-
-.btn-success:hover {
-    background: #2f855a;
-}
-
-.btn-warning {
-    background: #d69e2e;
-    border: none;
-    border-radius: 6px;
-    padding: 0.5rem 1.5rem;
-    font-weight: 500;
-    font-size: 0.85rem;
-    transition: background-color 0.2s ease;
-    color: white;
-}
-
-.btn-warning:hover {
-    background: #c53030;
-}
-
-.btn-danger {
-    background: #e53e3e;
-    border: none;
-    border-radius: 6px;
-    padding: 0.5rem 1.5rem;
-    font-weight: 500;
-    font-size: 0.85rem;
-    transition: background-color 0.2s ease;
-    color: white;
-}
-
-.btn-danger:hover {
-    background: #c53030;
-}
-
-.btn-light {
-    background: #f8f9fa;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 0.5rem 1.5rem;
-    font-weight: 500;
-    font-size: 0.8rem;
-    transition: all 0.2s ease;
-    color: #4a5568;
-}
-
-.btn-light:hover {
-    background: #e2e8f0;
-    color: #2d3748;
-}
-
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.75rem;
-    margin-top: 0.75rem;
-}
-
-.skill-item {
-    background: #f8f9fa;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 0.75rem;
-    text-align: center;
-    transition: all 0.2s ease;
-}
-
-.skill-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    border-color: #4a5568;
-}
-
-.skill-icon {
-    font-size: 1.5rem;
-    color: #4a5568;
-    margin-bottom: 0.4rem;
-}
-
-.skill-name {
-    font-weight: 500;
-    color: #2d3748;
-    font-size: 0.85rem;
-}
-
-.highlights-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-top: 0.75rem;
-}
-
-.highlight-card {
-    background: #f8f9fa;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 1rem;
-    text-align: center;
-    transition: all 0.2s ease;
-}
-
-.highlight-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-color: #4a5568;
-}
-
-.highlight-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #4a5568;
-    color: white;
-    font-size: 1rem;
-    margin: 0 auto 0.75rem;
-}
-
-.highlight-title {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 0.4rem;
-}
-
-.highlight-description {
-    color: #718096;
-    line-height: 1.5;
-    font-size: 0.8rem;
-}
-
-.table-modern {
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.table-modern thead {
-    background: #4a5568;
-    color: white;
-}
-
-.table-modern th {
-    padding: 0.75rem;
-    font-weight: 500;
-    border: none;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
-}
-
-.table-modern td {
-    padding: 0.75rem;
-    border-bottom: 1px solid #e2e8f0;
-    vertical-align: middle;
-    font-size: 0.85rem;
-}
-
-.table-modern tbody tr:hover {
-    background: #f8f9fa;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 0.4rem;
-}
-
-.btn-icon {
-    padding: 0.35rem;
-    border-radius: 4px;
-    border: none;
-    transition: all 0.2s ease;
-    font-size: 0.75rem;
-    color: white;
-}
-
-.btn-icon:hover {
-    transform: scale(1.05);
-}
-
-.modal-content {
-    border-radius: 8px;
-    border: none;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-.modal-header {
-    background: #4a5568;
-    color: white;
-    border-radius: 8px 8px 0 0;
-    border: none;
-}
-
-.drag-handle {
-    cursor: move;
-    color: #a0aec0;
-    transition: color 0.2s ease;
-}
-
-.drag-handle:hover {
-    color: #4a5568;
-}
-
-.sortable-ghost {
-    opacity: 0.4;
-    background: #f8f9fa;
-}
-
-.feature-card {
-    background: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    border-left: 3px solid #4a5568;
-}
-
-.feature-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-}
-
-.feature-icon {
-    width: 35px;
-    height: 35px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #4a5568;
-    color: white;
-    font-size: 0.9rem;
-}
-
-.feature-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #2d3748;
-    margin: 0;
-}
-
-.cta-preview {
-    display: inline-block;
-    background: #4a5568;
-    color: white;
-    padding: 0.5rem 1.5rem;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.85rem;
-    transition: background-color 0.2s ease;
-}
-
-.cta-preview:hover {
-    background: #2d3748;
-}
-
-@media (max-width: 768px) {
-    .stats-overview {
-        grid-template-columns: 1fr;
+    /* Enhanced About Me Page Styles - Matching Projects Section */
+    .about-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px 15px 0 0;
+        margin-bottom: 0;
     }
     
-    .skills-grid {
-        grid-template-columns: 1fr;
+    .about-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
-    .highlights-grid {
-        grid-template-columns: 1fr;
+    .about-header p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
     }
     
-    .admin-header {
-        padding: 1rem 0;
+    .about-container {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 0;
+        margin-bottom: 25px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
     }
-}
+    
+    .about-toolbar {
+        background: #f8f9fa;
+        padding: 20px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .about-content {
+        padding: 25px;
+    }
+    
+    /* Enhanced Section Cards - Matching Projects Section */
+    .section-card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        background: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    
+    .section-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--card-color) 0%, var(--card-color-light) 100%);
+    }
+    
+    .section-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    
+    .section-card.content::before { --card-color: #4e73df; --card-color-light: #6b8cff; }
+    .section-card.skills::before { --card-color: #1cc88a; --card-color-light: #2dd4a0; }
+    .section-card.highlights::before { --card-color: #36b9cc; --card-color-light: #4dd9ec; }
+    
+    .section-header {
+        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%);
+        padding: 1.25rem;
+        border-bottom: 1px solid #e5e7eb;
+        backdrop-filter: blur(10px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .section-header h6 {
+        margin: 0;
+        font-weight: 700;
+        color: var(--card-color);
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .section-header h6 i {
+        font-size: 1.2rem;
+    }
+    
+    .section-body {
+        padding: 1.5rem;
+    }
+    
+    /* Enhanced Form Styling */
+    .admin-form {
+        width: 100%;
+    }
+    
+    .form-section h3 {
+        color: #4e73df;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 25px 0 15px 0;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .form-section h3:first-of-type {
+        margin-top: 0;
+    }
+    
+    .form-section h3 i {
+        color: #4e73df;
+        font-size: 1.2rem;
+    }
+    
+    .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        flex: 1;
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+        font-size: 0.9rem;
+    }
+    
+    .form-group label i {
+        margin-right: 8px;
+        color: #4e73df;
+    }
+    
+    .form-input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    
+    .form-input:focus {
+        outline: none;
+        border-color: #4e73df;
+        box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
+    }
+    
+    .form-input.textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+    
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .checkbox-group label {
+        margin: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #4e73df;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px solid #e5e7eb;
+    }
+    
+    /* Enhanced Buttons - Matching Projects Section */
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+        padding: 12px 24px;
+        transition: all 0.3s ease;
+        border: none;
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn:hover::before {
+        left: 100%;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #4e73df 0%, #6b8cff 100%);
+        box-shadow: 0 4px 15px rgba(78, 115, 223, 0.3);
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(78, 115, 223, 0.4);
+    }
+    
+    .btn-secondary {
+        background: linear-gradient(135deg, #858796 0%, #a1a3b0 100%);
+        box-shadow: 0 4px 15px rgba(133, 135, 150, 0.3);
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(133, 135, 150, 0.4);
+    }
+    
+    .btn-success {
+        background: linear-gradient(135deg, #1cc88a 0%, #2dd4a0 100%);
+        box-shadow: 0 4px 15px rgba(28, 200, 138, 0.3);
+        color: white;
+    }
+    
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(28, 200, 138, 0.4);
+    }
+    
+    .btn-danger {
+        background: linear-gradient(135deg, #e74a3b 0%, #f56c6c 100%);
+        box-shadow: 0 4px 15px rgba(231, 74, 59, 0.3);
+        color: white;
+    }
+    
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(231, 74, 59, 0.4);
+    }
+    
+    .btn-sm {
+        padding: 8px 16px;
+        font-size: 0.875rem;
+    }
+    
+    /* Skills & Highlights Items - Enhanced */
+    .skills-management, .highlights-management {
+        width: 100%;
+    }
+    
+    .skills-list, .highlights-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .skill-item, .highlight-item {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 15px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .skill-item:hover, .highlight-item:hover {
+        border-color: #4e73df;
+        transform: translateX(5px);
+        box-shadow: 0 4px 12px rgba(78, 115, 223, 0.1);
+    }
+    
+    .skill-name, .highlight-title {
+        flex: 2;
+        padding: 10px 12px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+    
+    .skill-name:focus, .highlight-title:focus {
+        outline: none;
+        border-color: #4e73df;
+    }
+    
+    .skill-icon, .highlight-icon {
+        flex: 1;
+        padding: 10px 12px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+    
+    .skill-icon:focus, .highlight-icon:focus {
+        outline: none;
+        border-color: #4e73df;
+    }
+    
+    .skill-order, .highlight-order {
+        flex: 0.5;
+        padding: 10px 12px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 14px;
+        text-align: center;
+    }
+    
+    .highlight-description {
+        flex: 3;
+        min-height: 60px;
+        padding: 10px 12px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 14px;
+        resize: vertical;
+    }
+    
+    .skill-item .btn-sm, .highlight-item .btn-sm {
+        padding: 8px 12px;
+        white-space: nowrap;
+    }
+    
+    /* Empty State Styles */
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 15px;
+        border: 2px dashed #dee2e6;
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+        color: #adb5bd;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state p {
+        color: #6c757d;
+        margin-bottom: 1rem;
+    }
+    
+    /* Modal Styles - Enhanced */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+    }
+    
+    .modal-content {
+        background: white;
+        margin: 50px auto;
+        padding: 0;
+        border-radius: 15px;
+        max-width: 800px;
+        position: relative;
+        top: 50px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        overflow: hidden;
+    }
+    
+    .modal-header {
+        background: linear-gradient(135deg, #4e73df 0%, #6b8cff 100%);
+        color: white;
+        padding: 20px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-header h3 {
+        margin: 0;
+        font-size: 1.3rem;
+    }
+    
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+        color: white;
+        transition: all 0.3s ease;
+    }
+    
+    .close-btn:hover {
+        transform: rotate(90deg);
+    }
+    
+    .modal-body {
+        padding: 25px;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+    
+    /* Animation Classes */
+    .fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .about-header {
+            padding: 1.5rem;
+        }
+        
+        .about-header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .about-header p {
+            font-size: 1rem;
+        }
+        
+        .about-toolbar {
+            padding: 15px;
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .about-content {
+            padding: 15px;
+        }
+        
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+        
+        .skill-item, .highlight-item {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .skill-item .btn-sm, .highlight-item .btn-sm {
+            align-self: flex-start;
+        }
+        
+        .section-header {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+        
+        .form-actions .btn {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .checkbox-group {
+            justify-content: center;
+        }
+        
+        .modal-content {
+            margin: 20px;
+            width: calc(100% - 40px);
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .about-header h1 {
+            font-size: 1.25rem;
+        }
+        
+        .about-header p {
+            font-size: 0.9rem;
+        }
+        
+        .section-header h6 {
+            font-size: 1rem;
+        }
+        
+        .section-body {
+            padding: 1rem;
+        }
+        
+        .form-section h3 {
+            font-size: 1rem;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <!-- About Me Header -->
-<div class="admin-card fade-in">
-    <div class="admin-card-header">
-        <h1>
-            <i class="fas fa-id-card me-2"></i>About Me Management
-        </h1>
-        <p>Manage your professional profile, skills, and achievements with modern UI</p>
-    </div>
-    <div class="admin-card-body">
-        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-            <div>
-                <span class="badge bg-primary rounded-pill px-3 py-2">
-                    <i class="fas fa-code me-2"></i><span id="skillsCount">6</span> Core Skills
-                </span>
-                <span class="badge bg-success rounded-pill px-3 py-2 ms-2">
-                    <i class="fas fa-trophy me-2"></i><span id="highlightsCount">4</span> Achievements
-                </span>
-                <span class="badge bg-info rounded-pill px-3 py-2 ms-2">
-                    <i class="fas fa-chart-line me-2"></i><span id="completionRate">85%</span> Complete
-                </span>
-                <span class="text-muted ms-3">
-                    <i class="fas fa-info-circle me-2"></i>Last updated: <span id="lastUpdated">Today</span>
-                </span>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-                <button class="btn btn-outline-primary" onclick="exportContent()">
-                    <i class="fas fa-download me-2"></i>Export
-                </button>
-                <button class="btn btn-outline-warning" onclick="resetContent()">
-                    <i class="fas fa-undo me-2"></i>Reset
-                </button>
-            </div>
+<div class="about-header fade-in">
+    <div class="d-sm-flex align-items-center justify-content-between">
+        <div>
+            <h1>
+                <i class="fas fa-user-circle me-3"></i>About Me Management
+            </h1>
+            <p class="mb-0">Manage your personal information, skills, and achievements</p>
         </div>
-    </div>
-</div>
-
-<!-- About Me Content -->
-<div class="about-me-content">
-
-<!-- Live Preview Section -->
-<div class="admin-card fade-in mb-4">
-    <div class="admin-card-header">
-        <h2>
+        <button type="button" class="btn btn-primary" onclick="previewContent()">
             <i class="fas fa-eye me-2"></i>Live Preview
-        </h2>
-        <p>Real-time preview of your about me section</p>
-    </div>
-    <div class="admin-card-body">
-        <div class="preview-content">
-            <div class="text-center mb-3">
-                <h2 class="mb-3" id="previewSectionTitle" style="font-size: 1.2rem; font-weight: 600;">{{ content.section_title if content else 'About Me' }}</h2>
-                <p class="lead text-muted mb-3" id="previewSectionSubtitle" style="font-size: 0.9rem;">{{ content.section_subtitle if content else 'Passionate about creating innovative digital solutions' }}</p>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <h3 class="mb-3" id="previewMainTitle" style="font-size: 1.1rem; font-weight: 600;">{{ content.main_title if content else 'Hi, I\'m a Full-Stack Developer' }}</h3>
-                        <p class="mb-3" id="previewMainDescription" style="font-size: 0.85rem;">{{ content.main_description if content else 'I transform creative ideas into powerful digital experiences' }}</p>
-                        
-                        <div class="mb-3">
-                            <p id="previewStory1" style="font-size: 0.8rem;">{{ content.story_paragraph1 if content else 'With over 5 years of experience in web development' }}</p>
-                            <p id="previewStory2" style="font-size: 0.8rem;">{{ content.story_paragraph2 if content else 'I believe in the power of technology' }}</p>
-                        </div>
-                        
-                        {% if content and content.skills_enabled or true %}
-                        <div class="mb-3" id="previewSkillsSection">
-                            <h4 class="mb-3" id="previewSkillsTitle" style="font-size: 1rem; font-weight: 600;">{{ content.skills_title if content else 'Core Expertise' }}</h4>
-                            <div class="skills-grid" id="previewSkillsGrid">
-                                <div class="skill-item">
-                                    <div class="skill-icon">
-                                        <i class="fas fa-code"></i>
-                                    </div>
-                                    <div class="skill-name">Frontend Development</div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-icon">
-                                        <i class="fas fa-server"></i>
-                                    </div>
-                                    <div class="skill-name">Backend Architecture</div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-icon">
-                                        <i class="fas fa-paint-brush"></i>
-                                    </div>
-                                    <div class="skill-name">UI/UX Design</div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
-                        
-                        {% if content and content.cta_enabled or true %}
-                        <div class="text-center" id="previewCtaSection">
-                            <a href="{{ content.cta_link if content else '#contact' }}" class="cta-preview" id="previewCtaLink">
-                                <i class="{{ content.cta_icon if content else 'fas fa-envelope' }}" id="previewCtaIcon"></i>
-                                {{ content.cta_text if content else 'Let\'s Work Together' }}
-                            </a>
-                        </div>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="col-md-6">
-                        {% if content and content.highlights_enabled or true %}
-                        <div id="previewHighlightsSection">
-                            <h4 class="mb-3" style="font-size: 1rem; font-weight: 600;">Key Achievements</h4>
-                            <div class="highlights-grid">
-                                <div class="highlight-card">
-                                    <div class="highlight-icon">
-                                        <i class="fas fa-trophy"></i>
-                                    </div>
-                                    <div class="highlight-title">50+ Projects Delivered</div>
-                                    <div class="highlight-description">Successfully completed projects for startups</div>
-                                </div>
-                                <div class="highlight-card">
-                                    <div class="highlight-icon">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-                                    <div class="highlight-title">30+ Happy Clients</div>
-                                    <div class="highlight-description">Built long-term relationships with satisfied clients</div>
-                                </div>
-                                <div class="highlight-card">
-                                    <div class="highlight-icon">
-                                        <i class="fas fa-clock"></i>
-                                    </div>
-                                    <div class="highlight-title">5+ Years Experience</div>
-                                    <div class="highlight-description">Proven track record in delivering quality solutions</div>
-                                </div>
-                                <div class="highlight-card">
-                                    <div class="highlight-icon">
-                                        <i class="fas fa-heart"></i>
-                                    </div>
-                                    <div class="highlight-title">100% Satisfaction</div>
-                                    <div class="highlight-description">Committed to excellence and client success</div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
+        </button>
     </div>
 </div>
 
-<!-- Main Content Form -->
-<div class="admin-card fade-in mb-4">
-    <div class="admin-card-header">
-        <h2>
-            <i class="fas fa-edit me-2"></i>Main Content
-        </h2>
-        <p>Edit your about me section content and personal information</p>
+<!-- About Container -->
+<div class="about-container">
+    <!-- Toolbar -->
+    <div class="about-toolbar">
+        <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-primary rounded-pill px-3 py-2">
+                <i class="fas fa-edit me-2"></i>Content Management
+            </span>
+            <span class="text-muted">
+                <i class="fas fa-info-circle me-2"></i>Fill in your information to showcase on your portfolio
+            </span>
+        </div>
     </div>
-    <div class="admin-card-body">
-        
-        <form id="contentForm">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="section_title" class="form-label">Section Title</label>
-                        <input type="text" class="form-control" id="section_title" name="section_title" 
-                               value="{{ content.section_title if content else 'About Me' }}" required>
-                        <div class="help-text">Main heading for the About Me section</div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="main_title" class="form-label">Main Title</label>
-                        <input type="text" class="form-control" id="main_title" name="main_title" 
-                               value="{{ content.main_title if content else 'Hi, I\'m a Full-Stack Developer' }}" required>
-                        <div class="help-text">Personal introduction title</div>
-                    </div>
-                </div>
+
+    <div class="about-content">
+        <!-- Content Section -->
+        <div class="section-card content fade-in">
+            <div class="section-header">
+                <h6>
+                    <i class="fas fa-pen-fancy"></i>
+                    Main Content
+                </h6>
+                <small class="text-muted">
+                    <i class="fas fa-globe me-1"></i>This content will appear on your About Me page
+                </small>
             </div>
-            
-            <div class="form-group">
-                <label for="section_subtitle" class="form-label">Section Subtitle</label>
-                <input type="text" class="form-control" id="section_subtitle" name="section_subtitle" 
-                       value="{{ content.section_subtitle if content else 'Passionate about creating innovative digital solutions' }}" required>
-                <div class="help-text">Brief description under the main title</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="main_description" class="form-label">Main Description</label>
-                <textarea class="form-control" id="main_description" name="main_description" rows="3" required>{{ content.main_description if content else 'I transform creative ideas into powerful digital experiences' }}</textarea>
-                <div class="help-text">Brief introduction about yourself</div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="story_paragraph1" class="form-label">Story Paragraph 1</label>
-                        <textarea class="form-control" id="story_paragraph1" name="story_paragraph1" rows="4" required>{{ content.story_paragraph1 if content else 'With over 5 years of experience in web development and design' }}</textarea>
-                        <div class="help-text">First paragraph of your story</div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="story_paragraph2" class="form-label">Story Paragraph 2</label>
-                        <textarea class="form-control" id="story_paragraph2" name="story_paragraph2" rows="4" required>{{ content.story_paragraph2 if content else 'I believe in the power of technology to transform businesses' }}</textarea>
-                        <div class="help-text">Second paragraph of your story</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="skills_title" class="form-label">Skills Title</label>
-                        <input type="text" class="form-control" id="skills_title" name="skills_title" 
-                               value="{{ content.skills_title if content else 'Core Expertise' }}">
-                        <div class="help-text">Title for the skills section</div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-label">Enable Skills Section</label>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" id="skills_enabled" name="skills_enabled" 
-                                       {% if content and content.skills_enabled %}checked{% endif %}>
-                                Enable Skills Section
-                            </label>
+            <div class="section-body">
+                <form method="POST" action="{{ url_for('about_me.update_about_me') }}" class="admin-form">
+                    <div class="form-section">
+                        <h3><i class="fas fa-heading"></i> Section Header</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-tag"></i> Section Title</label>
+                                <input type="text" id="section_title" name="section_title" 
+                                       value="{{ about_me.section_title if about_me else 'About Me' }}" 
+                                       class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-align-left"></i> Section Subtitle</label>
+                                <textarea id="section_subtitle" name="section_subtitle" 
+                                          class="form-input textarea" rows="3" placeholder="A brief introduction about yourself...">{{ about_me.section_subtitle if about_me else '' }}</textarea>
+                            </div>
+                        </div>
+
+                        <h3><i class="fas fa-info-circle"></i> Main Content</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-heading"></i> Main Title</label>
+                                <input type="text" id="main_title" name="main_title" 
+                                       value="{{ about_me.main_title if about_me else '' }}" 
+                                       class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-paragraph"></i> Main Description</label>
+                                <textarea id="main_description" name="main_description" 
+                                          class="form-input textarea" rows="4" placeholder="Your main introduction...">{{ about_me.main_description if about_me else '' }}</textarea>
+                            </div>
+                        </div>
+
+                        <h3><i class="fas fa-book-open"></i> Story Content</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-paragraph"></i> Story Paragraph 1</label>
+                                <textarea id="story_paragraph1" name="story_paragraph1" 
+                                          class="form-input textarea" rows="5" placeholder="Your journey, background, and experience...">{{ about_me.story_paragraph1 if about_me else '' }}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-paragraph"></i> Story Paragraph 2</label>
+                                <textarea id="story_paragraph2" name="story_paragraph2" 
+                                          class="form-input textarea" rows="5" placeholder="Your goals, vision, and aspirations...">{{ about_me.story_paragraph2 if about_me else '' }}</textarea>
+                            </div>
+                        </div>
+
+                        <h3><i class="fas fa-bullhorn"></i> Call to Action</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-font"></i> CTA Text</label>
+                                <input type="text" id="cta_text" name="cta_text" 
+                                       value="{{ about_me.cta_text if about_me else '' }}" 
+                                       class="form-input" placeholder="e.g., Contact Me">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-icons"></i> CTA Icon</label>
+                                <input type="text" id="cta_icon" name="cta_icon" 
+                                       value="{{ about_me.cta_icon if about_me else '' }}" 
+                                       class="form-input" placeholder="fas fa-envelope">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-link"></i> CTA Link</label>
+                                <input type="text" id="cta_link" name="cta_link" 
+                                       value="{{ about_me.cta_link if about_me else '' }}" 
+                                       class="form-input" placeholder="#contact or /contact">
+                            </div>
+                        </div>
+
+                        <h3><i class="fas fa-toggle-on"></i> Section Settings</h3>
+                        <div class="form-row">
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" name="skills_enabled" {% if about_me and about_me.skills_enabled %}checked{% endif %}>
+                                    <i class="fas fa-code"></i> Enable Skills Section
+                                </label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" name="cta_enabled" {% if about_me and about_me.cta_enabled %}checked{% endif %}>
+                                    <i class="fas fa-bullhorn"></i> Enable CTA Button
+                                </label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" name="highlights_enabled" {% if about_me and about_me.highlights_enabled %}checked{% endif %}>
+                                    <i class="fas fa-star"></i> Enable Highlights Section
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                Save All Changes
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="window.location.reload()">
+                                <i class="fas fa-undo-alt"></i>
+                                Reset
+                            </button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
-            
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="cta_text" class="form-label">CTA Button Text</label>
-                        <input type="text" class="form-control" id="cta_text" name="cta_text" 
-                               value="{{ content.cta_text if content else 'Let\'s Work Together' }}">
-                        <div class="help-text">Button text</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="cta_icon" class="form-label">CTA Icon Class</label>
-                        <input type="text" class="form-control" id="cta_icon" name="cta_icon" 
-                               value="{{ content.cta_icon if content else 'fas fa-envelope' }}" placeholder="fas fa-envelope">
-                        <div class="help-text">FontAwesome icon class</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="cta_link" class="form-label">CTA Link</label>
-                        <input type="text" class="form-control" id="cta_link" name="cta_link" 
-                               value="{{ content.cta_link if content else '#contact' }}" placeholder="#contact">
-                        <div class="help-text">URL or anchor link</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-label">Enable CTA Button</label>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" id="cta_enabled" name="cta_enabled" 
-                                       {% if content and content.cta_enabled %}checked{% endif %}>
-                                Enable CTA Button
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-label">Enable Highlights Section</label>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" id="highlights_enabled" name="highlights_enabled" 
-                                       {% if content and content.highlights_enabled %}checked{% endif %}>
-                                Enable Highlights Section
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-end mt-3">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save me-2"></i>Save Changes
+        </div>
+
+        <!-- Skills Section -->
+        <div class="section-card skills fade-in">
+            <div class="section-header">
+                <h6>
+                    <i class="fas fa-code"></i>
+                    Skills Management
+                </h6>
+                <button type="button" class="btn btn-success btn-sm" onclick="addSkill()">
+                    <i class="fas fa-plus me-2"></i>Add New Skill
                 </button>
             </div>
-        </form>
-    </div>
-</div>
-
-<!-- Skills Management -->
-<div class="admin-card fade-in mb-4">
-    <div class="admin-card-header">
-        <h2>
-            <i class="fas fa-code me-2"></i>Skills Management
-        </h2>
-        <p>Manage your technical skills and expertise areas</p>
-    </div>
-    <div class="admin-card-body">
-        
-        <div class="table-responsive">
-            <table class="table table-modern">
-                <thead>
-                    <tr>
-                        <th width="50px">Order</th>
-                        <th>Skill Name</th>
-                        <th>Icon</th>
-                        <th width="100px">Status</th>
-                        <th width="150px">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="skillsTableBody">
-                    {% if content and content.skills %}
-                        {% for skill in content.skills %}
-                        <tr data-skill-id="{{ skill.id }}">
-                            <td>
-                                <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control form-control-sm skill-name" 
-                                       value="{{ skill.name }}" placeholder="Skill name">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control form-control-sm skill-icon" 
-                                       value="{{ skill.icon }}" placeholder="fas fa-code">
-                            </td>
-                            <td>
-                                <span class="status-badge badge {% if skill.is_active %}bg-success{% else %}bg-secondary{% endif %}">
-                                    {% if skill.is_active %}Active{% else %}Inactive{% endif %}
-                                </span>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn btn-primary btn-icon" onclick="updateSkill({{ skill.id }})" title="Update">
-                                        <i class="fas fa-save"></i>
-                                    </button>
-                                    <button class="btn btn-warning btn-icon" onclick="toggleSkillStatus({{ skill.id }})" title="Toggle Status">
-                                        <i class="fas fa-eye{% if not skill.is_active %}-slash{% endif %}"></i>
-                                    </button>
-                                    <button class="btn btn-danger btn-icon" onclick="deleteSkill({{ skill.id }})" title="Delete">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+            <div class="section-body">
+                <div id="skills-list" class="skills-list">
+                    {% if about_me and about_me.skills %}
+                        {% for skill in about_me.skills %}
+                        <div class="skill-item" data-id="{{ skill.id }}">
+                            <input type="text" value="{{ skill.name }}" class="skill-name" placeholder="Skill name (e.g., Python)">
+                            <input type="text" value="{{ skill.icon }}" class="skill-icon" placeholder="Icon class (e.g., fab fa-python)">
+                            <input type="number" value="{{ skill.display_order }}" class="skill-order" placeholder="Display Order">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeSkill(this, {{ skill.id }})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
                         {% endfor %}
                     {% else %}
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-3">
-                            <i class="fas fa-info-circle me-2"></i>No skills added yet. Click "Add Skill" to get started.
-                        </td>
-                    </tr>
+                    <div class="empty-state">
+                        <i class="fas fa-code"></i>
+                        <p>No skills added yet. Click "Add New Skill" to get started.</p>
+                    </div>
                     {% endif %}
-                </tbody>
-            </table>
+                </div>
+                {% if about_me and about_me.skills %}
+                <div class="form-actions" style="margin-top: 20px;">
+                    <button type="button" class="btn btn-primary" onclick="saveSkills()">
+                        <i class="fas fa-save"></i> Save Skills
+                    </button>
+                </div>
+                {% endif %}
+            </div>
         </div>
-        
-        <div class="text-end mt-3">
-            <button class="btn btn-success" onclick="addSkill()">
-                <i class="fas fa-plus me-2"></i>Add Skill
-            </button>
-        </div>
-    </div>
-</div>
 
-<!-- Highlights Management -->
-<div class="admin-card fade-in mb-4">
-    <div class="admin-card-header">
-        <h2>
-            <i class="fas fa-trophy me-2"></i>Achievements Management
-        </h2>
-        <p>Manage your professional achievements and highlights</p>
-    </div>
-    <div class="admin-card-body">
-        
-        <div class="table-responsive">
-            <table class="table table-modern">
-                <thead>
-                    <tr>
-                        <th width="50px">Order</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Icon</th>
-                        <th width="100px">Status</th>
-                        <th width="150px">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="highlightsTableBody">
-                    {% if content and content.highlights %}
-                        {% for highlight in content.highlights %}
-                        <tr data-highlight-id="{{ highlight.id }}">
-                            <td>
-                                <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control form-control-sm highlight-title" 
-                                       value="{{ highlight.title }}" placeholder="Highlight title">
-                            </td>
-                            <td>
-                                <textarea class="form-control form-control-sm highlight-description" 
-                                      placeholder="Highlight description">{{ highlight.description }}</textarea>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control form-control-sm highlight-icon" 
-                                       value="{{ highlight.icon }}" placeholder="fas fa-trophy">
-                            </td>
-                            <td>
-                                <span class="status-badge badge {% if highlight.is_active %}bg-success{% else %}bg-secondary{% endif %}">
-                                    {% if highlight.is_active %}Active{% else %}Inactive{% endif %}
-                                </span>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn btn-primary btn-icon" onclick="updateHighlight({{ highlight.id }})" title="Update">
-                                        <i class="fas fa-save"></i>
-                                    </button>
-                                    <button class="btn btn-warning btn-icon" onclick="toggleHighlightStatus({{ highlight.id }})" title="Toggle Status">
-                                        <i class="fas fa-eye{% if not highlight.is_active %}-slash{% endif %}"></i>
-                                    </button>
-                                    <button class="btn btn-danger btn-icon" onclick="deleteHighlight({{ highlight.id }})" title="Delete">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+        <!-- Highlights Section -->
+        <div class="section-card highlights fade-in">
+            <div class="section-header">
+                <h6>
+                    <i class="fas fa-star"></i>
+                    Highlights Management
+                </h6>
+                <button type="button" class="btn btn-success btn-sm" onclick="addHighlight()">
+                    <i class="fas fa-plus me-2"></i>Add New Highlight
+                </button>
+            </div>
+            <div class="section-body">
+                <div id="highlights-list" class="highlights-list">
+                    {% if about_me and about_me.highlights %}
+                        {% for highlight in about_me.highlights %}
+                        <div class="highlight-item" data-id="{{ highlight.id }}">
+                            <input type="text" value="{{ highlight.title }}" class="highlight-title" placeholder="Title (e.g., Years of Experience)">
+                            <textarea class="highlight-description" placeholder="Description">{{ highlight.description }}</textarea>
+                            <input type="text" value="{{ highlight.icon }}" class="highlight-icon" placeholder="Icon class (e.g., fas fa-award)">
+                            <input type="number" value="{{ highlight.display_order }}" class="highlight-order" placeholder="Display Order">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeHighlight(this, {{ highlight.id }})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
                         {% endfor %}
                     {% else %}
-                    <tr>
-                        <td colspan="6" class="text-center text-muted py-3">
-                            <i class="fas fa-info-circle me-2"></i>No achievements added yet. Click "Add Achievement" to get started.
-                        </td>
-                    </tr>
+                    <div class="empty-state">
+                        <i class="fas fa-star"></i>
+                        <p>No highlights added yet. Click "Add New Highlight" to showcase achievements.</p>
+                    </div>
                     {% endif %}
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="text-end mt-3">
-            <button class="btn btn-success" onclick="addHighlight()">
-                <i class="fas fa-plus me-2"></i>Add Achievement
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Add Skill Modal -->
-<div class="modal fade" id="addSkillModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Skill</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addSkillForm">
-                    <div class="form-group mb-3">
-                        <label for="new_skill_name" class="form-label">Skill Name</label>
-                        <input type="text" class="form-control" id="new_skill_name" name="name" required>
-                        <div class="help-text">e.g., Frontend Development, Python, React</div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="new_skill_icon" class="form-label">Icon Class</label>
-                        <input type="text" class="form-control" id="new_skill_icon" name="icon" required>
-                        <div class="help-text">FontAwesome icon class, e.g., fas fa-code</div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="new_skill_order" class="form-label">Display Order</label>
-                        <input type="number" class="form-control" id="new_skill_order" name="display_order" min="0" value="0">
-                        <div class="help-text">Lower numbers appear first</div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="saveNewSkill()">Add Skill</button>
+                </div>
+                {% if about_me and about_me.highlights %}
+                <div class="form-actions" style="margin-top: 20px;">
+                    <button type="button" class="btn btn-primary" onclick="saveHighlights()">
+                        <i class="fas fa-save"></i> Save Highlights
+                    </button>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
 
-<!-- Add Highlight Modal -->
-<div class="modal fade" id="addHighlightModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Achievement</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addHighlightForm">
-                    <div class="form-group mb-3">
-                        <label for="new_highlight_title" class="form-label">Achievement Title</label>
-                        <input type="text" class="form-control" id="new_highlight_title" name="title" required>
-                        <div class="help-text">e.g., 50+ Projects Delivered</div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="new_highlight_description" class="form-label">Description</label>
-                        <textarea class="form-control" id="new_highlight_description" name="description" rows="3" required></textarea>
-                        <div class="help-text">Brief description of achievement</div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="new_highlight_icon" class="form-label">Icon Class</label>
-                        <input type="text" class="form-control" id="new_highlight_icon" name="icon" required>
-                        <div class="help-text">FontAwesome icon class, e.g., fas fa-trophy</div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="new_highlight_order" class="form-label">Display Order</label>
-                        <input type="number" class="form-control" id="new_highlight_order" name="display_order" min="0" value="0">
-                        <div class="help-text">Lower numbers appear first</div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="saveNewHighlight()">Add Achievement</button>
-            </div>
+<!-- Preview Modal -->
+<div id="preview-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-eye me-2"></i>Content Preview</h3>
+            <button type="button" class="close-btn" onclick="closePreview()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="preview-content"></div>
         </div>
     </div>
 </div>
 {% endblock %}
 
-{% block extra_js %}
+{% block scripts %}
 <script>
-// Initialize professional admin dashboard
-document.addEventListener('DOMContentLoaded', function() {
-    updateStatistics();
-    initializeLivePreview();
-    initializeSortable();
-});
-
-// Update statistics
-function updateStatistics() {
-    // Update skills count
-    const skillsCount = document.querySelectorAll('#skillsTableBody tr[data-skill-id]').length;
-    const skillsCountElement = document.getElementById('skillsCount');
-    if (skillsCountElement) {
-        skillsCountElement.textContent = skillsCount || 6;
-    }
-    
-    // Update highlights count
-    const highlightsCount = document.querySelectorAll('#highlightsTableBody tr[data-highlight-id]').length;
-    const highlightsCountElement = document.getElementById('highlightsCount');
-    if (highlightsCountElement) {
-        highlightsCountElement.textContent = highlightsCount || 4;
-    }
-    
-    // Update last updated
-    const lastUpdatedElement = document.getElementById('lastUpdated');
-    if (lastUpdatedElement) {
-        lastUpdatedElement.textContent = 'Today';
-    }
-    
-    // Update status
-    const statusStatusElement = document.getElementById('statusStatus');
-    if (statusStatusElement) {
-        statusStatusElement.textContent = 'Active';
-    }
-}
-
-// Live Preview Functionality
-function initializeLivePreview() {
-    const contentForm = document.getElementById('contentForm');
-    if (contentForm) {
-        const inputs = contentForm.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('input', updateLivePreview);
-            input.addEventListener('change', updateLivePreview);
-        });
-    }
-    
-    // Update preview when checkboxes change
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', updateLivePreview);
+function showTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
     });
     
-    // Initial preview update
-    updateLivePreview();
+    // Show selected tab
+    document.getElementById(tabName + '-tab').classList.add('active');
+    event.target.classList.add('active');
 }
 
-function updateLivePreview() {
-    // Update section title
-    const sectionTitle = document.getElementById('section_title');
-    const previewSectionTitle = document.getElementById('previewSectionTitle');
-    if (sectionTitle && previewSectionTitle) {
-        previewSectionTitle.textContent = sectionTitle.value || 'About Me';
-    }
+function previewContent() {
+    const sectionTitle = document.getElementById('section_title')?.value || 'About Me';
+    const mainTitle = document.getElementById('main_title')?.value || 'Main Title';
+    const mainDescription = document.getElementById('main_description')?.value || 'Your main description will appear here.';
+    const storyPara1 = document.getElementById('story_paragraph1')?.value || '';
+    const storyPara2 = document.getElementById('story_paragraph2')?.value || '';
     
-    // Update section subtitle
-    const sectionSubtitle = document.getElementById('section_subtitle');
-    const previewSectionSubtitle = document.getElementById('previewSectionSubtitle');
-    if (sectionSubtitle && previewSectionSubtitle) {
-        previewSectionSubtitle.textContent = sectionSubtitle.value || 'Passionate about creating innovative digital solutions';
-    }
-    
-    // Update main title
-    const mainTitle = document.getElementById('main_title');
-    const previewMainTitle = document.getElementById('previewMainTitle');
-    if (mainTitle && previewMainTitle) {
-        previewMainTitle.textContent = mainTitle.value || 'Hi, I\'m a Full-Stack Developer';
-    }
-    
-    // Update main description
-    const mainDescription = document.getElementById('main_description');
-    const previewMainDescription = document.getElementById('previewMainDescription');
-    if (mainDescription && previewMainDescription) {
-        previewMainDescription.textContent = mainDescription.value || 'I transform creative ideas into powerful digital experiences';
-    }
-    
-    // Update story paragraphs
-    const story1 = document.getElementById('story_paragraph1');
-    const previewStory1 = document.getElementById('previewStory1');
-    if (story1 && previewStory1) {
-        previewStory1.textContent = story1.value || 'With over 5 years of experience...';
-    }
-    
-    const story2 = document.getElementById('story_paragraph2');
-    const previewStory2 = document.getElementById('previewStory2');
-    if (story2 && previewStory2) {
-        previewStory2.textContent = story2.value || 'I believe in the power of technology...';
-    }
-    
-    // Update skills section
-    const skillsEnabled = document.getElementById('skills_enabled');
-    const previewSkillsSection = document.getElementById('previewSkillsSection');
-    if (skillsEnabled && previewSkillsSection) {
-        previewSkillsSection.style.display = skillsEnabled.checked ? 'block' : 'none';
-    }
-    
-    const skillsTitle = document.getElementById('skills_title');
-    const previewSkillsTitle = document.getElementById('previewSkillsTitle');
-    if (skillsTitle && previewSkillsTitle) {
-        previewSkillsTitle.textContent = skillsTitle.value || 'Core Expertise';
-    }
-    
-    // Update CTA button
-    const ctaEnabled = document.getElementById('cta_enabled');
-    const previewCtaSection = document.getElementById('previewCtaSection');
-    if (ctaEnabled && previewCtaSection) {
-        previewCtaSection.style.display = ctaEnabled.checked ? 'block' : 'none';
-    }
-    
-    const ctaText = document.getElementById('cta_text');
-    const previewCtaText = document.getElementById('previewCtaText');
-    if (ctaText && previewCtaText) {
-        previewCtaText.textContent = ctaText.value || 'Let\'s Work Together';
-    }
-    
-    const ctaIcon = document.getElementById('cta_icon');
-    const previewCtaIcon = document.getElementById('previewCtaIcon');
-    if (ctaIcon && previewCtaIcon) {
-        previewCtaIcon.className = ctaIcon.value || 'fas fa-envelope';
-    }
-    
-    const ctaLink = document.getElementById('cta_link');
-    const previewCtaLink = document.getElementById('previewCtaLink');
-    if (ctaLink && previewCtaLink) {
-        previewCtaLink.href = ctaLink.value || '#contact';
-    }
-    
-    // Update highlights section
-    const highlightsEnabled = document.getElementById('highlights_enabled');
-    const previewHighlightsSection = document.getElementById('previewHighlightsSection');
-    if (highlightsEnabled && previewHighlightsSection) {
-        previewHighlightsSection.style.display = highlightsEnabled.checked ? 'block' : 'none';
-    }
-}
-
-// Initialize sortable tables
-function initializeSortable() {
-    // Skills sortable
-    const skillsTableBody = document.getElementById('skillsTableBody');
-    if (skillsTableBody) {
-        new Sortable(skillsTableBody, {
-            handle: '.drag-handle',
-            animation: 150,
-            ghostClass: 'sortable-ghost',
-            onEnd: function(evt) {
-                updateSkillsOrder();
-            }
-        });
-    }
-    
-    // Highlights sortable
-    const highlightsTableBody = document.getElementById('highlightsTableBody');
-    if (highlightsTableBody) {
-        new Sortable(highlightsTableBody, {
-            handle: '.drag-handle',
-            animation: 150,
-            ghostClass: 'sortable-ghost',
-            onEnd: function(evt) {
-                updateHighlightsOrder();
-            }
-        });
-    }
-}
-
-// Form submission
-document.getElementById('contentForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    saveContent();
-});
-
-function saveContent() {
-    const form = document.getElementById('contentForm');
-    const formData = new FormData(form);
-    
-    fetch('/admin/about-me/update', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showNotification('Content saved successfully!', 'success');
-            updateStatistics();
-        } else {
-            showNotification('Error saving content: ' + data.message, 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Error saving content', 'error');
-    });
-}
-
-// Skills Management
-function addSkill() {
-    const modal = new bootstrap.Modal(document.getElementById('addSkillModal'));
-    modal.show();
-}
-
-function saveNewSkill() {
-    const form = document.getElementById('addSkillForm');
-    const formData = new FormData(form);
-    
-    fetch('/admin/about-me/skills/add', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            bootstrap.Modal.getInstance(document.getElementById('addSkillModal')).hide();
-            location.reload();
-        } else {
-            showNotification('Error adding skill: ' + data.message, 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Error adding skill', 'error');
-    });
-}
-
-function updateSkill(skillId) {
-    const row = document.querySelector(`tr[data-skill-id="${skillId}"]`);
-    const name = row.querySelector('.skill-name').value;
-    const icon = row.querySelector('.skill-icon').value;
-    
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('icon', icon);
-    
-    fetch(`/admin/about-me/skills/${skillId}/update`, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showNotification('Skill updated successfully!', 'success');
-            updateStatistics();
-        } else {
-            showNotification('Error updating skill: ' + data.message, 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Error updating skill', 'error');
-    });
-}
-
-function deleteSkill(skillId) {
-    if (confirm('Are you sure you want to delete this skill?')) {
-        fetch(`/admin/about-me/skills/${skillId}/delete`, {
-            method: 'POST'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.querySelector(`tr[data-skill-id="${skillId}"]`).remove();
-                showNotification('Skill deleted successfully!', 'success');
-                updateStatistics();
-            } else {
-                showNotification('Error deleting skill: ' + data.message, 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showNotification('Error deleting skill', 'error');
-        });
-    }
-}
-
-// Highlights Management
-function addHighlight() {
-    const modal = new bootstrap.Modal(document.getElementById('addHighlightModal'));
-    modal.show();
-}
-
-function saveNewHighlight() {
-    const form = document.getElementById('addHighlightForm');
-    const formData = new FormData(form);
-    
-    fetch('/admin/about-me/highlights/add', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            bootstrap.Modal.getInstance(document.getElementById('addHighlightModal')).hide();
-            location.reload();
-        } else {
-            showNotification('Error adding achievement: ' + data.message, 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Error adding achievement', 'error');
-    });
-}
-
-function updateHighlight(highlightId) {
-    const row = document.querySelector(`tr[data-highlight-id="${highlightId}"]`);
-    const title = row.querySelector('.highlight-title').value;
-    const description = row.querySelector('.highlight-description').value;
-    const icon = row.querySelector('.highlight-icon').value;
-    
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('icon', icon);
-    
-    fetch(`/admin/about-me/highlights/${highlightId}/update`, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showNotification('Achievement updated successfully!', 'success');
-            updateStatistics();
-        } else {
-            showNotification('Error updating achievement: ' + data.message, 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Error updating achievement', 'error');
-    });
-}
-
-function deleteHighlight(highlightId) {
-    if (confirm('Are you sure you want to delete this achievement?')) {
-        fetch(`/admin/about-me/highlights/${highlightId}/delete`, {
-            method: 'POST'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.querySelector(`tr[data-highlight-id="${highlightId}"]`).remove();
-                showNotification('Achievement deleted successfully!', 'success');
-                updateStatistics();
-            } else {
-                showNotification('Error deleting achievement: ' + data.message, 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showNotification('Error deleting achievement', 'error');
-        });
-    }
-}
-
-// Utility functions
-function showNotification(message, type) {
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
-    alertDiv.innerHTML = `
-        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    let previewHTML = `
+        <div style="font-family: Arial, sans-serif;">
+            <h2 style="color: #4e73df; border-bottom: 3px solid #4e73df; padding-bottom: 10px;">${escapeHtml(sectionTitle)}</h2>
+            <h3 style="color: #333; margin-top: 20px;">${escapeHtml(mainTitle)}</h3>
+            <p style="color: #666; line-height: 1.6;">${escapeHtml(mainDescription)}</p>
     `;
     
-    document.body.appendChild(alertDiv);
+    if (storyPara1) {
+        previewHTML += `<p style="color: #666; line-height: 1.6; margin-top: 15px;">${escapeHtml(storyPara1)}</p>`;
+    }
     
-    // Remove alert after 3 seconds
-    setTimeout(() => {
-        alertDiv.remove();
-    }, 3000);
+    if (storyPara2) {
+        previewHTML += `<p style="color: #666; line-height: 1.6; margin-top: 15px;">${escapeHtml(storyPara2)}</p>`;
+    }
+    
+    previewHTML += `</div>`;
+    
+    document.getElementById('preview-content').innerHTML = previewHTML;
+    document.getElementById('preview-modal').style.display = 'block';
 }
 
-function exportContent() {
-    showNotification('Export functionality coming soon!', 'info');
+function closePreview() {
+    document.getElementById('preview-modal').style.display = 'none';
 }
 
-function resetContent() {
-    if (confirm('Are you sure you want to reset all content to default values? This action cannot be undone.')) {
-        fetch('/admin/about-me/reset', {
-            method: 'POST'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                showNotification('Error resetting content: ' + data.message, 'error');
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function addSkill() {
+    const skillsList = document.getElementById('skills-list');
+    // Remove empty state if exists
+    const emptyState = skillsList.querySelector('.empty-state');
+    if (emptyState) emptyState.remove();
+    
+    const skillItem = document.createElement('div');
+    skillItem.className = 'skill-item';
+    skillItem.innerHTML = `
+        <input type="text" class="skill-name" placeholder="Skill name (e.g., Python)">
+        <input type="text" class="skill-icon" placeholder="Icon class (e.g., fab fa-python)">
+        <input type="number" class="skill-order" placeholder="Display Order">
+        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">
+            <i class="fas fa-trash"></i> Delete
+        </button>
+    `;
+    skillsList.appendChild(skillItem);
+}
+
+function removeSkill(button, id) {
+    if (confirm('Are you sure you want to delete this skill?')) {
+        // If it's an existing skill (has ID), send delete request
+        if (id) {
+            fetch('/admin/about/skills/' + id + '/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    button.closest('.skill-item').remove();
+                    // Show empty state if no skills left
+                    if (document.querySelectorAll('.skill-item').length === 0) {
+                        document.getElementById('skills-list').innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-code"></i>
+                                <p>No skills added yet. Click "Add New Skill" to get started.</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    alert('Error deleting skill');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error deleting skill');
+            });
+        } else {
+            button.closest('.skill-item').remove();
+            // Show empty state if no skills left
+            if (document.querySelectorAll('.skill-item').length === 0) {
+                document.getElementById('skills-list').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-code"></i>
+                        <p>No skills added yet. Click "Add New Skill" to get started.</p>
+                    </div>
+                `;
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showNotification('Error resetting content', 'error');
-        });
+        }
     }
 }
+
+function saveSkills() {
+    const skills = [];
+    document.querySelectorAll('.skill-item').forEach(item => {
+        const name = item.querySelector('.skill-name')?.value;
+        const icon = item.querySelector('.skill-icon')?.value;
+        const order = item.querySelector('.skill-order')?.value;
+        if (name) {
+            skills.push({
+                id: item.dataset.id || null,
+                name: name,
+                icon: icon || '',
+                display_order: parseInt(order) || 0
+            });
+        }
+    });
+    
+    fetch('/admin/about/skills/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ skills: skills })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Skills saved successfully!');
+            location.reload();
+        } else {
+            alert('Error saving skills');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error saving skills');
+    });
+}
+
+function addHighlight() {
+    const highlightsList = document.getElementById('highlights-list');
+    // Remove empty state if exists
+    const emptyState = highlightsList.querySelector('.empty-state');
+    if (emptyState) emptyState.remove();
+    
+    const highlightItem = document.createElement('div');
+    highlightItem.className = 'highlight-item';
+    highlightItem.innerHTML = `
+        <input type="text" class="highlight-title" placeholder="Title (e.g., Years of Experience)">
+        <textarea class="highlight-description" placeholder="Description"></textarea>
+        <input type="text" class="highlight-icon" placeholder="Icon class (e.g., fas fa-award)">
+        <input type="number" class="highlight-order" placeholder="Display Order">
+        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">
+            <i class="fas fa-trash"></i> Delete
+        </button>
+    `;
+    highlightsList.appendChild(highlightItem);
+}
+
+function removeHighlight(button, id) {
+    if (confirm('Are you sure you want to delete this highlight?')) {
+        if (id) {
+            fetch('/admin/about/highlights/' + id + '/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    button.closest('.highlight-item').remove();
+                    if (document.querySelectorAll('.highlight-item').length === 0) {
+                        document.getElementById('highlights-list').innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-star"></i>
+                                <p>No highlights added yet. Click "Add New Highlight" to showcase achievements.</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    alert('Error deleting highlight');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error deleting highlight');
+            });
+        } else {
+            button.closest('.highlight-item').remove();
+            if (document.querySelectorAll('.highlight-item').length === 0) {
+                document.getElementById('highlights-list').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-star"></i>
+                        <p>No highlights added yet. Click "Add New Highlight" to showcase achievements.</p>
+                    </div>
+                `;
+            }
+        }
+    }
+}
+
+function saveHighlights() {
+    const highlights = [];
+    document.querySelectorAll('.highlight-item').forEach(item => {
+        const title = item.querySelector('.highlight-title')?.value;
+        const description = item.querySelector('.highlight-description')?.value;
+        const icon = item.querySelector('.highlight-icon')?.value;
+        const order = item.querySelector('.highlight-order')?.value;
+        if (title) {
+            highlights.push({
+                id: item.dataset.id || null,
+                title: title,
+                description: description || '',
+                icon: icon || '',
+                display_order: parseInt(order) || 0
+            });
+        }
+    });
+    
+    fetch('/admin/about/highlights/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ highlights: highlights })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Highlights saved successfully!');
+            location.reload();
+        } else {
+            alert('Error saving highlights');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error saving highlights');
+    });
+}
+
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+});
 </script>
 {% endblock %}

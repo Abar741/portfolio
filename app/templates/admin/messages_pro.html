@@ -1687,6 +1687,129 @@
         .dropdown-item-enhanced i {
             width: 18px !important;
             margin-right: 8px !important;
+        }
+        
+        /* Enhanced mobile table fixes */
+        .messages-header {
+            padding: 0.75rem;
+        }
+        
+        .messages-header h1 {
+            font-size: 1.25rem;
+        }
+        
+        .messages-header p {
+            font-size: 0.875rem;
+        }
+        
+        .table-responsive {
+            margin: 0 -0.5rem;
+            padding: 0 0.5rem;
+        }
+        
+        .table-enhanced {
+            font-size: 0.65rem;
+            min-width: 300px;
+        }
+        
+        .table-enhanced thead th,
+        .table-enhanced tbody td {
+            padding: 0.25rem 0.125rem;
+        }
+        
+        .table-enhanced th:nth-child(2),
+        .table-enhanced td:nth-child(2),
+        .table-enhanced th:nth-child(4),
+        .table-enhanced td:nth-child(4) {
+            display: none;
+        }
+        
+        .btn-group {
+            flex-direction: column;
+            gap: 0.25rem;
+            max-width: 50px;
+        }
+        
+        .btn-sm {
+            padding: 0.2rem 0.375rem;
+            font-size: 0.5625rem;
+            min-height: 24px;
+        }
+        
+        .btn-sm i {
+            font-size: 0.5625rem;
+        }
+        
+        .message-preview {
+            max-width: 120px;
+            font-size: 0.6rem;
+        }
+        
+        .status-badge {
+            font-size: 0.6rem;
+            padding: 0.125rem 0.375rem;
+        }
+        
+        .empty-state {
+            padding: 1.5rem;
+        }
+        
+        .empty-state i {
+            font-size: 2rem;
+        }
+        
+        .empty-state h4 {
+            font-size: 1rem;
+        }
+        
+        .empty-state p {
+            font-size: 0.875rem;
+        }
+    }
+    
+    @media (max-width: 360px) {
+        .messages-header {
+            padding: 0.5rem;
+        }
+        
+        .messages-header h1 {
+            font-size: 1.125rem;
+        }
+        
+        .table-enhanced {
+            font-size: 0.6rem;
+            min-width: 280px;
+        }
+        
+        .table-enhanced thead th,
+        .table-enhanced tbody td {
+            padding: 0.2rem 0.1rem;
+        }
+        
+        .table-enhanced th:nth-child(3),
+        .table-enhanced td:nth-child(3) {
+            display: none;
+        }
+        
+        .message-preview {
+            max-width: 100px;
+            font-size: 0.55rem;
+        }
+        
+        .btn-group {
+            max-width: 40px;
+        }
+        
+        .btn-sm {
+            padding: 0.15rem 0.25rem;
+            font-size: 0.5rem;
+            min-height: 20px;
+        }
+        
+        .btn-sm i {
+            font-size: 0.5rem;
+        }
+    }
             margin-bottom: 0.25rem;
             font-size: 0.9rem !important;
         }

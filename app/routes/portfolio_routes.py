@@ -3,8 +3,9 @@ Sample Flask routes for dynamic hero section management
 This file demonstrates how to pass dynamic data from database to the hero section
 """
 
-from flask import Blueprint, render_template, jsonify
+from flask import Blueprint, render_template, jsonify, current_app
 import json
+import os
 
 # Create a blueprint for portfolio routes
 portfolio_bp = Blueprint('portfolio', __name__)
@@ -44,22 +45,15 @@ class HeroData:
 
 @portfolio_bp.route('/')
 def index():
-    """Main portfolio page with dynamic hero data"""
+    """Main portfolio page with dynamic hero and navbar data"""
     
-    # Option 1: Load from database
-    # hero_data = HeroData.query.first()  # SQLAlchemy example
-    
-    # Option 2: Load from JSON file
-    # with open('hero_data.json', 'r') as f:
-    #     hero_data = json.load(f)
-    
-    # Option 3: Load from environment variables or config
-    # hero_data = load_hero_from_config()
-    
-    # For demonstration, using sample data
+    # Load hero data
     hero_data = get_hero_data_from_database()
     
-    return render_template('portfolio/index.html', hero_data=hero_data)
+    # Load navbar data
+    navbar_data = get_navbar_data()
+    
+    return render_template('portfolio/index.html', hero_data=hero_data, navbar_data=navbar_data)
 
 @portfolio_bp.route('/api/hero')
 def get_hero_api():
@@ -74,6 +68,56 @@ def update_hero_api():
     # hero_data = request.get_json()
     # save_hero_to_database(hero_data)
     return jsonify({"status": "success", "message": "Hero data updated"})
+
+@portfolio_bp.route('/debug/navbar')
+def debug_navbar():
+    """Debug endpoint to check navbar data"""
+    navbar_data = get_navbar_data()
+    return jsonify({
+        "navbar_data_exists": navbar_data is not None,
+        "total_links": len(navbar_data.get('links', [])),
+        "links": navbar_data.get('links', [])
+    })
+
+def get_navbar_data():
+    """Get navbar data from JSON file"""
+    navbar_data_file = os.path.join(current_app.root_path, 'static', 'data', 'navbar_data.json')
+    
+    print(f"DEBUG: Reading navbar data from: {navbar_data_file}")
+    
+    if os.path.exists(navbar_data_file):
+        try:
+            with open(navbar_data_file, 'r') as f:
+                data = json.load(f)
+                print(f"DEBUG: Successfully loaded {len(data.get('links', []))} links")
+                print(f"DEBUG: Links are: {[link['text'] for link in data.get('links', [])]}")
+                return data
+        except Exception as e:
+            print(f"DEBUG: Error loading JSON: {str(e)}")
+            current_app.logger.error(f"Error loading navbar data: {str(e)}")
+    else:
+        print(f"DEBUG: JSON file not found!")
+    
+    # Return default data if file doesn't exist or error occurred
+    default_data = {
+        "brand": {
+            "logo": "/static/images/logo.png",
+            "alt": "Graphic Nest",
+            "url": "#hero"
+        },
+        "links": [
+            {"text": "Home", "url": "#hero", "active": True},
+            {"text": "About", "url": "#about", "active": False},
+            {"text": "Services", "url": "#services", "active": False},
+            {"text": "Projects", "url": "#projects", "active": False},
+            {"text": "Skills", "url": "#skills", "active": False},
+            {"text": "Testimonials", "url": "#testimonials", "active": False},
+            {"text": "Contact", "url": "#feedback-contact-section", "active": False},
+            {"text": "navnav", "url": "#", "active": False}
+        ]
+    }
+    print(f"DEBUG: Returning default data with {len(default_data['links'])} links")
+    return default_data
 
 def get_hero_data_from_database():
     """Simulate loading hero data from database"""

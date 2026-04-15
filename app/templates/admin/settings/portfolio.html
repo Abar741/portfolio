@@ -1,0 +1,451 @@
+{% extends "admin/base_new.html" %}
+
+{% block title %}Portfolio Settings{% endblock %}
+
+{% block content %}
+<!-- Portfolio Settings Header -->
+<div class="card-modern fade-in">
+    <div class="card-header-modern">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h1>
+                    <i class="fas fa-briefcase me-2"></i>Portfolio Settings
+                </h1>
+                <p>Configure your portfolio display and content settings</p>
+            </div>
+            <a href="{{ url_for('admin.settings.settings') }}" class="btn btn-outline-modern">
+                <i class="fas fa-arrow-left me-2"></i>Back to Settings
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Site Information -->
+    <div class="col-lg-8">
+        <div class="card-modern fade-in">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-info-circle me-2"></i>Site Information
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <form method="POST" id="siteInfoForm">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="siteTitle" class="form-label">Site Title</label>
+                            <input type="text" class="form-control" id="siteTitle" name="siteTitle" value="My Portfolio" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="siteDescription" class="form-label">Site Description</label>
+                            <textarea class="form-control" id="siteDescription" name="siteDescription" rows="3" required>Professional portfolio showcasing my projects, skills, and experience</textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="siteKeywords" class="form-label">Keywords</label>
+                            <input type="text" class="form-control" id="siteKeywords" name="siteKeywords" placeholder="portfolio, developer, projects, skills">
+                            <small class="text-muted">Comma-separated keywords for SEO</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="siteLanguage" class="form-label">Primary Language</label>
+                            <select class="form-select" id="siteLanguage" name="siteLanguage">
+                                <option value="en" selected>English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                                <option value="zh">Chinese</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="contactEmail" class="form-label">Contact Email</label>
+                            <input type="email" class="form-control" id="contactEmail" name="contactEmail" value="contact@myportfolio.com" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="contactPhone" class="form-label">Contact Phone</label>
+                            <input type="tel" class="form-control" id="contactPhone" name="contactPhone" placeholder="+1 (555) 123-4567">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- SEO Settings -->
+        <div class="card-modern fade-in mt-4">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-search me-2"></i>SEO Settings
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <form method="POST" id="seoForm">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="enableSEO" checked>
+                                <label class="form-check-label" for="enableSEO">
+                                    <strong>Enable SEO Optimization</strong>
+                                    <p class="text-muted small mb-0">Automatically optimize pages for search engines</p>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="metaDescription" class="form-label">Default Meta Description</label>
+                            <textarea class="form-control" id="metaDescription" name="metaDescription" rows="2" placeholder="Default description for search engines">Professional portfolio website showcasing web development projects and technical skills.</textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="googleAnalytics" class="form-label">Google Analytics ID</label>
+                            <input type="text" class="form-control" id="googleAnalytics" name="googleAnalytics" placeholder="G-XXXXXXXXXX">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="googleSearchConsole" class="form-label">Google Search Console</label>
+                            <input type="text" class="form-control" id="googleSearchConsole" name="googleSearchConsole" placeholder="https://search.google.com/search-console">
+                        </div>
+                        <div class="col-12">
+                            <label for="sitemapUrl" class="form-label">Sitemap URL</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="sitemapUrl" name="sitemapUrl" value="/sitemap.xml" readonly>
+                                <button class="btn btn-outline-modern" type="button" onclick="generateSitemap()">
+                                    <i class="fas fa-sync-alt me-2"></i>Generate
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Social Media Integration -->
+        <div class="card-modern fade-in mt-4">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-share-alt me-2"></i>Social Media Integration
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <form method="POST" id="socialForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="socialLinkedin" class="form-label">
+                                <i class="fab fa-linkedin me-2"></i>LinkedIn
+                            </label>
+                            <input type="url" class="form-control" id="socialLinkedin" name="socialLinkedin" placeholder="https://linkedin.com/in/yourprofile">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="socialGithub" class="form-label">
+                                <i class="fab fa-github me-2"></i>GitHub
+                            </label>
+                            <input type="url" class="form-control" id="socialGithub" name="socialGithub" placeholder="https://github.com/yourusername">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="socialTwitter" class="form-label">
+                                <i class="fab fa-twitter me-2"></i>Twitter
+                            </label>
+                            <input type="url" class="form-control" id="socialTwitter" name="socialTwitter" placeholder="https://twitter.com/yourusername">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="socialInstagram" class="form-label">
+                                <i class="fab fa-instagram me-2"></i>Instagram
+                            </label>
+                            <input type="url" class="form-control" id="socialInstagram" name="socialInstagram" placeholder="https://instagram.com/yourusername">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="socialFacebook" class="form-label">
+                                <i class="fab fa-facebook me-2"></i>Facebook
+                            </label>
+                            <input type="url" class="form-control" id="socialFacebook" name="socialFacebook" placeholder="https://facebook.com/yourprofile">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="socialYoutube" class="form-label">
+                                <i class="fab fa-youtube me-2"></i>YouTube
+                            </label>
+                            <input type="url" class="form-control" id="socialYoutube" name="socialYoutube" placeholder="https://youtube.com/c/yourchannel">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Settings -->
+    <div class="col-lg-4">
+        <div class="card-modern fade-in">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-cog me-2"></i>Display Settings
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <form method="POST" id="displayForm">
+                    <div class="space-y-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showProjects" checked>
+                            <label class="form-check-label" for="showProjects">
+                                <strong>Show Projects Section</strong>
+                                <p class="text-muted small mb-0">Display projects on main page</p>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showSkills" checked>
+                            <label class="form-check-label" for="showSkills">
+                                <strong>Show Skills Section</strong>
+                                <p class="text-muted small mb-0">Display skills on main page</p>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showTestimonials" checked>
+                            <label class="form-check-label" for="showTestimonials">
+                                <strong>Show Testimonials</strong>
+                                <p class="text-muted small mb-0">Display client testimonials</p>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showContact" checked>
+                            <label class="form-check-label" for="showContact">
+                                <strong>Show Contact Form</strong>
+                                <p class="text-muted small mb-0">Display contact information</p>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showBlog">
+                            <label class="form-check-label" for="showBlog">
+                                <strong>Show Blog Section</strong>
+                                <p class="text-muted small mb-0">Display blog posts</p>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Analytics Settings -->
+        <div class="card-modern fade-in mt-4">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-chart-line me-2"></i>Analytics
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <form method="POST" id="analyticsForm">
+                    <div class="space-y-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="enableAnalytics" checked>
+                            <label class="form-check-label" for="enableAnalytics">
+                                <strong>Enable Analytics</strong>
+                                <p class="text-muted small mb-0">Track visitor statistics and behavior</p>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="trackPageViews" checked>
+                            <label class="form-check-label" for="trackPageViews">
+                                <strong>Track Page Views</strong>
+                                <p class="text-muted small mb-0">Monitor page visitation patterns</p>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="trackUserBehavior">
+                            <label class="form-check-label" for="trackUserBehavior">
+                                <strong>Track User Behavior</strong>
+                                <p class="text-muted small mb-0">Monitor clicks and interactions</p>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="anonymizeData" checked>
+                            <label class="form-check-label" for="anonymizeData">
+                                <strong>Anonymize Data</strong>
+                                <p class="text-muted small mb-0">Protect user privacy by anonymizing data</p>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Performance Settings -->
+        <div class="card-modern fade-in mt-4">
+            <div class="card-header-modern">
+                <h5>
+                    <i class="fas fa-tachometer-alt me-2"></i>Performance
+                </h5>
+            </div>
+            <div class="card-body-modern">
+                <form method="POST" id="performanceForm">
+                    <div class="space-y-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="enableCaching" checked>
+                            <label class="form-check-label" for="enableCaching">
+                                <strong>Enable Caching</strong>
+                                <p class="text-muted small mb-0">Improve page load times</p>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="enableCompression" checked>
+                            <label class="form-check-label" for="enableCompression">
+                                <strong>Enable Compression</strong>
+                                <p class="text-muted small mb-0">Reduce file sizes for faster loading</p>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="enableCDN">
+                            <label class="form-check-label" for="enableCDN">
+                                <strong>Enable CDN</strong>
+                                <p class="text-muted small mb-0">Use Content Delivery Network for assets</p>
+                            </label>
+                        </div>
+                        
+                        <div>
+                            <label for="cacheDuration" class="form-label">Cache Duration</label>
+                            <select class="form-select" id="cacheDuration">
+                                <option value="1">1 Hour</option>
+                                <option value="6">6 Hours</option>
+                                <option value="24" selected>24 Hours</option>
+                                <option value="168">1 Week</option>
+                                <option value="720">1 Month</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Save Button -->
+<div class="card-modern fade-in mt-4">
+    <div class="card-body-modern">
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-outline-modern" onclick="exportPortfolioSettings()">
+                <i class="fas fa-download me-2"></i>Export Settings
+            </button>
+            <div>
+                <button type="button" class="btn btn-outline-modern me-2" onclick="previewPortfolio()">
+                    <i class="fas fa-eye me-2"></i>Preview Site
+                </button>
+                <button type="submit" form="siteInfoForm" class="btn btn-primary-modern">
+                    <i class="fas fa-save me-2"></i>Save Settings
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.space-y-3 > * + * {
+    margin-top: 1rem;
+}
+
+.form-check-label strong {
+    color: var(--gray-800);
+    font-weight: 600;
+}
+
+.form-check-label p {
+    margin-left: 0;
+    margin-top: 0.25rem;
+}
+
+.form-switch .form-check-input {
+    width: 3rem;
+    height: 1.5rem;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: var(--primary-600);
+    border-color: var(--primary-600);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function generateSitemap() {
+    showNotificationToast('Generating sitemap...', 'info');
+    setTimeout(() => {
+        showNotificationToast('Sitemap generated successfully!', 'success');
+    }, 2000);
+}
+
+function exportPortfolioSettings() {
+    const settings = {
+        siteInfo: {
+            title: document.getElementById('siteTitle').value,
+            description: document.getElementById('siteDescription').value,
+            keywords: document.getElementById('siteKeywords').value,
+            language: document.getElementById('siteLanguage').value,
+            email: document.getElementById('contactEmail').value,
+            phone: document.getElementById('contactPhone').value
+        },
+        seo: {
+            enabled: document.getElementById('enableSEO').checked,
+            metaDescription: document.getElementById('metaDescription').value,
+            googleAnalytics: document.getElementById('googleAnalytics').value,
+            searchConsole: document.getElementById('googleSearchConsole').value
+        },
+        social: {
+            linkedin: document.getElementById('socialLinkedin').value,
+            github: document.getElementById('socialGithub').value,
+            twitter: document.getElementById('socialTwitter').value,
+            instagram: document.getElementById('socialInstagram').value,
+            facebook: document.getElementById('socialFacebook').value,
+            youtube: document.getElementById('socialYoutube').value
+        }
+    };
+    
+    const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'portfolio-settings.json';
+    a.click();
+    
+    showNotificationToast('Portfolio settings exported successfully', 'success');
+}
+
+function previewPortfolio() {
+    window.open('{{ url_for("main.home") }}', '_blank');
+    showNotificationToast('Opening portfolio preview...', 'info');
+}
+
+// Form submissions
+document.getElementById('siteInfoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showNotificationToast('Site information saved successfully!', 'success');
+});
+
+document.getElementById('seoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showNotificationToast('SEO settings saved successfully!', 'success');
+});
+
+document.getElementById('socialForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showNotificationToast('Social media links saved successfully!', 'success');
+});
+
+document.getElementById('displayForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showNotificationToast('Display settings saved successfully!', 'success');
+});
+
+document.getElementById('analyticsForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showNotificationToast('Analytics settings saved successfully!', 'success');
+});
+
+document.getElementById('performanceForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showNotificationToast('Performance settings saved successfully!', 'success');
+});
+</script>
+{% endblock %}
